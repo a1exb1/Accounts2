@@ -20,7 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: bounds)
         
         var tabBar = UITabBarController()
-        tabBar.viewControllers = [FriendsViewController()]
+        var nav = UINavigationController(rootViewController: FriendsViewController())
+        tabBar.viewControllers = [nav]
         
         self.window?.rootViewController = tabBar
         self.window?.makeKeyAndVisible()
