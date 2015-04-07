@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		E17CD2741AD3E06200C1716D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2731AD3E06200C1716D /* AppDelegate.swift */; };
-		E17CD2761AD3E06200C1716D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2751AD3E06200C1716D /* ViewController.swift */; };
-		E17CD2791AD3E06200C1716D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E17CD2771AD3E06200C1716D /* Main.storyboard */; };
+		E17CD2761AD3E06200C1716D /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2751AD3E06200C1716D /* FriendsViewController.swift */; };
 		E17CD27B1AD3E06200C1716D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E17CD27A1AD3E06200C1716D /* Images.xcassets */; };
 		E17CD27E1AD3E06200C1716D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E17CD27C1AD3E06200C1716D /* LaunchScreen.xib */; };
 		E17CD28A1AD3E06200C1716D /* AccountsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2891AD3E06200C1716D /* AccountsTests.swift */; };
+		E17CD2961AD3E36B00C1716D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2951AD3E36B00C1716D /* BaseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,13 +29,13 @@
 		E17CD26E1AD3E06200C1716D /* Accounts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Accounts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E17CD2721AD3E06200C1716D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E17CD2731AD3E06200C1716D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E17CD2751AD3E06200C1716D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		E17CD2781AD3E06200C1716D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E17CD2751AD3E06200C1716D /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		E17CD27A1AD3E06200C1716D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E17CD27D1AD3E06200C1716D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		E17CD2831AD3E06200C1716D /* AccountsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AccountsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E17CD2881AD3E06200C1716D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E17CD2891AD3E06200C1716D /* AccountsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTests.swift; sourceTree = "<group>"; };
+		E17CD2951AD3E36B00C1716D /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,9 +77,9 @@
 		E17CD2701AD3E06200C1716D /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				E17CD2931AD3E35600C1716D /* Classes */,
 				E17CD2731AD3E06200C1716D /* AppDelegate.swift */,
-				E17CD2751AD3E06200C1716D /* ViewController.swift */,
-				E17CD2771AD3E06200C1716D /* Main.storyboard */,
+				E17CD2751AD3E06200C1716D /* FriendsViewController.swift */,
 				E17CD27A1AD3E06200C1716D /* Images.xcassets */,
 				E17CD27C1AD3E06200C1716D /* LaunchScreen.xib */,
 				E17CD2711AD3E06200C1716D /* Supporting Files */,
@@ -110,6 +110,30 @@
 				E17CD2881AD3E06200C1716D /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E17CD2931AD3E35600C1716D /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E17CD2941AD3E35C00C1716D /* Shared */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		E17CD2941AD3E35C00C1716D /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				E17CD2971AD3E42A00C1716D /* Controllers */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		E17CD2971AD3E42A00C1716D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E17CD2951AD3E36B00C1716D /* BaseViewController.swift */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,7 +216,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E17CD2791AD3E06200C1716D /* Main.storyboard in Resources */,
 				E17CD27E1AD3E06200C1716D /* LaunchScreen.xib in Resources */,
 				E17CD27B1AD3E06200C1716D /* Images.xcassets in Resources */,
 			);
@@ -212,8 +235,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E17CD2761AD3E06200C1716D /* ViewController.swift in Sources */,
+				E17CD2761AD3E06200C1716D /* FriendsViewController.swift in Sources */,
 				E17CD2741AD3E06200C1716D /* AppDelegate.swift in Sources */,
+				E17CD2961AD3E36B00C1716D /* BaseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,14 +260,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		E17CD2771AD3E06200C1716D /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E17CD2781AD3E06200C1716D /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		E17CD27C1AD3E06200C1716D /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
