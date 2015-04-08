@@ -29,6 +29,7 @@ class FriendsViewController: BaseViewController, UITableViewDataSource, UITableV
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addPayment")
+        self.load()
     }
     
     func setupTableViewConstraints(){
@@ -73,7 +74,23 @@ class FriendsViewController: BaseViewController, UITableViewDataSource, UITableV
     
     func openPayment(id:Int){
         
+    }
+    
+    func load(){
         
+        User.createObjectFromJsonAsync(2) { object in
+            
+            let user = object as User?
+            println(user?.id)
+            println(user?.Username)
+        }
+        
+        User.createObjectFromJsonAsync("http://topik.ustwo.com/Users/3", completion: { (object) -> () in
+            
+            let user = object as User?
+            println(user?.id)
+            println(user?.Username)
+        })
     }
 }
 

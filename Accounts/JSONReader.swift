@@ -37,6 +37,15 @@ extension String {
 class JSONReader: NSObject {
     
     class func JsonAsyncRequest(urlString:String, data:Dictionary<String, AnyObject>?, httpMethod:HttpMethod, completionHandler:(response: JSON) -> ()){
+        
+        JsonAsyncRequest(urlString, data: data, httpMethod: httpMethod) { (response:NSData) -> () in
+            let json = JSON(data: response)
+            completionHandler(response: json)
+        }
+        
+    }
+    
+    class func JsonAsyncRequest(urlString:String, data:Dictionary<String, AnyObject>?, httpMethod:HttpMethod, completionHandler:(response: NSData) -> ()){
         var rc:NSArray = NSArray()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
@@ -69,8 +78,8 @@ class JSONReader: NSObject {
             dispatch_async(dispatch_get_main_queue()) {
                 
                 if data != nil{
-                    let json = JSON(data: data!)
-                    completionHandler(response: json)
+                    
+                    completionHandler(response: data!)
                     UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 }
                 else{
@@ -78,7 +87,7 @@ class JSONReader: NSObject {
                 }
                 
             }
-
+            
         })
         
     }

@@ -1,0 +1,10 @@
+PODS:
+  - DCKeyValueObjectMapping (1.4)
+
+DEPENDENCIES:
+  - DCKeyValueObjectMapping
+
+SPEC CHECKSUMS:
+  DCKeyValueObjectMapping: 04cd5a338c03ce1c02488926cab6e1d1f704a093
+
+COCOAPODS: 0.36.0

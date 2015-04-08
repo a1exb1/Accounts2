@@ -1,0 +1,571 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05A772BBEAB9E4523966A3FD /* DCKeyValueObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 236265CC87839CF49431F8AA /* DCKeyValueObjectMapping.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		085CE2035F706952CFAE7821 /* DCKeyValueObjectMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 893AB48215E40B978113B490 /* DCKeyValueObjectMapping.h */; };
+		0F884BB38B05A55B9941A15B /* DCObjectMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D8BE96D68D6DDFAE16EA5B1 /* DCObjectMapping.h */; };
+		242EB1C7D4F2B2D08632ECD8 /* DCParserConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = E88BCC52E7A32901B48404BC /* DCParserConfiguration.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		2B52B485DA624A95D2B6F53E /* DCPropertyFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7767772FB33D0EDBBDD5ED71 /* DCPropertyFinder.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		2CA1A4AC0430565F8F3D3520 /* DCCustomInitialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B420842D06BA895BB3A61EC /* DCCustomInitialize.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		41FC8C61C8001A015A837047 /* DCSimpleConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = A9E15C08B0A45A9612534067 /* DCSimpleConverter.h */; };
+		42A98F0018C68DF232885A78 /* DCAttributeSetter.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E5829C3FC49F1079B7B82B /* DCAttributeSetter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		50FE4D4D4BF5544AD672AD5B /* DCObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = EC70ABB3340B1DEE5A8A87C9 /* DCObjectMapping.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		58E014430CAA6591110732BE /* DCDictionaryRearranger.h in Headers */ = {isa = PBXBuildFile; fileRef = 1343F058576A5C8864D792F8 /* DCDictionaryRearranger.h */; };
+		5CFA8EB661D80F06379D5296 /* DCDynamicAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = E5969CCF3FCCFDF5A21F9D36 /* DCDynamicAttribute.h */; };
+		5D283CB5045E3A901C2AF85A /* DCReferenceKeyParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 48101DE5906DF38232C412E0 /* DCReferenceKeyParser.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		5E7DDAC66CB3ECD9509FE202 /* DCValueConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = A3FA81E781C1AE01CB759951 /* DCValueConverter.h */; };
+		6502C45BDBAD583F3761D553 /* DCCustomParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 28796A42C6DC0A60B4630D65 /* DCCustomParser.h */; };
+		6551EEA2430D02B9E8E4A422 /* DCNSDateConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 49E5147C86DF2425D24D1D2B /* DCNSDateConverter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		726C08588B375A280A2F0CBE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57BF99F16C175760AE3C1274 /* Foundation.framework */; };
+		73D6E60F03E3BC715E4A57A6 /* DCDictionaryRearranger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C8EA47C0CFD93FA3B3F75EF /* DCDictionaryRearranger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		7BC67956F91FA9E5074330AF /* DCNSURLConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = AC19D23BCAD3A541A9A5E9BE /* DCNSURLConverter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		8D911DA47C682E6378C189A4 /* DCPropertyAggregator.h in Headers */ = {isa = PBXBuildFile; fileRef = F25E4E99800C26C616AE8D88 /* DCPropertyAggregator.h */; };
+		8E30A84448C5922D29F07B26 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57BF99F16C175760AE3C1274 /* Foundation.framework */; };
+		92B0CD8ED62EF06645C40A7A /* DCCustomInitialize.h in Headers */ = {isa = PBXBuildFile; fileRef = 91A910710FD6E6256834CD48 /* DCCustomInitialize.h */; };
+		946D7EB239B7A6FF5E3A9958 /* DCPropertyFinder.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DE8DCE2683CFAE42F97E0CA /* DCPropertyFinder.h */; };
+		94E356EAAF3DF8BA54CF4C2C /* DCSimpleConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = AC1DBB2F0B7DF67588FA2D40 /* DCSimpleConverter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		9548CDCC5A22C1398854C6DB /* DCCustomParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 425B18A71BD71CDA2ABE166B /* DCCustomParser.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		973FB1760B44F40C7E1EC912 /* DCNSArrayConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = C83D20F4AF02CA9EA2FD12B1 /* DCNSArrayConverter.h */; };
+		9B7034FF6FCDA7F4827FFD8D /* DCDynamicAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = AE55B9A4F0706597FAA091A0 /* DCDynamicAttribute.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		9C3A8AC62AB512D24F9CEB31 /* DCReferenceKeyParser.h in Headers */ = {isa = PBXBuildFile; fileRef = B975DC9302DE4D195EA132D3 /* DCReferenceKeyParser.h */; };
+		9FC8A9D5AAAA970152BA30CC /* DCNSDateConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 678E569CAE55EC8CF08C36EA /* DCNSDateConverter.h */; };
+		A8E7BC796E8E49CAE86BADF2 /* DCArrayMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 250E0ACE8C6ED85439048D33 /* DCArrayMapping.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		AD5300564A58E4528F2B549D /* Pods-DCKeyValueObjectMapping-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BA0F6A5F53EEC1E273C9C899 /* Pods-DCKeyValueObjectMapping-dummy.m */; };
+		AFE8B5B7CB9E6E3263607446 /* DCGenericConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DC5D2F4EDED41B3DB29FB01 /* DCGenericConverter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		B3B7346BBBC9757F15A93E3F /* DCGenericConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B45CC4CB630873022231FE5 /* DCGenericConverter.h */; };
+		B53CEBD8541C41942197E5DD /* DCNSSetConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 8009F3ABA832A51C5553A900 /* DCNSSetConverter.h */; };
+		B656387F3C3E17F7A575E2DA /* DCArrayMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 4DB71E415864913D3B2EF6EF /* DCArrayMapping.h */; };
+		C98FAE214DA6030C14904C2A /* DCAttributeSetter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D43290FC4F6AA2B9126495A /* DCAttributeSetter.h */; };
+		E3B9301F30D4D1991DD32E7B /* DCNSURLConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 31351BF8F7562DD34B18585E /* DCNSURLConverter.h */; };
+		EABA18AA1CBD5B20A502B3BB /* DCPropertyAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A5BC68D8D7333CC6FAF01B0 /* DCPropertyAggregator.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		EC6C6B56162FFDDB4766EF09 /* DCParserConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = BCCEF032838E2144ED67B23B /* DCParserConfiguration.h */; };
+		F82592545ED143B781ED3B2F /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 170CD3E1D8538F2505399273 /* Pods-dummy.m */; };
+		FAE476BC3AE1B65544E590CD /* DCNSArrayConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 26620CB555107FC5049B5667 /* DCNSArrayConverter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		FDA0BD496CFEFDA2A73B2AF2 /* DCNSSetConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = D749C4ABE3364F5ABF5C3AD7 /* DCNSSetConverter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F0A639B865AB9A701818261D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8F54A588420BD2DD0120C3DA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96CB24556C59B0437165614F;
+			remoteInfo = "Pods-DCKeyValueObjectMapping";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1343F058576A5C8864D792F8 /* DCDictionaryRearranger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCDictionaryRearranger.h; path = KeyValueObjectMapping/DCDictionaryRearranger.h; sourceTree = "<group>"; };
+		146816476004D899B162ED4F /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
+		170CD3E1D8538F2505399273 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
+		17601ED101A1F3B82A3DA830 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
+		1DC5D2F4EDED41B3DB29FB01 /* DCGenericConverter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCGenericConverter.m; path = KeyValueObjectMapping/DCGenericConverter.m; sourceTree = "<group>"; };
+		236265CC87839CF49431F8AA /* DCKeyValueObjectMapping.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCKeyValueObjectMapping.m; path = KeyValueObjectMapping/DCKeyValueObjectMapping.m; sourceTree = "<group>"; };
+		239EC88C48D9F93669E8F1FC /* Pods-DCKeyValueObjectMapping-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DCKeyValueObjectMapping-prefix.pch"; sourceTree = "<group>"; };
+		250E0ACE8C6ED85439048D33 /* DCArrayMapping.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCArrayMapping.m; path = KeyValueObjectMapping/DCArrayMapping.m; sourceTree = "<group>"; };
+		26620CB555107FC5049B5667 /* DCNSArrayConverter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCNSArrayConverter.m; path = KeyValueObjectMapping/DCNSArrayConverter.m; sourceTree = "<group>"; };
+		28796A42C6DC0A60B4630D65 /* DCCustomParser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCCustomParser.h; path = KeyValueObjectMapping/DCCustomParser.h; sourceTree = "<group>"; };
+		2D43290FC4F6AA2B9126495A /* DCAttributeSetter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCAttributeSetter.h; path = KeyValueObjectMapping/DCAttributeSetter.h; sourceTree = "<group>"; };
+		2DE8DCE2683CFAE42F97E0CA /* DCPropertyFinder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCPropertyFinder.h; path = KeyValueObjectMapping/DCPropertyFinder.h; sourceTree = "<group>"; };
+		30E50846531B7790709ACC01 /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = "<group>"; };
+		31351BF8F7562DD34B18585E /* DCNSURLConverter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCNSURLConverter.h; path = KeyValueObjectMapping/DCNSURLConverter.h; sourceTree = "<group>"; };
+		3240ED639AF2B4E550FD62E7 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
+		425B18A71BD71CDA2ABE166B /* DCCustomParser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCCustomParser.m; path = KeyValueObjectMapping/DCCustomParser.m; sourceTree = "<group>"; };
+		48101DE5906DF38232C412E0 /* DCReferenceKeyParser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCReferenceKeyParser.m; path = KeyValueObjectMapping/DCReferenceKeyParser.m; sourceTree = "<group>"; };
+		49E5147C86DF2425D24D1D2B /* DCNSDateConverter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCNSDateConverter.m; path = KeyValueObjectMapping/DCNSDateConverter.m; sourceTree = "<group>"; };
+		4B420842D06BA895BB3A61EC /* DCCustomInitialize.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCCustomInitialize.m; path = KeyValueObjectMapping/DCCustomInitialize.m; sourceTree = "<group>"; };
+		4DB71E415864913D3B2EF6EF /* DCArrayMapping.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCArrayMapping.h; path = KeyValueObjectMapping/DCArrayMapping.h; sourceTree = "<group>"; };
+		57BF99F16C175760AE3C1274 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		5B45CC4CB630873022231FE5 /* DCGenericConverter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCGenericConverter.h; path = KeyValueObjectMapping/DCGenericConverter.h; sourceTree = "<group>"; };
+		5CFB97299C2689437AE6F7A5 /* Pods-DCKeyValueObjectMapping-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DCKeyValueObjectMapping-Private.xcconfig"; sourceTree = "<group>"; };
+		641C25B54C06F1E0A7074B5D /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
+		678E569CAE55EC8CF08C36EA /* DCNSDateConverter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCNSDateConverter.h; path = KeyValueObjectMapping/DCNSDateConverter.h; sourceTree = "<group>"; };
+		74E6DC90B5412DCB1049CBBA /* libPods-DCKeyValueObjectMapping.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DCKeyValueObjectMapping.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7767772FB33D0EDBBDD5ED71 /* DCPropertyFinder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCPropertyFinder.m; path = KeyValueObjectMapping/DCPropertyFinder.m; sourceTree = "<group>"; };
+		7C8EA47C0CFD93FA3B3F75EF /* DCDictionaryRearranger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCDictionaryRearranger.m; path = KeyValueObjectMapping/DCDictionaryRearranger.m; sourceTree = "<group>"; };
+		8009F3ABA832A51C5553A900 /* DCNSSetConverter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCNSSetConverter.h; path = KeyValueObjectMapping/DCNSSetConverter.h; sourceTree = "<group>"; };
+		893AB48215E40B978113B490 /* DCKeyValueObjectMapping.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCKeyValueObjectMapping.h; path = KeyValueObjectMapping/DCKeyValueObjectMapping.h; sourceTree = "<group>"; };
+		91A910710FD6E6256834CD48 /* DCCustomInitialize.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCCustomInitialize.h; path = KeyValueObjectMapping/DCCustomInitialize.h; sourceTree = "<group>"; };
+		9A5BC68D8D7333CC6FAF01B0 /* DCPropertyAggregator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCPropertyAggregator.m; path = KeyValueObjectMapping/DCPropertyAggregator.m; sourceTree = "<group>"; };
+		9D8BE96D68D6DDFAE16EA5B1 /* DCObjectMapping.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCObjectMapping.h; path = KeyValueObjectMapping/DCObjectMapping.h; sourceTree = "<group>"; };
+		A262CD18F320CEE3EE99EAE2 /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A3FA81E781C1AE01CB759951 /* DCValueConverter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCValueConverter.h; path = KeyValueObjectMapping/DCValueConverter.h; sourceTree = "<group>"; };
+		A9E15C08B0A45A9612534067 /* DCSimpleConverter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCSimpleConverter.h; path = KeyValueObjectMapping/DCSimpleConverter.h; sourceTree = "<group>"; };
+		AAB5CE0870537FC691F02228 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC19D23BCAD3A541A9A5E9BE /* DCNSURLConverter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCNSURLConverter.m; path = KeyValueObjectMapping/DCNSURLConverter.m; sourceTree = "<group>"; };
+		AC1DBB2F0B7DF67588FA2D40 /* DCSimpleConverter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCSimpleConverter.m; path = KeyValueObjectMapping/DCSimpleConverter.m; sourceTree = "<group>"; };
+		ACEA38048CA594275AA1B6C0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
+		AE55B9A4F0706597FAA091A0 /* DCDynamicAttribute.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCDynamicAttribute.m; path = KeyValueObjectMapping/DCDynamicAttribute.m; sourceTree = "<group>"; };
+		B975DC9302DE4D195EA132D3 /* DCReferenceKeyParser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCReferenceKeyParser.h; path = KeyValueObjectMapping/DCReferenceKeyParser.h; sourceTree = "<group>"; };
+		BA0F6A5F53EEC1E273C9C899 /* Pods-DCKeyValueObjectMapping-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DCKeyValueObjectMapping-dummy.m"; sourceTree = "<group>"; };
+		BCCEF032838E2144ED67B23B /* DCParserConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCParserConfiguration.h; path = KeyValueObjectMapping/DCParserConfiguration.h; sourceTree = "<group>"; };
+		C83D20F4AF02CA9EA2FD12B1 /* DCNSArrayConverter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCNSArrayConverter.h; path = KeyValueObjectMapping/DCNSArrayConverter.h; sourceTree = "<group>"; };
+		D749C4ABE3364F5ABF5C3AD7 /* DCNSSetConverter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCNSSetConverter.m; path = KeyValueObjectMapping/DCNSSetConverter.m; sourceTree = "<group>"; };
+		D9E5829C3FC49F1079B7B82B /* DCAttributeSetter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCAttributeSetter.m; path = KeyValueObjectMapping/DCAttributeSetter.m; sourceTree = "<group>"; };
+		E5969CCF3FCCFDF5A21F9D36 /* DCDynamicAttribute.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCDynamicAttribute.h; path = KeyValueObjectMapping/DCDynamicAttribute.h; sourceTree = "<group>"; };
+		E88BCC52E7A32901B48404BC /* DCParserConfiguration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCParserConfiguration.m; path = KeyValueObjectMapping/DCParserConfiguration.m; sourceTree = "<group>"; };
+		EC70ABB3340B1DEE5A8A87C9 /* DCObjectMapping.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DCObjectMapping.m; path = KeyValueObjectMapping/DCObjectMapping.m; sourceTree = "<group>"; };
+		EFFE47541E38431A92D37C6E /* Pods-DCKeyValueObjectMapping.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DCKeyValueObjectMapping.xcconfig"; sourceTree = "<group>"; };
+		F25E4E99800C26C616AE8D88 /* DCPropertyAggregator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DCPropertyAggregator.h; path = KeyValueObjectMapping/DCPropertyAggregator.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		34DD1DA6BC5FDB1855345639 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E30A84448C5922D29F07B26 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3830A53D7599D92408354815 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				726C08588B375A280A2F0CBE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0AFCC976B7FC22284CC8323D /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				EFFE47541E38431A92D37C6E /* Pods-DCKeyValueObjectMapping.xcconfig */,
+				5CFB97299C2689437AE6F7A5 /* Pods-DCKeyValueObjectMapping-Private.xcconfig */,
+				BA0F6A5F53EEC1E273C9C899 /* Pods-DCKeyValueObjectMapping-dummy.m */,
+				239EC88C48D9F93669E8F1FC /* Pods-DCKeyValueObjectMapping-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-DCKeyValueObjectMapping";
+			sourceTree = "<group>";
+		};
+		19601107263EF1290A336BF4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5F45E7C09C44966CF6E45081 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5F45E7C09C44966CF6E45081 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				57BF99F16C175760AE3C1274 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		64BF209B4A0E67A865D6A0EC /* DCKeyValueObjectMapping */ = {
+			isa = PBXGroup;
+			children = (
+				4DB71E415864913D3B2EF6EF /* DCArrayMapping.h */,
+				250E0ACE8C6ED85439048D33 /* DCArrayMapping.m */,
+				2D43290FC4F6AA2B9126495A /* DCAttributeSetter.h */,
+				D9E5829C3FC49F1079B7B82B /* DCAttributeSetter.m */,
+				91A910710FD6E6256834CD48 /* DCCustomInitialize.h */,
+				4B420842D06BA895BB3A61EC /* DCCustomInitialize.m */,
+				28796A42C6DC0A60B4630D65 /* DCCustomParser.h */,
+				425B18A71BD71CDA2ABE166B /* DCCustomParser.m */,
+				1343F058576A5C8864D792F8 /* DCDictionaryRearranger.h */,
+				7C8EA47C0CFD93FA3B3F75EF /* DCDictionaryRearranger.m */,
+				E5969CCF3FCCFDF5A21F9D36 /* DCDynamicAttribute.h */,
+				AE55B9A4F0706597FAA091A0 /* DCDynamicAttribute.m */,
+				5B45CC4CB630873022231FE5 /* DCGenericConverter.h */,
+				1DC5D2F4EDED41B3DB29FB01 /* DCGenericConverter.m */,
+				893AB48215E40B978113B490 /* DCKeyValueObjectMapping.h */,
+				236265CC87839CF49431F8AA /* DCKeyValueObjectMapping.m */,
+				C83D20F4AF02CA9EA2FD12B1 /* DCNSArrayConverter.h */,
+				26620CB555107FC5049B5667 /* DCNSArrayConverter.m */,
+				678E569CAE55EC8CF08C36EA /* DCNSDateConverter.h */,
+				49E5147C86DF2425D24D1D2B /* DCNSDateConverter.m */,
+				8009F3ABA832A51C5553A900 /* DCNSSetConverter.h */,
+				D749C4ABE3364F5ABF5C3AD7 /* DCNSSetConverter.m */,
+				31351BF8F7562DD34B18585E /* DCNSURLConverter.h */,
+				AC19D23BCAD3A541A9A5E9BE /* DCNSURLConverter.m */,
+				9D8BE96D68D6DDFAE16EA5B1 /* DCObjectMapping.h */,
+				EC70ABB3340B1DEE5A8A87C9 /* DCObjectMapping.m */,
+				BCCEF032838E2144ED67B23B /* DCParserConfiguration.h */,
+				E88BCC52E7A32901B48404BC /* DCParserConfiguration.m */,
+				F25E4E99800C26C616AE8D88 /* DCPropertyAggregator.h */,
+				9A5BC68D8D7333CC6FAF01B0 /* DCPropertyAggregator.m */,
+				2DE8DCE2683CFAE42F97E0CA /* DCPropertyFinder.h */,
+				7767772FB33D0EDBBDD5ED71 /* DCPropertyFinder.m */,
+				B975DC9302DE4D195EA132D3 /* DCReferenceKeyParser.h */,
+				48101DE5906DF38232C412E0 /* DCReferenceKeyParser.m */,
+				A9E15C08B0A45A9612534067 /* DCSimpleConverter.h */,
+				AC1DBB2F0B7DF67588FA2D40 /* DCSimpleConverter.m */,
+				A3FA81E781C1AE01CB759951 /* DCValueConverter.h */,
+				0AFCC976B7FC22284CC8323D /* Support Files */,
+			);
+			path = DCKeyValueObjectMapping;
+			sourceTree = "<group>";
+		};
+		B47BE033F65566384F21B95E /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				BF294F23E4E15E9CF330706E /* Pods */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		B8354D607FAEF1908C6ECDE2 = {
+			isa = PBXGroup;
+			children = (
+				A262CD18F320CEE3EE99EAE2 /* Podfile */,
+				19601107263EF1290A336BF4 /* Frameworks */,
+				F007450B25B0924F9512466E /* Pods */,
+				BF8BA6B8BFA0E45E4E3CF6CD /* Products */,
+				B47BE033F65566384F21B95E /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		BF294F23E4E15E9CF330706E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				641C25B54C06F1E0A7074B5D /* Pods-acknowledgements.markdown */,
+				146816476004D899B162ED4F /* Pods-acknowledgements.plist */,
+				170CD3E1D8538F2505399273 /* Pods-dummy.m */,
+				30E50846531B7790709ACC01 /* Pods-environment.h */,
+				3240ED639AF2B4E550FD62E7 /* Pods-resources.sh */,
+				17601ED101A1F3B82A3DA830 /* Pods.debug.xcconfig */,
+				ACEA38048CA594275AA1B6C0 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			path = "Target Support Files/Pods";
+			sourceTree = "<group>";
+		};
+		BF8BA6B8BFA0E45E4E3CF6CD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AAB5CE0870537FC691F02228 /* libPods.a */,
+				74E6DC90B5412DCB1049CBBA /* libPods-DCKeyValueObjectMapping.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F007450B25B0924F9512466E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				64BF209B4A0E67A865D6A0EC /* DCKeyValueObjectMapping */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		B911FA08EFEB1940B08B1F90 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B656387F3C3E17F7A575E2DA /* DCArrayMapping.h in Headers */,
+				C98FAE214DA6030C14904C2A /* DCAttributeSetter.h in Headers */,
+				92B0CD8ED62EF06645C40A7A /* DCCustomInitialize.h in Headers */,
+				6502C45BDBAD583F3761D553 /* DCCustomParser.h in Headers */,
+				58E014430CAA6591110732BE /* DCDictionaryRearranger.h in Headers */,
+				5CFA8EB661D80F06379D5296 /* DCDynamicAttribute.h in Headers */,
+				B3B7346BBBC9757F15A93E3F /* DCGenericConverter.h in Headers */,
+				085CE2035F706952CFAE7821 /* DCKeyValueObjectMapping.h in Headers */,
+				973FB1760B44F40C7E1EC912 /* DCNSArrayConverter.h in Headers */,
+				9FC8A9D5AAAA970152BA30CC /* DCNSDateConverter.h in Headers */,
+				B53CEBD8541C41942197E5DD /* DCNSSetConverter.h in Headers */,
+				E3B9301F30D4D1991DD32E7B /* DCNSURLConverter.h in Headers */,
+				0F884BB38B05A55B9941A15B /* DCObjectMapping.h in Headers */,
+				EC6C6B56162FFDDB4766EF09 /* DCParserConfiguration.h in Headers */,
+				8D911DA47C682E6378C189A4 /* DCPropertyAggregator.h in Headers */,
+				946D7EB239B7A6FF5E3A9958 /* DCPropertyFinder.h in Headers */,
+				9C3A8AC62AB512D24F9CEB31 /* DCReferenceKeyParser.h in Headers */,
+				41FC8C61C8001A015A837047 /* DCSimpleConverter.h in Headers */,
+				5E7DDAC66CB3ECD9509FE202 /* DCValueConverter.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		96CB24556C59B0437165614F /* Pods-DCKeyValueObjectMapping */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AD713EB6D11A3CDF32D564C4 /* Build configuration list for PBXNativeTarget "Pods-DCKeyValueObjectMapping" */;
+			buildPhases = (
+				C37BBD158D360E3410733C02 /* Sources */,
+				3830A53D7599D92408354815 /* Frameworks */,
+				B911FA08EFEB1940B08B1F90 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-DCKeyValueObjectMapping";
+			productName = "Pods-DCKeyValueObjectMapping";
+			productReference = 74E6DC90B5412DCB1049CBBA /* libPods-DCKeyValueObjectMapping.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		A8C8AE22FF400C24682EA930 /* Pods */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4FB8783C05FD58F45609A10C /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildPhases = (
+				5500A0C2D49D02D8F55BA636 /* Sources */,
+				34DD1DA6BC5FDB1855345639 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DE663FEB66B0EDCE79EB4331 /* PBXTargetDependency */,
+			);
+			name = Pods;
+			productName = Pods;
+			productReference = AAB5CE0870537FC691F02228 /* libPods.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8F54A588420BD2DD0120C3DA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+			};
+			buildConfigurationList = 77069195A0EB1D78A00E7ADF /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B8354D607FAEF1908C6ECDE2;
+			productRefGroup = BF8BA6B8BFA0E45E4E3CF6CD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A8C8AE22FF400C24682EA930 /* Pods */,
+				96CB24556C59B0437165614F /* Pods-DCKeyValueObjectMapping */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5500A0C2D49D02D8F55BA636 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F82592545ED143B781ED3B2F /* Pods-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C37BBD158D360E3410733C02 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A8E7BC796E8E49CAE86BADF2 /* DCArrayMapping.m in Sources */,
+				42A98F0018C68DF232885A78 /* DCAttributeSetter.m in Sources */,
+				2CA1A4AC0430565F8F3D3520 /* DCCustomInitialize.m in Sources */,
+				9548CDCC5A22C1398854C6DB /* DCCustomParser.m in Sources */,
+				73D6E60F03E3BC715E4A57A6 /* DCDictionaryRearranger.m in Sources */,
+				9B7034FF6FCDA7F4827FFD8D /* DCDynamicAttribute.m in Sources */,
+				AFE8B5B7CB9E6E3263607446 /* DCGenericConverter.m in Sources */,
+				05A772BBEAB9E4523966A3FD /* DCKeyValueObjectMapping.m in Sources */,
+				FAE476BC3AE1B65544E590CD /* DCNSArrayConverter.m in Sources */,
+				6551EEA2430D02B9E8E4A422 /* DCNSDateConverter.m in Sources */,
+				FDA0BD496CFEFDA2A73B2AF2 /* DCNSSetConverter.m in Sources */,
+				7BC67956F91FA9E5074330AF /* DCNSURLConverter.m in Sources */,
+				50FE4D4D4BF5544AD672AD5B /* DCObjectMapping.m in Sources */,
+				242EB1C7D4F2B2D08632ECD8 /* DCParserConfiguration.m in Sources */,
+				EABA18AA1CBD5B20A502B3BB /* DCPropertyAggregator.m in Sources */,
+				2B52B485DA624A95D2B6F53E /* DCPropertyFinder.m in Sources */,
+				5D283CB5045E3A901C2AF85A /* DCReferenceKeyParser.m in Sources */,
+				94E356EAAF3DF8BA54CF4C2C /* DCSimpleConverter.m in Sources */,
+				AD5300564A58E4528F2B549D /* Pods-DCKeyValueObjectMapping-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DE663FEB66B0EDCE79EB4331 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-DCKeyValueObjectMapping";
+			target = 96CB24556C59B0437165614F /* Pods-DCKeyValueObjectMapping */;
+			targetProxy = F0A639B865AB9A701818261D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		975F260DF1F257BC04BF2790 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 17601ED101A1F3B82A3DA830 /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		ABE5C1BF549068E0B54BF58C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C6C9401BDD446EC9FFCF8478 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ACEA38048CA594275AA1B6C0 /* Pods.release.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		D3C2610B42D660DA02C6DB94 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		DA0DBEA4BBF39FC68D2EDD4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5CFB97299C2689437AE6F7A5 /* Pods-DCKeyValueObjectMapping-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-DCKeyValueObjectMapping/Pods-DCKeyValueObjectMapping-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		E5F747CE8C8A83AF4A31E1A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5CFB97299C2689437AE6F7A5 /* Pods-DCKeyValueObjectMapping-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-DCKeyValueObjectMapping/Pods-DCKeyValueObjectMapping-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4FB8783C05FD58F45609A10C /* Build configuration list for PBXNativeTarget "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				975F260DF1F257BC04BF2790 /* Debug */,
+				C6C9401BDD446EC9FFCF8478 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		77069195A0EB1D78A00E7ADF /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3C2610B42D660DA02C6DB94 /* Debug */,
+				ABE5C1BF549068E0B54BF58C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AD713EB6D11A3CDF32D564C4 /* Build configuration list for PBXNativeTarget "Pods-DCKeyValueObjectMapping" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5F747CE8C8A83AF4A31E1A1 /* Debug */,
+				DA0DBEA4BBF39FC68D2EDD4F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8F54A588420BD2DD0120C3DA /* Project object */;
+}
