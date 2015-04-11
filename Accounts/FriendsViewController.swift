@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FriendsViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
+class FriendsViewController: BaseViewController {
     
     var tableView = UITableView()
     
@@ -21,19 +21,20 @@ class FriendsViewController: BaseViewController, UITableViewDataSource, UITableV
         
         self.setTabBar(Tools.imageWithColor(UIColor.redColor(), size: CGSize(width: 10, height: 10)))
         
-        self.view.addSubview(self.tableView)
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        self.setupTableViewConstraints()
-        
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        self.setupTableView()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addPayment")
         self.load()
     }
     
-    func setupTableViewConstraints(){
+    func setupTableView(){
         
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        
+        self.view.addSubview(self.tableView)
+        
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
         self.tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
         
         self.tableView.addTopConstraint(toView: self.view, relation: .Equal, constant: 0)
@@ -42,31 +43,6 @@ class FriendsViewController: BaseViewController, UITableViewDataSource, UITableV
         self.tableView.addBottomConstraint(toView: self.view, relation: .Equal, constant: 0)
     }
 
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        
-        return 1
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return 3
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as UITableViewCell
-        
-        cell.textLabel?.text = "Person"
-        
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        self.openPayment(indexPath.row)
-    }
-    
     func addPayment(){
         
         self.openPayment(0)
@@ -78,19 +54,35 @@ class FriendsViewController: BaseViewController, UITableViewDataSource, UITableV
     
     func load(){
         
-        User.createObjectFromJsonAsync(2) { object in
-            
-            let user = object as User?
-            println(user?.id)
-            println(user?.Username)
-        }
         
-        User.createObjectFromJsonAsync("http://topik.ustwo.com/Users/3", completion: { (object) -> () in
-            
-            let user = object as User?
-            println(user?.id)
-            println(user?.Username)
-        })
     }
+}
+
+extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return Session.sharedInstance().activeUser.Friends.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as UITableViewCell
+        
+        cell.textLabel?.text = Session.sharedInstance().activeUser.Friends[indexPath.row].Username
+        
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        self.openPayment(indexPath.row)
+    }
+
 }
 

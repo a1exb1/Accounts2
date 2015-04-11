@@ -15,12 +15,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-
+        
         var bounds: CGRect = UIScreen.mainScreen().bounds
         self.window = UIWindow(frame: bounds)
         
         var tabBar = UITabBarController()
-        var nav = UINavigationController(rootViewController: FriendsViewController())
+        var nav = UINavigationController(rootViewController: LoginViewController())
         tabBar.viewControllers = [nav]
         
         self.window?.rootViewController = tabBar

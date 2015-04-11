@@ -14,23 +14,40 @@ class JSONObject: NSObject {
         return ""
     }
     
-    class func createObjectFromJsonAsync(id:Int, completion: (object:JSONObject?) -> () ) {
+    class func getObjectFromJsonAsync(id:Int, completion: (object:JSONObject?) -> () ) {
 
         JSONReader.JsonAsyncRequest((self as AnyClass).jsonURL(id), data: nil, httpMethod: .GET) { (json:JSON) -> () in
             
-            var mapper = DCKeyValueObjectMapping.mapperForClass(self.classForCoder())
-            var rc: JSONObject = mapper.parseDictionary(json.dictionaryObject) as JSONObject
-            completion(object: rc as JSONObject)
+            completion(object: self.createObjectFromJson(json))
         }
     }
     
-    class func createObjectFromJsonAsync(url:String, completion: (object:JSONObject?) -> () ) {
+    class func getObjectFromJsonAsync(url:String, completion: (object:JSONObject?) -> () ) {
         
         JSONReader.JsonAsyncRequest(url, data: nil, httpMethod: .GET) { (json:JSON) -> () in
             
-            var mapper = DCKeyValueObjectMapping.mapperForClass(self.classForCoder())
-            var rc: JSONObject = mapper.parseDictionary(json.dictionaryObject) as JSONObject
-            completion(object: rc as JSONObject)
+            completion(object: self.createObjectFromJson(json))
         }
+    }
+    
+    class func createObjectFromJson(json:JSON) -> JSONObject? {
+        
+        var mapper = DCKeyValueObjectMapping.mapperForClass(self.classForCoder())
+        var rc: JSONObject = mapper.parseDictionary(json.dictionaryObject) as JSONObject
+        rc.setExtraPropertiesFromJSON(json)
+        return rc
+    }
+    
+    
+    func setExtraPropertiesFromJSON(json:JSON) {
+        
+    }
+    
+    func convertToJSONString() -> String {
+        var json = JSON(self)
+        println(json)
+        return json.stringValue
+        //var data = NSJSONSerialization.dataWithJSONObject(self, options: NSJSONWritingOptions.PrettyPrinted, error: nil)!
+        //return NSString(data: data, encoding: NSUTF8StringEncoding)!
     }
 }

@@ -2,3 +2,4 @@
 # platform :ios, ‘8.0’
 
 pod 'DCKeyValueObjectMapping'
+pod 'NSObject-ObjectMap', '~> 2.0'

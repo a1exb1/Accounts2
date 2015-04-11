@@ -379,18 +379,6 @@ class Tools: NSObject {
         return rc
     }
     
-    class func Domain() -> String{
-        return "http://lesson-manager.com"
-    }
-    
-    class func WebApiURL(webApiControllerName:String) -> String{
-        return Domain() + "/webapi/Api/" + webApiControllerName + "/"
-    }
-    
-    class func WebMvcController(controller:String, action:String) -> String{
-        return Domain() + "/webapi/" + controller + "/" + action + "/"
-    }
-    
     class func ShowAlertControllerOK(message:String, completionHandler:(response: Int) -> ()){
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         
@@ -454,6 +442,56 @@ class Tools: NSObject {
     
     class func Device() -> UIUserInterfaceIdiom{
         return UIDevice.currentDevice().userInterfaceIdiom
+    }
+    
+    class func GetValueFromPlistDocuments(plist:String, key:String) -> String?{
+        // getting path to GameData.plist
+        var rc = ""
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) as NSArray
+        let documentsDirectory = paths[0] as String
+        let path = documentsDirectory.stringByAppendingPathComponent("\(plist).plist")
+        let fileManager = NSFileManager.defaultManager()
+        //check if file exists
+        if(!fileManager.fileExistsAtPath(path)) {
+            // If it doesn't, copy it from the default file in the Bundle
+            if let bundlePath = NSBundle.mainBundle().pathForResource(plist, ofType: "plist") {
+                let resultDictionary = NSMutableDictionary(contentsOfFile: bundlePath)
+                //println("Bundle GameData.plist file is --> \(resultDictionary?.description)")
+                fileManager.copyItemAtPath(bundlePath, toPath: path, error: nil)
+                //println("copy")
+            } else {
+                //println("GameData.plist not found. Please, make sure it is part of the bundle.")
+            }
+        } else {
+            //println("GameData.plist already exits at path.")
+            // use this to delete file from documents directory
+            //fileManager.removeItemAtPath(path, error: nil)
+        }
+        let resultDictionary = NSMutableDictionary(contentsOfFile: path)
+        //println("Loaded GameData.plist file is --> \(resultDictionary?.description)")
+        var myDict = NSDictionary(contentsOfFile: path)
+        if let dict = myDict {
+            //loading values
+            rc = dict.objectForKey(key) as String!
+            //...
+        } else {
+            //println("WARNING: Couldn't create dictionary from GameData.plist! Default values will be used!")
+        }
+        return rc
+    }
+    
+    class func SetValueInPlistDocuments(plist:String, key:String, value:String){
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) as NSArray
+        let documentsDirectory = paths.objectAtIndex(0) as NSString
+        let path = documentsDirectory.stringByAppendingPathComponent("\(plist).plist")
+        var dict: NSMutableDictionary = [key: value]
+        //saving values
+        dict.setObject(value, forKey: key)
+        //...
+        //writing to GameData.plist
+        dict.writeToFile(path, atomically: false)
+        let resultDictionary = NSMutableDictionary(contentsOfFile: path)
+        //println("Saved GameData.plist file is --> \(resultDictionary?.description)")
     }
 }
 
