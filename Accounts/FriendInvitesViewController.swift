@@ -26,7 +26,7 @@ class FriendInvitesViewController: BaseViewController {
         
         super.viewWillAppear(animated)
         
-        self.refreshData()
+        self.refreshData(nil)
     }
     
     func setupTableView() {
@@ -40,14 +40,19 @@ class FriendInvitesViewController: BaseViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
+        var refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "refreshData:", forControlEvents: UIControlEvents.ValueChanged)
+        self.tableView.addSubview(refreshControl)
+        
     }
     
-    func refreshData() {
+    func refreshData(refreshControl: UIRefreshControl?) {
         
         Session.sharedInstance().activeUser.getUnconfirmedInvites { (invites) -> () in
             
             self.invites = invites
             self.tableView.reloadData()
+            refreshControl?.endRefreshing()
         }
     }
 }
@@ -79,7 +84,7 @@ extension FriendInvitesViewController: UITableViewDataSource, UITableViewDelegat
         
         Session.sharedInstance().activeUser.addFriend(relation.user.UserID, completion: { () -> () in
             
-            self.refreshData()
+            self.refreshData(nil)
         })
     }
     

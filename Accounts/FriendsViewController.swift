@@ -31,9 +31,10 @@ class FriendsViewController: BaseViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        
         super.viewWillAppear(animated)
         
-        self.refreshData()
+        self.refreshData(nil)
     }
     
     func setupTableView() {
@@ -50,6 +51,10 @@ class FriendsViewController: BaseViewController {
         self.tableView.addLeftConstraint(toView: self.view, relation: .Equal, constant: 0)
         self.tableView.addRightConstraint(toView: self.view, relation: .Equal, constant: 0)
         self.tableView.addBottomConstraint(toView: self.view, relation: .Equal, constant: 0)
+        
+        var refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "refreshData:", forControlEvents: UIControlEvents.ValueChanged)
+        self.tableView.addSubview(refreshControl)
     }
     
     func setupSearchBar() {
@@ -64,7 +69,6 @@ class FriendsViewController: BaseViewController {
         searchBar.placeholder = "Search existing or new friends"
         searchBar.returnKeyType = UIReturnKeyType.Search
         searchBar.searchBarStyle = UISearchBarStyle.Minimal;
-        
         searchBar.delegate = self
     }
     
@@ -87,11 +91,12 @@ class FriendsViewController: BaseViewController {
         
     }
     
-    func refreshData(){
+    func refreshData(refreshControl: UIRefreshControl?) {
 
         Session.sharedInstance().activeUser.refreshFriendsList { () -> () in
             
             self.tableView.reloadData()
+            refreshControl?.endRefreshing()
         }
         
         self.getUsersMatchingSearch(self.searchBar.text)
@@ -200,7 +205,6 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         return rc
-        //return section == 0 ? self.friendsMatchingSearchText().count : self.usersMatchingSearch.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -226,19 +230,15 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        //self.openPayment(indexPath.row)
-
         if indexPath.section == 2 {
             
             var relation: User = self.usersMatchingSearch[indexPath.row]
             
             Session.sharedInstance().activeUser.addFriend(relation.UserID, completion: { () -> () in
                 
-                self.refreshData()
+                self.refreshData(nil)
             })
         }
-        
-        
     }
 
 }
@@ -259,9 +259,9 @@ extension FriendsViewController: UISearchBarDelegate {
         
         searchBar.resignFirstResponder()
         searchBar.setShowsCancelButton(false, animated: true)
-
         searchBar.text = ""
-        self.refreshData()
+        
+        self.refreshData(nil)
     }
 }
 
