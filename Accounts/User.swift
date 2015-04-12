@@ -15,7 +15,8 @@ class User: JSONObject {
     var Friends: Array<User> = []
     
     override class func jsonURL(id:Int) -> String {
-        return "http://alex.bechmann.co.uk/iou/api/Users/\(id)"
+        
+        return AppTools.WebApiURL("Users") + "/\(id)"
     }
     
     override func setExtraPropertiesFromJSON(json:JSON) {
@@ -30,7 +31,7 @@ class User: JSONObject {
     }
     
     func saveUserOnDevice() {
-        println(self.convertToJSONString())
+        //println(self.convertToJSONString())
         //Tools.SetValueInPlistDocuments("AppSettings", key:"activeUser", value:self.convertToJSONString())
     }
 }
