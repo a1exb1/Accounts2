@@ -19,11 +19,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var bounds: CGRect = UIScreen.mainScreen().bounds
         self.window = UIWindow(frame: bounds)
         
-        var tabBar = UITabBarController()
-        var nav = UINavigationController(rootViewController: LoginViewController())
-        tabBar.viewControllers = [nav]
+        if let activeUser = User.userSavedOnDevice() {
+            
+            Session.sharedInstance().activeUser = activeUser
+            self.window?.rootViewController = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
+        }
+        else{
+            
+            var tabBar = UITabBarController()
+            var nav = UINavigationController(rootViewController: LoginViewController())
+            tabBar.viewControllers = [nav]
+            
+            self.window?.rootViewController = tabBar
+        }
         
-        self.window?.rootViewController = tabBar
         self.window?.makeKeyAndVisible()
         
         return true

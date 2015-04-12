@@ -12,7 +12,7 @@ let kTableViewTopMargin: CGFloat = 64
 let kTableViewPadding: CGFloat = 0
 let kCellHeight: CGFloat = 50
 
-class LoginViewController: UIViewController {
+class LoginViewController: BaseViewController {
 
     var tableView = UITableView()
     var textFields: Array<UITextField> = []
@@ -60,7 +60,7 @@ class LoginViewController: UIViewController {
                     
                     Session.sharedInstance().activeUser = object! as User
                     
-                    var v = UINavigationController(rootViewController: FriendsViewController())
+                    var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
                     self.presentViewController(v, animated: true, completion: nil)
                 })
                 

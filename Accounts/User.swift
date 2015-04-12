@@ -21,6 +21,8 @@ class User: JSONObject {
     
     override func setExtraPropertiesFromJSON(json:JSON) {
         
+        super.setExtraPropertiesFromJSON(json)
+        
         self.Friends = Array<User>()
         
         for (index: String, friendJSON: JSON) in json["Friends"] {
@@ -31,7 +33,25 @@ class User: JSONObject {
     }
     
     func saveUserOnDevice() {
-        //println(self.convertToJSONString())
-        //Tools.SetValueInPlistDocuments("AppSettings", key:"activeUser", value:self.convertToJSONString())
+
+        Tools.SetValueInPlistDocuments("AppSettings", key:"activeUser", value:self.convertToJSONString())
+    }
+    
+    class func userSavedOnDevice() -> User? {
+        
+        var user:User? = nil
+        
+        if let userStr:String = Tools.GetValueFromPlistDocuments("AppSettings", key: "activeUser") {
+            
+            if userStr.count() > 0 {
+                
+                let data:NSData = userStr.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!
+                user = User.createObjectFromJson(JSON(data: data)) as User!
+            }
+            
+            
+        }
+        
+        return user
     }
 }

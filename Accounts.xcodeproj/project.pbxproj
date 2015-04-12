@@ -24,6 +24,9 @@
 		E464674A1AD9798A005CD18B /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46467491AD9798A005CD18B /* Session.swift */; };
 		E464674C1AD9B927005CD18B /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E464674B1AD9B927005CD18B /* AppTools.swift */; };
 		E46467531AD9D7AB005CD18B /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46467521AD9D7AB005CD18B /* Response.swift */; };
+		E4BFF0571AD9F8B000CAEF93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4BFF0561AD9F8B000CAEF93 /* Main.storyboard */; };
+		E4BFF0591AD9FA4700CAEF93 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BFF0581AD9FA4700CAEF93 /* UIStoryboardExtension.swift */; };
+		E4BFF05B1AD9FD4600CAEF93 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BFF05A1AD9FD4600CAEF93 /* StringExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +64,9 @@
 		E46467491AD9798A005CD18B /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		E464674B1AD9B927005CD18B /* AppTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
 		E46467521AD9D7AB005CD18B /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		E4BFF0561AD9F8B000CAEF93 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		E4BFF0581AD9FA4700CAEF93 /* UIStoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtension.swift; sourceTree = "<group>"; };
+		E4BFF05A1AD9FD4600CAEF93 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		EFA16FCB756FCD13F4D94A65 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -124,6 +130,7 @@
 		E17CD2701AD3E06200C1716D /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				E4BFF0551AD9F89D00CAEF93 /* Storyboards */,
 				E17CD2931AD3E35600C1716D /* Classes */,
 				E17CD27A1AD3E06200C1716D /* Images.xcassets */,
 				E17CD27C1AD3E06200C1716D /* LaunchScreen.xib */,
@@ -246,8 +253,18 @@
 		E464674F1AD9D680005CD18B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E4BFF0581AD9FA4700CAEF93 /* UIStoryboardExtension.swift */,
+				E4BFF05A1AD9FD4600CAEF93 /* StringExtension.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		E4BFF0551AD9F89D00CAEF93 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				E4BFF0561AD9F8B000CAEF93 /* Main.storyboard */,
+			);
+			name = Storyboards;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -332,6 +349,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4BFF0571AD9F8B000CAEF93 /* Main.storyboard in Resources */,
 				E17CD27E1AD3E06200C1716D /* LaunchScreen.xib in Resources */,
 				E17CD27B1AD3E06200C1716D /* Images.xcassets in Resources */,
 			);
@@ -386,10 +404,12 @@
 			files = (
 				E17CD29F1AD3F45000C1716D /* AutoLayoutHelper.swift in Sources */,
 				E17CD2A11AD3F45000C1716D /* swiftyJSON.swift in Sources */,
+				E4BFF05B1AD9FD4600CAEF93 /* StringExtension.swift in Sources */,
 				E17CD2A01AD3F45000C1716D /* JSONReader.swift in Sources */,
 				E17CD2761AD3E06200C1716D /* FriendsViewController.swift in Sources */,
 				E17CD2AE1AD5384C00C1716D /* User.swift in Sources */,
 				E17CD2A21AD3F45000C1716D /* Tools.swift in Sources */,
+				E4BFF0591AD9FA4700CAEF93 /* UIStoryboardExtension.swift in Sources */,
 				E46467531AD9D7AB005CD18B /* Response.swift in Sources */,
 				E17CD2741AD3E06200C1716D /* AppDelegate.swift in Sources */,
 				E464674C1AD9B927005CD18B /* AppTools.swift in Sources */,

@@ -1,10 +1,13 @@
 PODS:
   - DCKeyValueObjectMapping (1.4)
+  - NSObject-ObjectMap (2.3.1)
 
 DEPENDENCIES:
   - DCKeyValueObjectMapping
+  - NSObject-ObjectMap (~> 2.0)
 
 SPEC CHECKSUMS:
   DCKeyValueObjectMapping: 04cd5a338c03ce1c02488926cab6e1d1f704a093
+  NSObject-ObjectMap: 3223c0c994a8e3de44ccb74ddf3e63c86821c015
 
-COCOAPODS: 0.36.0
+COCOAPODS: 0.36.3

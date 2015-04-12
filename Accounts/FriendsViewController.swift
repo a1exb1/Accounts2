@@ -19,8 +19,6 @@ class FriendsViewController: BaseViewController {
         self.view.backgroundColor = UIColor.whiteColor()
         self.title = "Friends"
         
-        self.setTabBar(Tools.imageWithColor(UIColor.redColor(), size: CGSize(width: 10, height: 10)))
-        
         self.setupTableView()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addPayment")
@@ -53,8 +51,7 @@ class FriendsViewController: BaseViewController {
     }
     
     func load(){
-        
-        
+
     }
 }
 

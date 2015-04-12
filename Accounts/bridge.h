@@ -8,6 +8,7 @@
 
 #import "DCKeyValueObjectMapping.h"
 #import "DCObjectMapping.h"
+#import "NSObject+ObjectMap.h"
 
 #ifndef Accounts_bridge_h
 #define Accounts_bridge_h

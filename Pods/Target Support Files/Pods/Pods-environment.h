@@ -12,3 +12,9 @@
 #define COCOAPODS_VERSION_MINOR_DCKeyValueObjectMapping 4
 #define COCOAPODS_VERSION_PATCH_DCKeyValueObjectMapping 0
 
+// NSObject-ObjectMap
+#define COCOAPODS_POD_AVAILABLE_NSObject_ObjectMap
+#define COCOAPODS_VERSION_MAJOR_NSObject_ObjectMap 2
+#define COCOAPODS_VERSION_MINOR_NSObject_ObjectMap 3
+#define COCOAPODS_VERSION_PATCH_NSObject_ObjectMap 1
+

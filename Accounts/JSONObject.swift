@@ -44,10 +44,7 @@ class JSONObject: NSObject {
     }
     
     func convertToJSONString() -> String {
-        var json = JSON(self)
-        println(json)
-        return json.stringValue
-        //var data = NSJSONSerialization.dataWithJSONObject(self, options: NSJSONWritingOptions.PrettyPrinted, error: nil)!
-        //return NSString(data: data, encoding: NSUTF8StringEncoding)!
+
+        return self.JSONString()
     }
 }
