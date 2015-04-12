@@ -41,7 +41,17 @@ class Session: NSObject {
         }
     }
     
-    func userIsLoggedIn () -> Bool {
+    func logout() {
+        
+        self.activeUser = User()
+        self.activeUser.saveUserOnDevice()
+        
+        UIApplication.sharedApplication().keyWindow?.rootViewController = UIStoryboard.initialViewControllerFromStoryboardNamed("Login")
+        UIApplication.sharedApplication().keyWindow?.makeKeyAndVisible()
+        
+    }
+    
+    func userIsLoggedIn() -> Bool {
         
         return self.activeUser.UserID > 0
     }

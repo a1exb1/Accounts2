@@ -26,11 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         else{
             
-            var tabBar = UITabBarController()
-            var nav = UINavigationController(rootViewController: LoginViewController())
-            tabBar.viewControllers = [nav]
-            
-            self.window?.rootViewController = tabBar
+            self.window?.rootViewController = UIStoryboard.initialViewControllerFromStoryboardNamed("Login")
         }
         
         self.window?.makeKeyAndVisible()
