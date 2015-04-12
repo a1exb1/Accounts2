@@ -117,6 +117,11 @@ extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
         
         textField.text = indexPath.row == 0 ? "Alex" : "pass"
         
+        if indexPath.row == 1 {
+            
+            textField.secureTextEntry = true
+        }
+        
         return cell
     }
     

@@ -93,11 +93,15 @@ class FriendsViewController: BaseViewController {
             
             self.tableView.reloadData()
         }
+        
+        self.getUsersMatchingSearch(self.searchBar.text)
     }
     
     func getUsersMatchingSearch(searchText: String) {
-        
+
         self.usersMatchingSearch = []
+        
+        self.tableView.reloadData()
         
         User.activeUsersContaining(searchText) { response in
          
@@ -106,13 +110,13 @@ class FriendsViewController: BaseViewController {
         }
     }
     
-    func friendsMatchingSearchText() -> Array<User> {
+    func friendsMatchingSearchText(array: Array<User>) -> Array<User> {
         
         var matches = Array<User>()
         
         if self.searchBar.text.count() > 0 {
             
-            for user in Session.sharedInstance().activeUser.Friends {
+            for user in array {
                 
                 if user.Username.contains(self.searchBar.text) {
                     
@@ -122,10 +126,22 @@ class FriendsViewController: BaseViewController {
         }
         else{
             
-            matches = Session.sharedInstance().activeUser.Friends
+            matches = array
         }
         
         return matches
+    }
+    
+    func confirmedFriends() -> Array<User> {
+        
+        var array = Session.sharedInstance().activeUser.confirmedFriends()
+        return self.friendsMatchingSearchText(array)
+    }
+    
+    func pendingFriends() -> Array<User> {
+        
+        var array = Session.sharedInstance().activeUser.pendingFriends()
+        return self.friendsMatchingSearchText(array)
     }
 }
 
@@ -137,7 +153,10 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
         
         if section == 0 {
             
-            rc = self.friendsMatchingSearchText().count > 0 ? "Friends" : ""
+            rc = self.confirmedFriends().count > 0 ? "Friends" : ""
+        }
+        else if section == 1{
+            rc = self.pendingFriends().count > 0 ? "Pending" : ""
         }
         else{
             rc = self.usersMatchingSearch.count > 0 ? "Add friend" : ""
@@ -151,7 +170,10 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
         
         if section == 0 {
             
-            rc = self.friendsMatchingSearchText().count == 0 ? "No matches" : ""
+            rc = self.confirmedFriends().count == 0 ? "No matches" : ""
+        }
+        else if section == 1{
+            rc = self.pendingFriends().count == 0 ? "No matches pending" : ""
         }
         else{
             rc = (self.searchBar.text.count() > 0 && self.usersMatchingSearch.count == 0) ? "No matches online" : ""
@@ -161,12 +183,24 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         
-        return 2
+        return 3
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return section == 0 ? self.friendsMatchingSearchText().count : self.usersMatchingSearch.count
+        var rc = 0
+        
+        switch section {
+            
+        case 0: rc = self.confirmedFriends().count; break;
+        case 1: rc = self.pendingFriends().count;  break;
+        case 2: rc = self.usersMatchingSearch.count; break;
+            
+        default:break;
+        }
+        
+        return rc
+        //return section == 0 ? self.friendsMatchingSearchText().count : self.usersMatchingSearch.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -175,7 +209,11 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
         
         if indexPath.section == 0 {
             
-            cell.textLabel?.text = self.friendsMatchingSearchText()[indexPath.row].Username
+            cell.textLabel?.text = self.confirmedFriends()[indexPath.row].Username
+        }
+        else if indexPath.section == 1{
+            
+            cell.textLabel?.text = self.pendingFriends()[indexPath.row].Username
         }
         else{
             
@@ -190,7 +228,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
         
         //self.openPayment(indexPath.row)
 
-        if indexPath.section == 1 {
+        if indexPath.section == 2 {
             
             var relation: User = self.usersMatchingSearch[indexPath.row]
             
@@ -221,6 +259,9 @@ extension FriendsViewController: UISearchBarDelegate {
         
         searchBar.resignFirstResponder()
         searchBar.setShowsCancelButton(false, animated: true)
+
+        searchBar.text = ""
+        self.refreshData()
     }
 }
 

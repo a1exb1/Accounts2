@@ -31,6 +31,7 @@
 		E4BFF0611ADAB48900CAEF93 /* Relation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BFF0601ADAB48900CAEF93 /* Relation.swift */; };
 		E4BFF0651ADAD6A900CAEF93 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BFF0641ADAD6A900CAEF93 /* MenuViewController.swift */; };
 		E4BFF0671ADAD6B900CAEF93 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4BFF0661ADAD6B900CAEF93 /* Login.storyboard */; };
+		E4BFF0691ADAF7D500CAEF93 /* RelationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BFF0681ADAF7D500CAEF93 /* RelationStatus.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		E4BFF0601ADAB48900CAEF93 /* Relation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relation.swift; sourceTree = "<group>"; };
 		E4BFF0641ADAD6A900CAEF93 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		E4BFF0661ADAD6B900CAEF93 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		E4BFF0681ADAF7D500CAEF93 /* RelationStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationStatus.swift; sourceTree = "<group>"; };
 		EFA16FCB756FCD13F4D94A65 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -225,6 +227,7 @@
 				E464674B1AD9B927005CD18B /* AppTools.swift */,
 				E46467521AD9D7AB005CD18B /* Response.swift */,
 				E4BFF0601ADAB48900CAEF93 /* Relation.swift */,
+				E4BFF0681ADAF7D500CAEF93 /* RelationStatus.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -449,6 +452,7 @@
 			files = (
 				E17CD29F1AD3F45000C1716D /* AutoLayoutHelper.swift in Sources */,
 				E17CD2A11AD3F45000C1716D /* swiftyJSON.swift in Sources */,
+				E4BFF0691ADAF7D500CAEF93 /* RelationStatus.swift in Sources */,
 				E4BFF05B1AD9FD4600CAEF93 /* StringExtension.swift in Sources */,
 				E17CD2A01AD3F45000C1716D /* JSONReader.swift in Sources */,
 				E4BFF0611ADAB48900CAEF93 /* Relation.swift in Sources */,

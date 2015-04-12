@@ -15,6 +15,7 @@ class User: JSONObject {
     var UserID = 0
     var Username = ""
     var Friends: Array<User> = []
+    var relationStatusToActiveUser: RelationStatus = RelationStatus.Undefined
     
     override class func jsonURL(id:Int) -> String {
         
@@ -26,7 +27,7 @@ class User: JSONObject {
         super.setExtraPropertiesFromJSON(json)
         
         self.setFriendsFromJSON(json["friends"])
-        
+        self.relationStatusToActiveUser = RelationStatus(rawValue: json["relationStatus"].intValue)!
     }
     
     func setFriendsFromJSON(json:JSON) {
@@ -101,6 +102,34 @@ class User: JSONObject {
             self.setFriendsFromJSON(response)
             completion()
         }
+    }
+    
+    func confirmedFriends() -> Array<User> {
+        
+        var rc = Array<User>()
+        
+        for friend in self.Friends {
+            
+            if friend.relationStatusToActiveUser == .Confirmed {
+                rc.append(friend)
+            }
+        }
+        
+        return rc
+    }
+    
+    func pendingFriends() -> Array<User> {
+        
+        var rc = Array<User>()
+        
+        for friend in self.Friends {
+            
+            if friend.relationStatusToActiveUser == .Pending {
+                rc.append(friend)
+            }
+        }
+        
+        return rc
     }
     
     class func activeUsersContaining(string: String, completion:(users:Array<User>) -> ()) {
