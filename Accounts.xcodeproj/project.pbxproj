@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		737CA235B89BDA33F1660400 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF7E7035D53D11D4DB724424 /* libPods.a */; };
+		E133C9831ADFEAA1005943D1 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E133C9821ADFEAA1005943D1 /* PaymentViewController.swift */; };
 		E17CD2741AD3E06200C1716D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2731AD3E06200C1716D /* AppDelegate.swift */; };
 		E17CD2761AD3E06200C1716D /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2751AD3E06200C1716D /* FriendsViewController.swift */; };
 		E17CD27B1AD3E06200C1716D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E17CD27A1AD3E06200C1716D /* Images.xcassets */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		BF7E7035D53D11D4DB724424 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03B6C7ED8A5E14D06CCC230 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		E133C9821ADFEAA1005943D1 /* PaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		E17CD26E1AD3E06200C1716D /* Accounts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Accounts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E17CD2721AD3E06200C1716D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E17CD2731AD3E06200C1716D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +119,22 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		E133C9801ADFEA6C005943D1 /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				E133C9811ADFEA7A005943D1 /* View Controllers */,
+			);
+			name = Payment;
+			sourceTree = "<group>";
+		};
+		E133C9811ADFEA7A005943D1 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E133C9821ADFEAA1005943D1 /* PaymentViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
 		E17CD2651AD3E06200C1716D = {
 			isa = PBXGroup;
 			children = (
@@ -178,11 +196,12 @@
 		E17CD2931AD3E35600C1716D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				E4BFF0621ADAD68300CAEF93 /* Menu */,
+				E17CD29A1AD3F43A00C1716D /* External */,
+				E46467431AD96EEB005CD18B /* Friends */,
 				E4BFF05C1ADA934B00CAEF93 /* Invites */,
 				E46467451AD96F18005CD18B /* Login */,
-				E46467431AD96EEB005CD18B /* Friends */,
-				E17CD29A1AD3F43A00C1716D /* External */,
+				E4BFF0621ADAD68300CAEF93 /* Menu */,
+				E133C9801ADFEA6C005943D1 /* Payment */,
 				E17CD2941AD3E35C00C1716D /* Shared */,
 			);
 			name = Classes;
@@ -457,6 +476,7 @@
 				E17CD2A01AD3F45000C1716D /* JSONReader.swift in Sources */,
 				E4BFF0611ADAB48900CAEF93 /* Relation.swift in Sources */,
 				E17CD2761AD3E06200C1716D /* FriendsViewController.swift in Sources */,
+				E133C9831ADFEAA1005943D1 /* PaymentViewController.swift in Sources */,
 				E17CD2AE1AD5384C00C1716D /* User.swift in Sources */,
 				E17CD2A21AD3F45000C1716D /* Tools.swift in Sources */,
 				E4BFF0591AD9FA4700CAEF93 /* UIStoryboardExtension.swift in Sources */,

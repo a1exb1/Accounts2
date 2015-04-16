@@ -101,10 +101,10 @@ class JSONReader: NSObject {
                 var connector = rc.contains("?") ? "&": "?"
                 rc += connector
                 if value is String{
-                    rc += key + "=" + (value as String)
+                    rc += key + "=" + (value as! String)
                 }
                 if value is Int{
-                    rc += key + "=" + String((value as Int))
+                    rc += key + "=" + String((value as! Int))
                 }
                 
             }
@@ -123,8 +123,8 @@ class JSONReader: NSObject {
         
         for pair in pairs {
             var elements:Array<AnyObject> = queryString!.componentsSeparatedByString("=")
-            var key:String = elements[0] as String //.stringByReplacingPercentEscapesUsingEncoding(0)!
-            var value:String = elements[1] as String //.stringByReplacingPercentEscapesUsingEncoding(0)!
+            var key:String = elements[0] as! String //.stringByReplacingPercentEscapesUsingEncoding(0)!
+            var value:String = elements[1] as! String //.stringByReplacingPercentEscapesUsingEncoding(0)!
             dict[key] = value
         }
         return dict;

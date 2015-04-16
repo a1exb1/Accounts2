@@ -10,8 +10,8 @@ import UIKit
 
 extension String {
     
-    func count() -> Int {
+    func charCount() -> Int {
         
-        return self.utf16Count
+        return count(self.utf16)
     }
 }
