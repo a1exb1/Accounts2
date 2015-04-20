@@ -38,7 +38,7 @@ class Session: NSObject {
             
             completion(success: (self.userIsLoggedIn() && r.Status == .Success))
             
-        }, onFailure: { () -> () in
+        }, onFailure: { (error: NSErrorPointer) -> () in
             
             
         }) { () -> () in

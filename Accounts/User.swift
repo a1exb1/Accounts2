@@ -75,7 +75,7 @@ class User: JSONObject {
             
             completion()
             
-        }, onFailure: { () -> () in
+        }, onFailure: { (error: NSErrorPointer) -> () in
             
             
         }) { () -> () in
@@ -115,7 +115,7 @@ class User: JSONObject {
             self.setFriendsFromJSON(json)
             onSuccess?()
             
-        }, onFailure: { () -> () in
+        }, onFailure: { (error: NSErrorPointer) -> () in
             
             onFailure?()
             
@@ -172,7 +172,7 @@ class User: JSONObject {
             
             completion(users: matches)
             
-        }, onFailure: { () -> () in
+        }, onFailure: { (error: NSErrorPointer) -> () in
             
             
         }) { () -> () in

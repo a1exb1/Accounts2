@@ -16,8 +16,6 @@ class FriendsViewController: BaseViewController {
     var usersMatchingSearch: Array<User> = []
     var searchBar = UISearchBar()
     
-    var searchBarView = UIView()
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -26,8 +24,6 @@ class FriendsViewController: BaseViewController {
         
         self.setupTableView()
         self.setupSearchBar()
-        
-        //self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addPayment")
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -60,36 +56,30 @@ class FriendsViewController: BaseViewController {
     func setupSearchBar() {
         
         self.updateSearchBarViewFrame()
-        self.navigationController?.navigationBar.addSubview(self.searchBarView)
+//        self.navigationController?.navigationBar.addSubview(self.searchBarView)
         
-        self.searchBarView.addSubview(searchBar)
-        searchBar.setTranslatesAutoresizingMaskIntoConstraints(false)
-        searchBar.fillSuperView(UIEdgeInsets(top: kSearchBarMargin, left: kSearchBarMargin, bottom: -kSearchBarMargin, right: -kSearchBarMargin))
+        //self.searchBarView.addSubview(searchBar)
+        //self.searchBar.setTranslatesAutoresizingMaskIntoConstraints(false)
         
-        searchBar.placeholder = "Search existing or new friends"
-        searchBar.returnKeyType = UIReturnKeyType.Search
-        searchBar.searchBarStyle = UISearchBarStyle.Minimal;
-        searchBar.delegate = self
+        self.tableView.tableHeaderView = self.searchBar
+        //self.searchBar.fillSuperView(UIEdgeInsets(top: kSearchBarMargin, left: kSearchBarMargin, bottom: -kSearchBarMargin, right: -kSearchBarMargin))
+        
+        self.searchBar.placeholder = "Search existing or new friends"
+        self.searchBar.returnKeyType = UIReturnKeyType.Search
+        self.searchBar.searchBarStyle = UISearchBarStyle.Minimal;
+        self.searchBar.delegate = self
     }
     
     func updateSearchBarViewFrame() {
         
-        self.searchBarView.frame = navigationController!.navigationBar.bounds
+        self.searchBar.frame = navigationController!.navigationBar.bounds
     }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         
         self.updateSearchBarViewFrame()
     }
-    
-    func addPayment(){
-        
-        self.openPayment(0)
-    }
-    
-    func openPayment(id:Int){
-        
-    }
+
     
     func refreshData(refreshControl: UIRefreshControl?) {
 
@@ -154,6 +144,29 @@ class FriendsViewController: BaseViewController {
         var array = Session.sharedInstance().activeUser.pendingFriends()
         return self.friendsMatchingSearchText(array)
     }
+    
+    
+    func arrayForSection(section: Int) -> [User] {
+        
+        if section == 0 {
+            
+            return confirmedFriends()
+        }
+        else if section == 1 {
+            
+            return pendingFriends()
+        }
+        else {
+            return self.usersMatchingSearch
+        }
+    }
+    
+    func viewOverview(friend: User) {
+        
+        var v = OverviewViewController()
+        v.friend = friend
+        self.navigationController?.pushViewController(v, animated: true)
+    }
 }
 
 extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
@@ -199,35 +212,19 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        var rc = 0
-        
-        switch section {
-            
-        case 0: rc = self.confirmedFriends().count; break;
-        case 1: rc = self.pendingFriends().count;  break;
-        case 2: rc = self.usersMatchingSearch.count; break;
-            
-        default:break;
-        }
-        
-        return rc
+        return self.arrayForSection(section).count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! UITableViewCell
         
-        if indexPath.section == 0 {
+        let friend = self.arrayForSection(indexPath.section)[indexPath.row]
+        
+        cell.textLabel?.text = friend.Username
+        
+        if indexPath.section == 2 {
             
-            cell.textLabel?.text = self.confirmedFriends()[indexPath.row].Username
-        }
-        else if indexPath.section == 1{
-            
-            cell.textLabel?.text = self.pendingFriends()[indexPath.row].Username
-        }
-        else{
-            
-            cell.textLabel?.text = self.usersMatchingSearch[indexPath.row].Username
             cell.detailTextLabel?.text = "Tap to add friend"
         }
         
@@ -244,6 +241,11 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
                 
                 self.refreshData(nil)
             })
+        }
+        else {
+            
+            let friend = self.arrayForSection(indexPath.section)[indexPath.row]
+            viewOverview(friend)
         }
     }
 

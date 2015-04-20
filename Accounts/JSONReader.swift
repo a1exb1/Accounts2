@@ -36,7 +36,7 @@ extension String {
 
 class JSONReader: NSObject {
     
-    class func JsonAsyncRequest(urlString:String, data:Dictionary<String, AnyObject>?, httpMethod:HttpMethod, onSuccess:((json: JSON) -> ())?, onFailure:(() -> ())?, onFinished:(() -> ())?) {
+    class func JsonAsyncRequest(urlString:String, data:Dictionary<String, AnyObject>?, httpMethod:HttpMethod, onSuccess:((json: JSON) -> ())?, onFailure:((error: NSErrorPointer) -> ())?, onFinished:(() -> ())?) {
         
         JsonAsyncRequestAsData(urlString, data: data, httpMethod: httpMethod, onSuccess: { (data) -> () in
             
@@ -45,7 +45,7 @@ class JSONReader: NSObject {
             
         }, onFailure: { (error) -> () in
             
-            onFailure?()
+            onFailure?(error: error)
             
         }) { () -> () in
             
