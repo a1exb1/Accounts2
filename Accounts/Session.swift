@@ -12,7 +12,7 @@ let kSharedSessionInstance = Session()
 
 class Session: NSObject {
    
-    var activeUser = User()
+    var activeUser:User = User()
     
     class func sharedInstance() -> Session {
         return kSharedSessionInstance
@@ -20,24 +20,30 @@ class Session: NSObject {
     
     func login(username: String, password:String, completion: (success: Bool) -> ()) {
         
+        var urlString = AppTools.WebMvcController("User", action: "Login")
         var data = [
             "username" : username,
             "password" : password
         ]
-
-        JSONReader.JsonAsyncRequest(AppTools.WebMvcController("User", action: "Login"), data: data, httpMethod: .GET) { (response: JSON) -> () in
+        
+        JSONReader.JsonAsyncRequest(urlString, data: data, httpMethod: .GET, onSuccess: { (json) -> () in
             
-            var r = Response.createObjectFromJson(response["Response"])! as Response
+            var r:Response = Response.createObjectFromJson(json["Response"])
             
             if r.Status == .Success {
                 
-                var userJSON = response["User"]
-                self.activeUser = User.createObjectFromJson(response["User"])! as User
+                self.activeUser = User.createObjectFromJson(json["User"])
                 self.activeUser.saveUserOnDevice()
             }
             
-            
             completion(success: (self.userIsLoggedIn() && r.Status == .Success))
+            
+        }, onFailure: { () -> () in
+            
+            
+        }) { () -> () in
+            
+            
         }
     }
     

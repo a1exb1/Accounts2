@@ -56,9 +56,9 @@ class LoginViewController: BaseViewController {
             
             if success {
                 
-                User.getObjectFromJsonAsync(Session.sharedInstance().activeUser.UserID, completion: { (object) -> () in
+                User.getObjectFromJsonAsync(Session.sharedInstance().activeUser.UserID, completion: { (object:User) -> () in
                     
-                    Session.sharedInstance().activeUser = object! as User
+                    Session.sharedInstance().activeUser = object
                     
                     var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
                     self.presentViewController(v, animated: true, completion: nil)
@@ -89,7 +89,7 @@ extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! UITableViewCell
         
         cell.selectionStyle = UITableViewCellSelectionStyle.None
         

@@ -71,13 +71,13 @@ extension UIColor
             
             if scanner.scanHexLongLong(&hexValue)
             {
-                if countElements(hex) == 6
+                if count(hex) == 6
                 {
                     red   = CGFloat((hexValue & 0xFF0000) >> 16) / 255.0
                     green = CGFloat((hexValue & 0x00FF00) >> 8)  / 255.0
                     blue  = CGFloat(hexValue & 0x0000FF) / 255.0
                 }
-                else if countElements(hex) == 8
+                else if count(hex) == 8
                 {
                     red   = CGFloat((hexValue & 0xFF000000) >> 24) / 255.0
                     green = CGFloat((hexValue & 0x00FF0000) >> 16) / 255.0
@@ -149,7 +149,7 @@ class Tools: NSObject {
         dateFormatter.dateFormat = LMDateFormat.ISO8601.rawValue
         
         var d:NSDate = dateFormatter.dateFromString(s)!
-        return d.dateByAddingTimeInterval(NSTimeInterval(-secondsFromGMT()))!
+        return d.dateByAddingTimeInterval(NSTimeInterval(-secondsFromGMT()))
     }
     
 //    class func StringISO8601FromDate(var date:NSDate) -> String{
@@ -318,7 +318,7 @@ class Tools: NSObject {
     
     class func GetValueFromPlist(plist:String, value:String) -> String?{
         let dict = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource(plist, ofType: "plist")!)
-        return dict?.objectForKey(value)? as String?
+        return dict?.objectForKey(value) as! String?
     }
     
     class func SetValueInPlist(plist:String, key:String, value:String) -> Bool{
@@ -338,7 +338,7 @@ class Tools: NSObject {
             rc = true
             if obj is String{
                 if (obj is String){
-                    if (obj as String) == ""{
+                    if (obj as! String) == ""{
                         rc = false;
                     }
                 }
@@ -448,7 +448,7 @@ class Tools: NSObject {
         // getting path to GameData.plist
         var rc = ""
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) as NSArray
-        let documentsDirectory = paths[0] as String
+        let documentsDirectory = paths[0] as! String
         let path = documentsDirectory.stringByAppendingPathComponent("\(plist).plist")
         let fileManager = NSFileManager.defaultManager()
         //check if file exists
@@ -472,7 +472,7 @@ class Tools: NSObject {
         var myDict = NSDictionary(contentsOfFile: path)
         if let dict = myDict {
             //loading values
-            rc = dict.objectForKey(key) as String!
+            rc = dict.objectForKey(key) as! String!
             //...
         } else {
             //println("WARNING: Couldn't create dictionary from GameData.plist! Default values will be used!")
@@ -482,7 +482,7 @@ class Tools: NSObject {
     
     class func SetValueInPlistDocuments(plist:String, key:String, value:String){
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) as NSArray
-        let documentsDirectory = paths.objectAtIndex(0) as NSString
+        let documentsDirectory = paths.objectAtIndex(0) as! NSString
         let path = documentsDirectory.stringByAppendingPathComponent("\(plist).plist")
         var dict: NSMutableDictionary = [key: value]
         //saving values

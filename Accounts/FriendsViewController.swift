@@ -93,9 +93,15 @@ class FriendsViewController: BaseViewController {
     
     func refreshData(refreshControl: UIRefreshControl?) {
 
-        Session.sharedInstance().activeUser.refreshFriendsList { () -> () in
+        Session.sharedInstance().activeUser.refreshFriendsList({ () -> () in
             
             self.tableView.reloadData()
+            
+        }, onFailure: { () -> () in
+            
+            
+        }) { () -> () in
+            
             refreshControl?.endRefreshing()
         }
         
@@ -119,7 +125,7 @@ class FriendsViewController: BaseViewController {
         
         var matches = Array<User>()
         
-        if self.searchBar.text.count() > 0 {
+        if self.searchBar.text.charCount() > 0 {
             
             for user in array {
                 
@@ -181,7 +187,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
             rc = self.pendingFriends().count == 0 ? "No matches pending" : ""
         }
         else{
-            rc = (self.searchBar.text.count() > 0 && self.usersMatchingSearch.count == 0) ? "No matches online" : ""
+            rc = (self.searchBar.text.charCount() > 0 && self.usersMatchingSearch.count == 0) ? "No matches online" : ""
         }
         return rc
     }
@@ -209,7 +215,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! UITableViewCell
         
         if indexPath.section == 0 {
             

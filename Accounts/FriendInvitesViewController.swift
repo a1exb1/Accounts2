@@ -43,7 +43,6 @@ class FriendInvitesViewController: BaseViewController {
         var refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "refreshData:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
-        
     }
     
     func refreshData(refreshControl: UIRefreshControl?) {
@@ -71,7 +70,7 @@ extension FriendInvitesViewController: UITableViewDataSource, UITableViewDelegat
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! UITableViewCell
         
         cell.textLabel?.text = "\(self.invites[indexPath.row].user.Username)"
         

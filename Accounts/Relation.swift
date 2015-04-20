@@ -16,7 +16,7 @@ class Relation: JSONObject {
 
     override func setExtraPropertiesFromJSON(json: JSON) {
 
-        self.user = User.createObjectFromJson(json["User"]) as User!
+        self.user = User.createObjectFromJson(json["User"])
     }
     
 }

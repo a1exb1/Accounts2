@@ -229,6 +229,7 @@
 		E17CD29A1AD3F43A00C1716D /* External */ = {
 			isa = PBXGroup;
 			children = (
+				E17CD2AF1AD53B5300C1716D /* JSONObject.swift */,
 				E17CD29B1AD3F45000C1716D /* AutoLayoutHelper.swift */,
 				E17CD29C1AD3F45000C1716D /* JSONReader.swift */,
 				E17CD29D1AD3F45000C1716D /* swiftyJSON.swift */,
@@ -241,7 +242,6 @@
 			isa = PBXGroup;
 			children = (
 				E17CD2AD1AD5384C00C1716D /* User.swift */,
-				E17CD2AF1AD53B5300C1716D /* JSONObject.swift */,
 				E46467491AD9798A005CD18B /* Session.swift */,
 				E464674B1AD9B927005CD18B /* AppTools.swift */,
 				E46467521AD9D7AB005CD18B /* Response.swift */,

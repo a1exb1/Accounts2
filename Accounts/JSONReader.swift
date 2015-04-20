@@ -36,16 +36,25 @@ extension String {
 
 class JSONReader: NSObject {
     
-    class func JsonAsyncRequest(urlString:String, data:Dictionary<String, AnyObject>?, httpMethod:HttpMethod, completionHandler:(response: JSON) -> ()){
+    class func JsonAsyncRequest(urlString:String, data:Dictionary<String, AnyObject>?, httpMethod:HttpMethod, onSuccess:((json: JSON) -> ())?, onFailure:(() -> ())?, onFinished:(() -> ())?) {
         
-        JsonAsyncRequest(urlString, data: data, httpMethod: httpMethod) { (response:NSData) -> () in
-            let json = JSON(data: response)
-            completionHandler(response: json)
+        JsonAsyncRequestAsData(urlString, data: data, httpMethod: httpMethod, onSuccess: { (data) -> () in
+            
+            let json = JSON(data: data)
+            onSuccess?(json: json)
+            
+        }, onFailure: { (error) -> () in
+            
+            onFailure?()
+            
+        }) { () -> () in
+            
+            onFinished?()
+            
         }
-        
     }
     
-    class func JsonAsyncRequest(urlString:String, data:Dictionary<String, AnyObject>?, httpMethod:HttpMethod, completionHandler:(response: NSData) -> ()){
+    class func JsonAsyncRequestAsData(urlString:String, data:Dictionary<String, AnyObject>?, httpMethod:HttpMethod, onSuccess:((data: NSData) -> ())?, onFailure:((error: NSErrorPointer) -> ())?, onFinished:(() -> ())?){
         var rc:NSArray = NSArray()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
@@ -77,17 +86,17 @@ class JSONReader: NSObject {
             
             dispatch_async(dispatch_get_main_queue()) {
                 
-                if data != nil{
+                if let d = data{
                     
-                    completionHandler(response: data!)
+                    onSuccess?(data: d)
                 }
                 else{
-                    
+                    onFailure?(error: error)
                     Tools.ShowAlertControllerOK("Data download failed"){ response in }
                 }
                 
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                
+                onFinished?()
             }
             
         })
