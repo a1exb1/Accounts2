@@ -10,11 +10,11 @@ import UIKit
 
 let kSearchBarMargin: CGFloat = 5
 
-class FriendsViewController: BaseViewController {
+class FriendsViewController: BaseViewController, UISearchControllerDelegate {
     
     var tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Grouped)
     var usersMatchingSearch: Array<User> = []
-    var searchBar = UISearchBar()
+    var searchController: UISearchController? = nil
     
     override func viewDidLoad() {
         
@@ -24,6 +24,8 @@ class FriendsViewController: BaseViewController {
         
         self.setupTableView()
         self.setupSearchBar()
+        
+        self.title = "Contacts"
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -54,25 +56,22 @@ class FriendsViewController: BaseViewController {
     }
     
     func setupSearchBar() {
+    
+        self.searchController = UISearchController(searchResultsController: nil)
+        self.searchController?.searchResultsUpdater = self
+        self.searchController?.delegate = self
+        self.searchController?.searchBar.sizeToFit()
         
-        self.updateSearchBarViewFrame()
-//        self.navigationController?.navigationBar.addSubview(self.searchBarView)
+        self.tableView.tableHeaderView = self.searchController?.searchBar
+        self.definesPresentationContext = true
         
-        //self.searchBarView.addSubview(searchBar)
-        //self.searchBar.setTranslatesAutoresizingMaskIntoConstraints(false)
-        
-        self.tableView.tableHeaderView = self.searchBar
-        //self.searchBar.fillSuperView(UIEdgeInsets(top: kSearchBarMargin, left: kSearchBarMargin, bottom: -kSearchBarMargin, right: -kSearchBarMargin))
-        
-        self.searchBar.placeholder = "Search existing or new friends"
-        self.searchBar.returnKeyType = UIReturnKeyType.Search
-        self.searchBar.searchBarStyle = UISearchBarStyle.Minimal;
-        self.searchBar.delegate = self
+        self.searchController?.searchBar.placeholder = "Search existing or new friends"
+        self.searchController?.dimsBackgroundDuringPresentation = false
     }
     
     func updateSearchBarViewFrame() {
         
-        self.searchBar.frame = navigationController!.navigationBar.bounds
+        self.searchController?.searchBar.frame = navigationController!.navigationBar.bounds
     }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
@@ -80,7 +79,6 @@ class FriendsViewController: BaseViewController {
         self.updateSearchBarViewFrame()
     }
 
-    
     func refreshData(refreshControl: UIRefreshControl?) {
 
         Session.sharedInstance().activeUser.refreshFriendsList({ () -> () in
@@ -95,7 +93,10 @@ class FriendsViewController: BaseViewController {
             refreshControl?.endRefreshing()
         }
         
-        self.getUsersMatchingSearch(self.searchBar.text)
+        if let searchText = self.searchController?.searchBar.text {
+         
+            self.getUsersMatchingSearch(searchText)
+        }
     }
     
     func getUsersMatchingSearch(searchText: String) {
@@ -115,11 +116,11 @@ class FriendsViewController: BaseViewController {
         
         var matches = Array<User>()
         
-        if self.searchBar.text.charCount() > 0 {
+        if self.searchController?.searchBar.text.charCount() > 0 {
             
             for user in array {
                 
-                if user.Username.contains(self.searchBar.text) {
+                if user.Username.contains(self.searchController!.searchBar.text) {
                     
                     matches.append(user)
                 }
@@ -200,7 +201,7 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
             rc = self.pendingFriends().count == 0 ? "No matches pending" : ""
         }
         else{
-            rc = (self.searchBar.text.charCount() > 0 && self.usersMatchingSearch.count == 0) ? "No matches online" : ""
+            rc = (self.searchController?.searchBar.text.charCount() > 0 && self.usersMatchingSearch.count == 0) ? "No matches online" : ""
         }
         return rc
     }
@@ -248,28 +249,14 @@ extension FriendsViewController: UITableViewDataSource, UITableViewDelegate {
             viewOverview(friend)
         }
     }
-
 }
 
-extension FriendsViewController: UISearchBarDelegate {
-    
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
 
-        self.getUsersMatchingSearch(searchText)
+extension FriendsViewController: UISearchResultsUpdating {
+    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        
+        self.getUsersMatchingSearch(searchController.searchBar.text)
     }
     
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        
-        searchBar.setShowsCancelButton(true, animated: true)
-    }
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        
-        searchBar.resignFirstResponder()
-        searchBar.setShowsCancelButton(false, animated: true)
-        searchBar.text = ""
-        
-        self.refreshData(nil)
-    }
 }
-
