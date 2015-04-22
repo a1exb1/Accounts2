@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		737CA235B89BDA33F1660400 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF7E7035D53D11D4DB724424 /* libPods.a */; };
-		E133C9831ADFEAA1005943D1 /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E133C9821ADFEAA1005943D1 /* PaymentViewController.swift */; };
+		E133C9831ADFEAA1005943D1 /* TransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E133C9821ADFEAA1005943D1 /* TransactionViewController.swift */; };
 		E17CD2741AD3E06200C1716D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2731AD3E06200C1716D /* AppDelegate.swift */; };
 		E17CD2761AD3E06200C1716D /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2751AD3E06200C1716D /* FriendsViewController.swift */; };
 		E17CD27B1AD3E06200C1716D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E17CD27A1AD3E06200C1716D /* Images.xcassets */; };
@@ -25,8 +25,16 @@
 		E464674A1AD9798A005CD18B /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46467491AD9798A005CD18B /* Session.swift */; };
 		E464674C1AD9B927005CD18B /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E464674B1AD9B927005CD18B /* AppTools.swift */; };
 		E46467531AD9D7AB005CD18B /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46467521AD9D7AB005CD18B /* Response.swift */; };
-		E4BC1B251AE5044F00A7F41A /* ABTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B241AE5044F00A7F41A /* ABTableViewController.swift */; };
 		E4BC1B291AE51D9200A7F41A /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B281AE51D9200A7F41A /* OverviewViewController.swift */; };
+		E4BC1B2C1AE54B2400A7F41A /* TextFieldWithLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B2B1AE54B2400A7F41A /* TextFieldWithLabelTableViewCell.swift */; };
+		E4BC1B2E1AE59F5B00A7F41A /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B2D1AE59F5B00A7F41A /* Transaction.swift */; };
+		E4BC1B321AE6931A00A7F41A /* PurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B311AE6931A00A7F41A /* PurchaseViewController.swift */; };
+		E4BC1B341AE693F000A7F41A /* Purchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B331AE693F000A7F41A /* Purchase.swift */; };
+		E4BC1B361AE694E100A7F41A /* FriendsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B351AE694E100A7F41A /* FriendsListViewController.swift */; };
+		E4BC1B381AE69E2E00A7F41A /* ABTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B371AE69E2E00A7F41A /* ABTableViewController.swift */; };
+		E4BC1B3A1AE69F3300A7F41A /* RecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B391AE69F3300A7F41A /* RecentsViewController.swift */; };
+		E4BC1B3C1AE7D6F000A7F41A /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B3B1AE7D6F000A7F41A /* UIViewExtension.swift */; };
+		E4BC1B3E1AE7DA1400A7F41A /* KMPlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B3D1AE7DA1400A7F41A /* KMPlaceholderTextView.swift */; };
 		E4BFF0571AD9F8B000CAEF93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4BFF0561AD9F8B000CAEF93 /* Main.storyboard */; };
 		E4BFF0591AD9FA4700CAEF93 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BFF0581AD9FA4700CAEF93 /* UIStoryboardExtension.swift */; };
 		E4BFF05B1AD9FD4600CAEF93 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BFF05A1AD9FD4600CAEF93 /* StringExtension.swift */; };
@@ -50,7 +58,7 @@
 /* Begin PBXFileReference section */
 		BF7E7035D53D11D4DB724424 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03B6C7ED8A5E14D06CCC230 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		E133C9821ADFEAA1005943D1 /* PaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
+		E133C9821ADFEAA1005943D1 /* TransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionViewController.swift; sourceTree = "<group>"; };
 		E17CD26E1AD3E06200C1716D /* Accounts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Accounts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E17CD2721AD3E06200C1716D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E17CD2731AD3E06200C1716D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -73,8 +81,16 @@
 		E46467491AD9798A005CD18B /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		E464674B1AD9B927005CD18B /* AppTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
 		E46467521AD9D7AB005CD18B /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
-		E4BC1B241AE5044F00A7F41A /* ABTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ABTableViewController.swift; sourceTree = "<group>"; };
 		E4BC1B281AE51D9200A7F41A /* OverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
+		E4BC1B2B1AE54B2400A7F41A /* TextFieldWithLabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabelTableViewCell.swift; sourceTree = "<group>"; };
+		E4BC1B2D1AE59F5B00A7F41A /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		E4BC1B311AE6931A00A7F41A /* PurchaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseViewController.swift; sourceTree = "<group>"; };
+		E4BC1B331AE693F000A7F41A /* Purchase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
+		E4BC1B351AE694E100A7F41A /* FriendsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsListViewController.swift; sourceTree = "<group>"; };
+		E4BC1B371AE69E2E00A7F41A /* ABTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ABTableViewController.swift; sourceTree = "<group>"; };
+		E4BC1B391AE69F3300A7F41A /* RecentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentsViewController.swift; sourceTree = "<group>"; };
+		E4BC1B3B1AE7D6F000A7F41A /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		E4BC1B3D1AE7DA1400A7F41A /* KMPlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KMPlaceholderTextView.swift; sourceTree = "<group>"; };
 		E4BFF0561AD9F8B000CAEF93 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E4BFF0581AD9FA4700CAEF93 /* UIStoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtension.swift; sourceTree = "<group>"; };
 		E4BFF05A1AD9FD4600CAEF93 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -123,18 +139,18 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		E133C9801ADFEA6C005943D1 /* Payment */ = {
+		E133C9801ADFEA6C005943D1 /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
 				E133C9811ADFEA7A005943D1 /* View Controllers */,
 			);
-			name = Payment;
+			name = Transaction;
 			sourceTree = "<group>";
 		};
 		E133C9811ADFEA7A005943D1 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				E133C9821ADFEAA1005943D1 /* PaymentViewController.swift */,
+				E133C9821ADFEAA1005943D1 /* TransactionViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -200,13 +216,14 @@
 		E17CD2931AD3E35600C1716D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E4BC1B2F1AE6930400A7F41A /* Purchase */,
 				E4BC1B261AE51D7300A7F41A /* Overview */,
 				E17CD29A1AD3F43A00C1716D /* External */,
 				E46467431AD96EEB005CD18B /* Friends */,
 				E4BFF05C1ADA934B00CAEF93 /* Invites */,
 				E46467451AD96F18005CD18B /* Login */,
 				E4BFF0621ADAD68300CAEF93 /* Menu */,
-				E133C9801ADFEA6C005943D1 /* Payment */,
+				E133C9801ADFEA6C005943D1 /* Transaction */,
 				E17CD2941AD3E35C00C1716D /* Shared */,
 			);
 			name = Classes;
@@ -218,6 +235,7 @@
 				E464674F1AD9D680005CD18B /* Extensions */,
 				E17CD2AC1AD5383500C1716D /* Models */,
 				E17CD2971AD3E42A00C1716D /* Controllers */,
+				E4BC1B2A1AE54B0100A7F41A /* Views */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -225,9 +243,9 @@
 		E17CD2971AD3E42A00C1716D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E4BC1B371AE69E2E00A7F41A /* ABTableViewController.swift */,
 				E17CD2731AD3E06200C1716D /* AppDelegate.swift */,
 				E17CD2951AD3E36B00C1716D /* BaseViewController.swift */,
-				E4BC1B241AE5044F00A7F41A /* ABTableViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -235,6 +253,7 @@
 		E17CD29A1AD3F43A00C1716D /* External */ = {
 			isa = PBXGroup;
 			children = (
+				E4BC1B3D1AE7DA1400A7F41A /* KMPlaceholderTextView.swift */,
 				E17CD2AF1AD53B5300C1716D /* JSONObject.swift */,
 				E17CD29B1AD3F45000C1716D /* AutoLayoutHelper.swift */,
 				E17CD29C1AD3F45000C1716D /* JSONReader.swift */,
@@ -253,6 +272,8 @@
 				E46467521AD9D7AB005CD18B /* Response.swift */,
 				E4BFF0601ADAB48900CAEF93 /* Relation.swift */,
 				E4BFF0681ADAF7D500CAEF93 /* RelationStatus.swift */,
+				E4BC1B2D1AE59F5B00A7F41A /* Transaction.swift */,
+				E4BC1B331AE693F000A7F41A /* Purchase.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -294,6 +315,7 @@
 			children = (
 				E4BFF0581AD9FA4700CAEF93 /* UIStoryboardExtension.swift */,
 				E4BFF05A1AD9FD4600CAEF93 /* StringExtension.swift */,
+				E4BC1B3B1AE7D6F000A7F41A /* UIViewExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -310,6 +332,32 @@
 			isa = PBXGroup;
 			children = (
 				E4BC1B281AE51D9200A7F41A /* OverviewViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		E4BC1B2A1AE54B0100A7F41A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E4BC1B2B1AE54B2400A7F41A /* TextFieldWithLabelTableViewCell.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		E4BC1B2F1AE6930400A7F41A /* Purchase */ = {
+			isa = PBXGroup;
+			children = (
+				E4BC1B301AE6930900A7F41A /* Controllers */,
+			);
+			name = Purchase;
+			sourceTree = "<group>";
+		};
+		E4BC1B301AE6930900A7F41A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E4BC1B311AE6931A00A7F41A /* PurchaseViewController.swift */,
+				E4BC1B351AE694E100A7F41A /* FriendsListViewController.swift */,
+				E4BC1B391AE69F3300A7F41A /* RecentsViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -493,24 +541,32 @@
 			files = (
 				E17CD29F1AD3F45000C1716D /* AutoLayoutHelper.swift in Sources */,
 				E4BC1B291AE51D9200A7F41A /* OverviewViewController.swift in Sources */,
+				E4BC1B2E1AE59F5B00A7F41A /* Transaction.swift in Sources */,
 				E17CD2A11AD3F45000C1716D /* swiftyJSON.swift in Sources */,
 				E4BFF0691ADAF7D500CAEF93 /* RelationStatus.swift in Sources */,
 				E4BFF05B1AD9FD4600CAEF93 /* StringExtension.swift in Sources */,
 				E17CD2A01AD3F45000C1716D /* JSONReader.swift in Sources */,
+				E4BC1B3E1AE7DA1400A7F41A /* KMPlaceholderTextView.swift in Sources */,
 				E4BFF0611ADAB48900CAEF93 /* Relation.swift in Sources */,
 				E17CD2761AD3E06200C1716D /* FriendsViewController.swift in Sources */,
-				E133C9831ADFEAA1005943D1 /* PaymentViewController.swift in Sources */,
+				E133C9831ADFEAA1005943D1 /* TransactionViewController.swift in Sources */,
 				E17CD2AE1AD5384C00C1716D /* User.swift in Sources */,
+				E4BC1B381AE69E2E00A7F41A /* ABTableViewController.swift in Sources */,
+				E4BC1B2C1AE54B2400A7F41A /* TextFieldWithLabelTableViewCell.swift in Sources */,
 				E17CD2A21AD3F45000C1716D /* Tools.swift in Sources */,
 				E4BFF0591AD9FA4700CAEF93 /* UIStoryboardExtension.swift in Sources */,
-				E4BC1B251AE5044F00A7F41A /* ABTableViewController.swift in Sources */,
 				E46467531AD9D7AB005CD18B /* Response.swift in Sources */,
 				E17CD2741AD3E06200C1716D /* AppDelegate.swift in Sources */,
+				E4BC1B341AE693F000A7F41A /* Purchase.swift in Sources */,
 				E464674C1AD9B927005CD18B /* AppTools.swift in Sources */,
+				E4BC1B321AE6931A00A7F41A /* PurchaseViewController.swift in Sources */,
 				E464674A1AD9798A005CD18B /* Session.swift in Sources */,
+				E4BC1B361AE694E100A7F41A /* FriendsListViewController.swift in Sources */,
 				E4BFF0651ADAD6A900CAEF93 /* MenuViewController.swift in Sources */,
 				E17CD2B01AD53B5300C1716D /* JSONObject.swift in Sources */,
+				E4BC1B3C1AE7D6F000A7F41A /* UIViewExtension.swift in Sources */,
 				E46467481AD96F9E005CD18B /* LoginViewController.swift in Sources */,
+				E4BC1B3A1AE69F3300A7F41A /* RecentsViewController.swift in Sources */,
 				E17CD2961AD3E36B00C1716D /* BaseViewController.swift in Sources */,
 				E4BFF05F1ADA937100CAEF93 /* FriendInvitesViewController.swift in Sources */,
 			);

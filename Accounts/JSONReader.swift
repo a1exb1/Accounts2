@@ -13,10 +13,10 @@ import UIKit
 //    optional func ReceivedJSONNotification(requestString:String)
 //}
 
-enum RequestStatus: Int{
-    case Failed = 0
-    case Success = 1
-}
+//enum RequestStatus: Int{
+//    case Failed = 0
+//    case Success = 1
+//}
 
 enum HttpMethod: String{
     case GET = "GET"
@@ -55,7 +55,7 @@ class JSONReader: NSObject {
     }
     
     class func JsonAsyncRequestAsData(urlString:String, data:Dictionary<String, AnyObject>?, httpMethod:HttpMethod, onSuccess:((data: NSData) -> ())?, onFailure:((error: NSErrorPointer) -> ())?, onFinished:(() -> ())?){
-        var rc:NSArray = NSArray()
+        //var rc:NSArray = NSArray()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
         var urlStr:String = urlString

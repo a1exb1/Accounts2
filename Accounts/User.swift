@@ -153,6 +153,33 @@ class User: JSONObject {
         return rc
     }
     
+    func addTransaction(transaction:Transaction, onSuccess:(() -> ())?, onFailure:(() -> ())?, onFinished:(() -> ())?) {
+        
+        var urlString = AppTools.WebMvcController("Transaction", action: "AddTransaction")
+        var data:Dictionary<String, AnyObject> = [
+            "UserID" : self.UserID,
+            "RelationUserID" : transaction.friend.UserID,
+            "Amount" : transaction.Amount,
+            //"Description" : transaction.Description
+        ]
+        
+        JSONReader.JsonAsyncRequest(urlString, data: data, httpMethod: HttpMethod.POST, onSuccess: { (json) -> () in
+            
+            onSuccess?()
+            
+        }, onFailure: { (error) -> () in
+            
+            Tools.ShowAlertControllerOK("Transaction not added successfully!", completionHandler: { (response) -> () in
+            })
+            
+            onFailure?()
+            
+        }) { () -> () in
+            
+            onFinished?()
+        }
+    }
+    
     class func activeUsersContaining(string: String, completion:(users:Array<User>) -> ()) {
         
         var matches = Array<User>()

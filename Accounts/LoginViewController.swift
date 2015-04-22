@@ -25,7 +25,7 @@ class LoginViewController: BaseViewController {
         
         self.view.backgroundColor = UIColor.whiteColor()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .Bordered, target: self, action: "login")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .Plain, target: self, action: "login")
     }
     
     func setupTableView(){
@@ -41,7 +41,7 @@ class LoginViewController: BaseViewController {
         self.tableView.addRightConstraint(toView: self.view, relation: .Equal, constant: -kTableViewPadding)
         self.tableView.addHeightConstraint(relation: .Equal, constant: (2 * kCellHeight))
         
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        self.tableView.registerClass(TextFieldWithLabelTableViewCell.self, forCellReuseIdentifier: "Cell")
         
         self.tableView.scrollEnabled = false
         self.tableView.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
@@ -63,8 +63,6 @@ class LoginViewController: BaseViewController {
                     var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
                     self.presentViewController(v, animated: true, completion: nil)
                 })
-                
-                
             }
             else{
                 
@@ -89,38 +87,17 @@ extension LoginViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! TextFieldWithLabelTableViewCell
         
-        cell.selectionStyle = UITableViewCellSelectionStyle.None
-        
-        var label = UILabel()
-        label.setTranslatesAutoresizingMaskIntoConstraints(false)
-        cell.contentView.addSubview(label)
-        
-        label.text = indexPath.row == 0 ? "Username" : "Password"
-        
-        label.addTopConstraint(toView: cell.contentView, relation: .Equal, constant: 0)
-        label.addLeftConstraint(toView: cell.contentView, relation: .Equal, constant: 15)
-        label.addBottomConstraint(toView: cell.contentView, relation: .Equal, constant: 0)
-        label.addWidthConstraint(relation: .Equal, constant: 100)
-        
-        var textField = UITextField()
-        textField.setTranslatesAutoresizingMaskIntoConstraints(false)
-        cell.contentView.addSubview(textField)
-        
-        textField.addTopConstraint(toView: cell.contentView, relation: .Equal, constant: 0)
-        textField.addLeftConstraint(toView: label, attribute: .Right, relation: .Equal, constant: 15)
-        textField.addRightConstraint(toView: cell.contentView, relation: .Equal, constant: -15)
-        textField.addBottomConstraint(toView: cell.contentView, relation: .Equal, constant: 0)
-        
-        self.textFields.append(textField)
-        
-        textField.text = indexPath.row == 0 ? "Alex" : "pass"
+        cell.label.text = indexPath.row == 0 ? "Username" : "Password"
+        cell.textField.text = indexPath.row == 0 ? "Alex" : "pass"
         
         if indexPath.row == 1 {
             
-            textField.secureTextEntry = true
+            cell.textField.secureTextEntry = true
         }
+        
+        self.textFields.append(cell.textField)
         
         return cell
     }

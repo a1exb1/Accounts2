@@ -120,7 +120,7 @@ class FriendsViewController: BaseViewController, UISearchControllerDelegate {
             
             for user in array {
                 
-                if user.Username.contains(self.searchController!.searchBar.text) {
+                if user.Username.lowercaseString.contains(self.searchController!.searchBar.text.lowercaseString) {
                     
                     matches.append(user)
                 }

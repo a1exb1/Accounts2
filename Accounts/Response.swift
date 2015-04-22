@@ -19,7 +19,6 @@ class Response: JSONObject {
     var Message:String = ""
     
     override func setExtraPropertiesFromJSON(json: JSON) {
-        
-        self.Status = ResponseStatus(rawValue: json["Status"].intValue)!
+        self.Status = ResponseStatus(rawValue: json["Response"]["Status"].intValue)!
     }
 }

@@ -18,7 +18,15 @@ class OverviewViewController: BaseViewController {
 
         self.setupLabel()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addPayment")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "addTransaction")
+        
+        self.title = self.friend.Username
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.refresh()
     }
 
     func setupLabel() {
@@ -30,8 +38,6 @@ class OverviewViewController: BaseViewController {
         self.label.addLeftConstraint(toView: self.view, relation: .Equal, constant: 0)
         self.label.addRightConstraint(toView: self.view, relation: .Equal, constant: 0)
         self.label.addHeightConstraint(relation: .Equal, constant: 50)
-        
-        self.label.text = "friend: \(self.friend.Username)"
     }
     
     override func didReceiveMemoryWarning() {
@@ -39,14 +45,57 @@ class OverviewViewController: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func addPayment(){
+    func refresh() {
         
-        self.openPayment(0)
+        self.label.text = ""
+        self.view.showLoader()
+        
+        var urlString = AppTools.WebMvcController("Transaction", action: "DifferenceBetweenUsers")
+        var data = [
+            "UserID" : Session.sharedInstance().activeUser.UserID,
+            "relationUserID" : self.friend.UserID
+        ]
+        
+        JSONReader.JsonAsyncRequest(urlString, data: data, httpMethod: HttpMethod.POST, onSuccess: { (json) -> () in
+            
+            var difference = json["difference"].doubleValue
+            
+            var oweText = ""
+            if difference > 0 {
+                oweText = "\(self.friend.Username) owes you:"
+            }
+            else{
+                oweText = "You owe \(self.friend.Username):"
+            }
+            
+            self.label.text = "\(oweText) \(difference)"
+            
+        }, onFailure: { (error) -> () in
+            
+            
+        }) { () -> () in
+            
+            self.view.hideLoader()
+        }
     }
     
-    func openPayment(id:Int){
+    func addTransaction(){
         
-        var v = PaymentViewController()
+        self.openTransaction(nil)
+    }
+    
+    func openTransaction(transaction:Transaction?){
+        
+        var v = TransactionViewController()
+        
+        if let t = transaction {
+            t.friend = self.friend
+            v.transaction = t
+        }
+        else{
+            v.transaction.friend = self.friend
+        }
+        
         self.navigationController?.pushViewController(v, animated: true)
     }
 

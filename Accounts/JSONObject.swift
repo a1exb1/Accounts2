@@ -12,6 +12,8 @@ class JSONObject: NSObject {
     
     required override init() {}
     
+    var initializerJSON: JSON? = nil
+    
     class func jsonURL(id:Int) -> String {
         return ""
     }
@@ -69,6 +71,7 @@ class JSONObject: NSObject {
         
         var mapper = DCKeyValueObjectMapping.mapperForClass(self.classForCoder())
         var rc: JSONObject = mapper.parseDictionary(json.dictionaryObject) as! T
+        rc.initializerJSON = json
         rc.setExtraPropertiesFromJSON(json)
         return rc as! T
     }

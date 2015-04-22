@@ -105,26 +105,6 @@ extension UIColor
 }
 
 class Tools: NSObject {
-   
-    class func AddLoaderToView(view:UIView){
-        var actInd : UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(0,0, 50, 50)) as UIActivityIndicatorView
-        actInd.center = view.center
-        actInd.hidesWhenStopped = true
-        actInd.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray
-        actInd.setTranslatesAutoresizingMaskIntoConstraints(false)
-        view.addSubview(actInd)
-        actInd.addCenterYConstraint(toView: view)
-        actInd.addCenterXConstraint(toView: view)
-        actInd.startAnimating()
-    }
-    
-    class func HideLoaderFromView(view:UIView){
-        for v in view.subviews{
-            if v is UIActivityIndicatorView{
-                v.stopAnimating()
-            }
-        }
-    }
     
     class func DateFromString(dateString:String) -> NSDate{
         var s = dateString.stringByReplacingOccurrencesOfString("\\", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil) as String?
