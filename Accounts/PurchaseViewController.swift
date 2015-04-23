@@ -62,14 +62,11 @@ class PurchaseViewController: UIViewController {
         self.purchase.splitTheBill()
         self.view.showLoader()
         
-        self.purchase.save({ () -> () in
+        self.purchase.save().onContextSuccess { () -> () in
             
             self.navigationController?.popViewControllerAnimated(true)
             
-        }, onFailure: { () -> () in
-            
-            
-        }) { () -> () in
+        }.onDownloadFinished { () -> () in
             
             self.view.hideLoader()
         }

@@ -48,19 +48,18 @@ class User: JSONObject {
             "UserID" : self.UserID
         ]
     
-        JSONReader.JsonAsyncRequest(urlString, data: data, httpMethod: .POST, onSuccess: { (response:JSON) -> () in
+        JsonRequest.create(urlString, parameters: data, method: .POST).onDownloadSuccess { (json, request) -> () in
             
             var relations = Array<Relation>()
             
-            for (index: String, relationJSON: JSON) in response {
+            for (index: String, relationJSON: JSON) in json {
                 
                 var relation:Relation = Relation.createObjectFromJson(relationJSON)
                 relations.append(relation)
             }
             
             completion(invites: relations)
-            
-            }, onFailure: nil, onFinished: nil )
+        }
     }
     
     func addFriend(relationUserID:Int, completion: () -> ()) {
@@ -71,16 +70,9 @@ class User: JSONObject {
             "relationUserID" : relationUserID
         ]
         
-        JSONReader.JsonAsyncRequest(urlString, data: data, httpMethod: .POST, onSuccess: { (json) -> () in
+        JsonRequest.create(urlString, parameters: data, method: Method.POST).onDownloadSuccess { (json, request) -> () in
             
             completion()
-            
-        }, onFailure: { (error: NSErrorPointer) -> () in
-            
-            
-        }) { () -> () in
-            
-            
         }
     }
     
@@ -105,24 +97,16 @@ class User: JSONObject {
         return user
     }
     
-    func refreshFriendsList(onSuccess: (() -> ())?, onFailure:(() -> ())?, onFinished: (() -> ())?) {
+    func refreshFriendsList() -> JsonRequest {
         
         var urlString = AppTools.WebMvcController(kMVCControllerName, action: "GetFriends")
         var data = [ "UserID" : self.UserID ]
         
-        JSONReader.JsonAsyncRequest(urlString, data: data, httpMethod: .POST, onSuccess: { (json) -> () in
+        return JsonRequest.create(urlString, parameters: data, method: .POST).onDownloadSuccess({ (json, request) -> () in
             
             self.setFriendsFromJSON(json)
-            onSuccess?()
-            
-        }, onFailure: { (error: NSErrorPointer) -> () in
-            
-            onFailure?()
-            
-        }) { () -> () in
-            
-            onFinished?()
-        }
+            request.succeedContext()
+        })
     }
     
     func confirmedFriends() -> Array<User> {
@@ -153,7 +137,7 @@ class User: JSONObject {
         return rc
     }
     
-    func addTransaction(transaction:Transaction, onSuccess:(() -> ())?, onFailure:(() -> ())?, onFinished:(() -> ())?) {
+    func addTransaction(transaction:Transaction) -> JsonRequest {
         
         var urlString = AppTools.WebMvcController("Transaction", action: "AddTransaction")
         var data:Dictionary<String, AnyObject> = [
@@ -163,21 +147,11 @@ class User: JSONObject {
             //"Description" : transaction.Description
         ]
         
-        JSONReader.JsonAsyncRequest(urlString, data: data, httpMethod: HttpMethod.POST, onSuccess: { (json) -> () in
+        return JsonRequest.create(urlString, parameters: data, method: .POST).onDownloadFailure({ (error, alert) -> () in
             
-            onSuccess?()
-            
-        }, onFailure: { (error) -> () in
-            
-            Tools.ShowAlertControllerOK("Transaction not added successfully!", completionHandler: { (response) -> () in
-            })
-            
-            onFailure?()
-            
-        }) { () -> () in
-            
-            onFinished?()
-        }
+            ///Tools.ShowAlertControllerOK("Transaction not added successfully!", completionHandler: { (response) -> () in
+            //})
+        })
     }
     
     class func activeUsersContaining(string: String, completion:(users:Array<User>) -> ()) {
@@ -189,7 +163,7 @@ class User: JSONObject {
             "UserID" : Session.sharedInstance().activeUser.UserID
         ]
         
-        JSONReader.JsonAsyncRequest(urlString, data: data, httpMethod: .POST, onSuccess: { (json) -> () in
+        JsonRequest.create(urlString, parameters: data, method: .POST).onDownloadSuccess { (json, request) -> () in
             
             for (index: String, matchJSON: JSON) in json {
                 
@@ -198,14 +172,6 @@ class User: JSONObject {
             }
             
             completion(users: matches)
-            
-        }, onFailure: { (error: NSErrorPointer) -> () in
-            
-            
-        }) { () -> () in
-            
-            
         }
-        
     }
 }

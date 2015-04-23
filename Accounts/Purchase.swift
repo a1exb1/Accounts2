@@ -17,45 +17,40 @@ class Purchase: JSONObject {
     
     var billSplitDictionary = Dictionary<User, Double>()
     
-    func save(onSuccess:(() -> ())?, onFailure:(() -> ())?, onFinished:(() -> ())?) {
+    func save() -> JsonRequest {
         
         if PurchaseID > 0 {
             
         }
         else{
             
-            var urlString = AppTools.WebMvcController("Transaction", action: "AddPurchase") + "?Amount=\(self.Amount)&UserID=\(Session.sharedInstance().activeUser.UserID)"
             
-            for friend in self.friends {
-                
-                urlString = urlString + "&relationUserIDs=\(friend.UserID)&relationUserAmounts=\(self.billSplitDictionary[friend]!)"
-            }
-            
-            JSONReader.JsonAsyncRequest(urlString, data: nil, httpMethod: .GET, onSuccess: { (json) -> () in
-                
-                var response:Response = Response.createObjectFromJson(json)
-                
-                if response.Status == ResponseStatus.Success {
-                    
-                    onSuccess?()
-                }
-                else{
-                    
-                    Tools.ShowAlertControllerOK(response.Message, completionHandler: { (response) -> () in
-                    })
-                    
-                    onFailure?()
-                }
-                
-            }, onFailure: { (error) -> () in
-                
-                onFailure?()
-                
-            }, onFinished: { () -> () in
-                
-                onFinished?()
-            })
         }
+        
+        //TODO: INSERT ONLY ATM
+        var urlString = AppTools.WebMvcController("Transaction", action: "AddPurchase") + "?Amount=\(self.Amount)&UserID=\(Session.sharedInstance().activeUser.UserID)"
+        
+        for friend in self.friends {
+            
+            urlString = urlString + "&relationUserIDs=\(friend.UserID)&relationUserAmounts=\(self.billSplitDictionary[friend]!)"
+        }
+        
+        return JsonRequest.create(urlString, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
+            
+            var response:Response = Response.createObjectFromJson(json["Response"])
+            
+            if response.Status == ResponseStatus.Success {
+                
+                request.succeedContext()
+            }
+            else{
+                
+                Tools.ShowAlertControllerOK(response.Message, completionHandler: { (response) -> () in
+                })
+                
+                request.failContext()
+            }
+        })
     }
     
     func splitTheBill() {

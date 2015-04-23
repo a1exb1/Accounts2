@@ -52,22 +52,19 @@ class LoginViewController: BaseViewController {
         var usernameTextField = self.textFields[0]
         var passwordTextField = self.textFields[1]
         
-        Session.sharedInstance().login(usernameTextField.text, password: passwordTextField.text) { (success) -> () in
+        Session.sharedInstance().login(usernameTextField.text, password: passwordTextField.text).onContextSuccess { () -> () in
             
-            if success {
+            User.getObjectFromJsonAsync(Session.sharedInstance().activeUser.UserID, completion: { (object:User) -> () in
                 
-                User.getObjectFromJsonAsync(Session.sharedInstance().activeUser.UserID, completion: { (object:User) -> () in
-                    
-                    Session.sharedInstance().activeUser = object
-                    
-                    var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
-                    self.presentViewController(v, animated: true, completion: nil)
-                })
-            }
-            else{
+                Session.sharedInstance().activeUser = object
                 
-                UIAlertView(title: "Login Failed", message: "Incorrect username or password!", delegate: nil, cancelButtonTitle: "OK").show()
-            }
+                var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
+                self.presentViewController(v, animated: true, completion: nil)
+            })
+            
+        }.onContextFailure { () -> () in
+            
+            UIAlertView(title: "Login Failed", message: "Incorrect username or password!", delegate: nil, cancelButtonTitle: "OK").show()
         }
     }
     

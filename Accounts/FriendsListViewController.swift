@@ -32,17 +32,10 @@ class FriendsListViewController: BaseViewController {
         
         self.setupNavigationButtons()
         
-        Session.sharedInstance().activeUser.refreshFriendsList({ () -> () in
+        Session.sharedInstance().activeUser.refreshFriendsList().onContextSuccess { () -> () in
             
             self.friends = Session.sharedInstance().activeUser.Friends // needed?
             self.tableView.reloadData()
-            
-            }, onFailure: { () -> () in
-                
-                
-            }) { () -> () in
-                
-                
         }
     }
     

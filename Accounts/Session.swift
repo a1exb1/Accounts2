@@ -18,7 +18,7 @@ class Session: NSObject {
         return kSharedSessionInstance
     }
     
-    func login(username: String, password:String, completion: (success: Bool) -> ()) {
+    func login(username: String, password:String) -> JsonRequest {
         
         var urlString = AppTools.WebMvcController("User", action: "Login")
         var data = [
@@ -26,8 +26,8 @@ class Session: NSObject {
             "password" : password
         ]
         
-        JSONReader.JsonAsyncRequest(urlString, data: data, httpMethod: .GET, onSuccess: { (json) -> () in
-            
+        return JsonRequest.create(urlString, parameters: data, method: .GET).onDownloadSuccess { (json, request) -> () in
+            println(json)
             var r:Response = Response.createObjectFromJson(json["Response"])
             
             if r.Status == .Success {
@@ -36,13 +36,7 @@ class Session: NSObject {
                 self.activeUser.saveUserOnDevice()
             }
             
-            completion(success: (self.userIsLoggedIn() && r.Status == .Success))
-            
-        }, onFailure: { (error: NSErrorPointer) -> () in
-            
-            
-        }) { () -> () in
-            
+            (self.userIsLoggedIn() && r.Status == .Success) ? request.succeedContext() : request.failContext()
             
         }
     }

@@ -81,16 +81,17 @@ class FriendsViewController: BaseViewController, UISearchControllerDelegate {
 
     func refreshData(refreshControl: UIRefreshControl?) {
 
-        Session.sharedInstance().activeUser.refreshFriendsList({ () -> () in
+        Session.sharedInstance().activeUser.refreshFriendsList().onContextSuccess { () -> () in
             
             self.tableView.reloadData()
             
-        }, onFailure: { () -> () in
-            
-            
-        }) { () -> () in
+        }.onDownloadFinished { () -> () in
             
             refreshControl?.endRefreshing()
+            
+        }.onDownloadFailure { (error, alert) -> () in
+            
+            alert.show()
         }
         
         if let searchText = self.searchController?.searchBar.text {

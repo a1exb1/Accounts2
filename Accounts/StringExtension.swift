@@ -14,4 +14,12 @@ extension String {
         
         return count(self.utf16)
     }
+    
+    func contains(find: String) -> Bool {
+        
+        if let temp = self.rangeOfString(find) {
+            return true
+        }
+        return false
+    }
 }

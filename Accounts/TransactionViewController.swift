@@ -65,16 +65,9 @@ class TransactionViewController: UIViewController {
         
         self.transaction.Amount = (self.paymentAmountTextField.text as NSString).doubleValue
         
-        Session.sharedInstance().activeUser.addTransaction(self.transaction, onSuccess: { () -> () in
+        Session.sharedInstance().activeUser.addTransaction(self.transaction).onDownloadSuccess { (json, request) -> () in
             
             self.navigationController?.popViewControllerAnimated(true)
-            
-        }, onFailure: { () -> () in
-            
-            
-        }) { () -> () in
-            
-            
         }
     }
     

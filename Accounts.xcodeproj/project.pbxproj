@@ -16,7 +16,6 @@
 		E17CD28A1AD3E06200C1716D /* AccountsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2891AD3E06200C1716D /* AccountsTests.swift */; };
 		E17CD2961AD3E36B00C1716D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2951AD3E36B00C1716D /* BaseViewController.swift */; };
 		E17CD29F1AD3F45000C1716D /* AutoLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD29B1AD3F45000C1716D /* AutoLayoutHelper.swift */; };
-		E17CD2A01AD3F45000C1716D /* JSONReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD29C1AD3F45000C1716D /* JSONReader.swift */; };
 		E17CD2A11AD3F45000C1716D /* swiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD29D1AD3F45000C1716D /* swiftyJSON.swift */; };
 		E17CD2A21AD3F45000C1716D /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD29E1AD3F45000C1716D /* Tools.swift */; };
 		E17CD2AE1AD5384C00C1716D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17CD2AD1AD5384C00C1716D /* User.swift */; };
@@ -35,6 +34,8 @@
 		E4BC1B3A1AE69F3300A7F41A /* RecentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B391AE69F3300A7F41A /* RecentsViewController.swift */; };
 		E4BC1B3C1AE7D6F000A7F41A /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B3B1AE7D6F000A7F41A /* UIViewExtension.swift */; };
 		E4BC1B3E1AE7DA1400A7F41A /* KMPlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B3D1AE7DA1400A7F41A /* KMPlaceholderTextView.swift */; };
+		E4BC1B7C1AE9090B00A7F41A /* JsonRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B7B1AE9090B00A7F41A /* JsonRequest.swift */; };
+		E4BC1B7E1AE909DE00A7F41A /* Almofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B7D1AE909DE00A7F41A /* Almofire.swift */; };
 		E4BFF0571AD9F8B000CAEF93 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4BFF0561AD9F8B000CAEF93 /* Main.storyboard */; };
 		E4BFF0591AD9FA4700CAEF93 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BFF0581AD9FA4700CAEF93 /* UIStoryboardExtension.swift */; };
 		E4BFF05B1AD9FD4600CAEF93 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BFF05A1AD9FD4600CAEF93 /* StringExtension.swift */; };
@@ -70,7 +71,6 @@
 		E17CD2891AD3E06200C1716D /* AccountsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTests.swift; sourceTree = "<group>"; };
 		E17CD2951AD3E36B00C1716D /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		E17CD29B1AD3F45000C1716D /* AutoLayoutHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoLayoutHelper.swift; sourceTree = "<group>"; };
-		E17CD29C1AD3F45000C1716D /* JSONReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONReader.swift; sourceTree = "<group>"; };
 		E17CD29D1AD3F45000C1716D /* swiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = swiftyJSON.swift; sourceTree = "<group>"; };
 		E17CD29E1AD3F45000C1716D /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		E17CD2AD1AD5384C00C1716D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -91,6 +91,8 @@
 		E4BC1B391AE69F3300A7F41A /* RecentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentsViewController.swift; sourceTree = "<group>"; };
 		E4BC1B3B1AE7D6F000A7F41A /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		E4BC1B3D1AE7DA1400A7F41A /* KMPlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KMPlaceholderTextView.swift; sourceTree = "<group>"; };
+		E4BC1B7B1AE9090B00A7F41A /* JsonRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonRequest.swift; sourceTree = "<group>"; };
+		E4BC1B7D1AE909DE00A7F41A /* Almofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Almofire.swift; sourceTree = "<group>"; };
 		E4BFF0561AD9F8B000CAEF93 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		E4BFF0581AD9FA4700CAEF93 /* UIStoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtension.swift; sourceTree = "<group>"; };
 		E4BFF05A1AD9FD4600CAEF93 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -253,10 +255,11 @@
 		E17CD29A1AD3F43A00C1716D /* External */ = {
 			isa = PBXGroup;
 			children = (
+				E4BC1B7D1AE909DE00A7F41A /* Almofire.swift */,
+				E4BC1B7B1AE9090B00A7F41A /* JsonRequest.swift */,
 				E4BC1B3D1AE7DA1400A7F41A /* KMPlaceholderTextView.swift */,
 				E17CD2AF1AD53B5300C1716D /* JSONObject.swift */,
 				E17CD29B1AD3F45000C1716D /* AutoLayoutHelper.swift */,
-				E17CD29C1AD3F45000C1716D /* JSONReader.swift */,
 				E17CD29D1AD3F45000C1716D /* swiftyJSON.swift */,
 				E17CD29E1AD3F45000C1716D /* Tools.swift */,
 			);
@@ -544,8 +547,8 @@
 				E4BC1B2E1AE59F5B00A7F41A /* Transaction.swift in Sources */,
 				E17CD2A11AD3F45000C1716D /* swiftyJSON.swift in Sources */,
 				E4BFF0691ADAF7D500CAEF93 /* RelationStatus.swift in Sources */,
+				E4BC1B7E1AE909DE00A7F41A /* Almofire.swift in Sources */,
 				E4BFF05B1AD9FD4600CAEF93 /* StringExtension.swift in Sources */,
-				E17CD2A01AD3F45000C1716D /* JSONReader.swift in Sources */,
 				E4BC1B3E1AE7DA1400A7F41A /* KMPlaceholderTextView.swift in Sources */,
 				E4BFF0611ADAB48900CAEF93 /* Relation.swift in Sources */,
 				E17CD2761AD3E06200C1716D /* FriendsViewController.swift in Sources */,
@@ -557,6 +560,7 @@
 				E4BFF0591AD9FA4700CAEF93 /* UIStoryboardExtension.swift in Sources */,
 				E46467531AD9D7AB005CD18B /* Response.swift in Sources */,
 				E17CD2741AD3E06200C1716D /* AppDelegate.swift in Sources */,
+				E4BC1B7C1AE9090B00A7F41A /* JsonRequest.swift in Sources */,
 				E4BC1B341AE693F000A7F41A /* Purchase.swift in Sources */,
 				E464674C1AD9B927005CD18B /* AppTools.swift in Sources */,
 				E4BC1B321AE6931A00A7F41A /* PurchaseViewController.swift in Sources */,

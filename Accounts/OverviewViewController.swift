@@ -56,7 +56,7 @@ class OverviewViewController: BaseViewController {
             "relationUserID" : self.friend.UserID
         ]
         
-        JSONReader.JsonAsyncRequest(urlString, data: data, httpMethod: HttpMethod.POST, onSuccess: { (json) -> () in
+        JsonRequest.create(urlString, parameters: data, method: .POST).onDownloadSuccess { (json, request) -> () in
             
             var difference = json["difference"].doubleValue
             
@@ -70,13 +70,11 @@ class OverviewViewController: BaseViewController {
             
             self.label.text = "\(oweText) \(difference)"
             
-        }, onFailure: { (error) -> () in
-            
-            
-        }) { () -> () in
+        }.onDownloadFinished { () -> () in
             
             self.view.hideLoader()
         }
+
     }
     
     func addTransaction(){

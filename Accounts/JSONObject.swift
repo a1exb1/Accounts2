@@ -38,32 +38,17 @@ class JSONObject: NSObject {
     
     class func getObjectFromJsonAsync< T : JSONObject >(id:Int, completion: (object:T) -> () ) {
         
-        JSONReader.JsonAsyncRequest((self as AnyClass).jsonURL(id), data: nil, httpMethod: .GET, onSuccess: { (json) -> () in
-
+        JsonRequest.create((self as AnyClass).jsonURL(id), parameters: nil, method: .GET).onDownloadSuccess { (json, request) -> () in
+            
             completion(object: self.createObjectFromJson(json))
-            
-        }, onFailure: { (error) -> () in
-            
-            
-        }) { () -> () in
-            
-            
         }
-        
     }
     
     class func getObjectFromJsonAsync< T : JSONObject >(url:String, completion: (object:T) -> () ) {
         
-        JSONReader.JsonAsyncRequest(url, data: nil, httpMethod: .GET, onSuccess: { (json) -> () in
+        JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess { (json, request) -> () in
             
             completion(object: self.createObjectFromJson(json))
-            
-            }, onFailure: { (error) -> () in
-                
-                
-            }) { () -> () in
-                
-                
         }
     }
 
@@ -75,6 +60,7 @@ class JSONObject: NSObject {
         rc.setExtraPropertiesFromJSON(json)
         return rc as! T
     }
+    
     
     
     // With type
