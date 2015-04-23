@@ -123,4 +123,26 @@ class JSONObject: NSObject {
 
         return self.JSONString()
     }
+    
+    func convertToDictionary(keysToInclude: Array<String>?) -> Dictionary<String, AnyObject> {
+        
+        var dict = Dictionary<String, AnyObject>()
+        
+        for key in self.objectDictionary().keys {
+            
+            if let keys = keysToInclude {
+                
+                if contains(keys, key as! String) {
+                    
+                    dict[key as! String] = self.objectDictionary()[key]
+                }
+            }
+            else{
+                
+                dict[key as! String] = self.objectDictionary()[key]
+            }
+        }
+        
+        return dict
+    }
 }

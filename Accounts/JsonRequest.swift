@@ -103,6 +103,8 @@ class JsonRequest {
     
     private func go() {
         
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        
         request(method, urlString, parameters: parameters, encoding: ParameterEncoding.URL)
             .response{ (request, response, data, error) in
                 
@@ -125,10 +127,12 @@ class JsonRequest {
                 }
                 
                 self.finishDownload()
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         }
     }
     
     private func alertControllerForError(error: NSError, completion: (retry: Bool) -> ()) -> UIAlertController {
+        
         let alertController = UIAlertController(title: nil, message: error.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
         
         let cancelAction = UIAlertAction(title: "OK", style: .Cancel) { (action) in
@@ -136,14 +140,14 @@ class JsonRequest {
         }
         alertController.addAction(cancelAction)
         
-        let retryAction = UIAlertAction(title: "Retry?", style: UIAlertActionStyle.Default) { (action) in
+        let retryAction = UIAlertAction(title: "Retry", style: UIAlertActionStyle.Default) { (action) in
             completion(retry: true)
         }
         alertController.addAction(retryAction)
         
         return alertController
     }
-    
+
 }
 
 extension UIAlertController {

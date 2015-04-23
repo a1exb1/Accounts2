@@ -16,6 +16,7 @@ class User: JSONObject {
     var Username = ""
     var Friends: Array<User> = []
     var relationStatusToActiveUser: RelationStatus = RelationStatus.Undefined
+    var transactions: Array<Transaction> = []
     
     override class func jsonURL(id:Int) -> String {
         
@@ -151,6 +152,29 @@ class User: JSONObject {
             
             ///Tools.ShowAlertControllerOK("Transaction not added successfully!", completionHandler: { (response) -> () in
             //})
+        })
+    }
+    
+    func getTransactions () -> JsonRequest {
+        
+        var urlString = AppTools.WebMvcController("Transaction", action: "TransactionsForUser")
+        var data = self.convertToDictionary(["UserID"])
+
+        return JsonRequest.create(urlString, parameters: data, method: .POST).onDownloadSuccess({ (json, request) -> () in
+            
+            self.transactions = Array<Transaction>()
+        
+            for (index: String, transactionJSON: JSON) in json {
+
+                var transaction:Transaction = Transaction.createObjectFromJson(transactionJSON)
+                self.transactions.append(transaction)
+            }
+            
+            request.succeedContext()
+            
+        }).onDownloadFailure({ (error, alert) -> () in
+            
+            alert.show()
         })
     }
     

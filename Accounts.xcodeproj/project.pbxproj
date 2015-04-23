@@ -256,10 +256,10 @@
 			isa = PBXGroup;
 			children = (
 				E4BC1B7D1AE909DE00A7F41A /* Almofire.swift */,
+				E17CD29B1AD3F45000C1716D /* AutoLayoutHelper.swift */,
+				E17CD2AF1AD53B5300C1716D /* JSONObject.swift */,
 				E4BC1B7B1AE9090B00A7F41A /* JsonRequest.swift */,
 				E4BC1B3D1AE7DA1400A7F41A /* KMPlaceholderTextView.swift */,
-				E17CD2AF1AD53B5300C1716D /* JSONObject.swift */,
-				E17CD29B1AD3F45000C1716D /* AutoLayoutHelper.swift */,
 				E17CD29D1AD3F45000C1716D /* swiftyJSON.swift */,
 				E17CD29E1AD3F45000C1716D /* Tools.swift */,
 			);
@@ -269,14 +269,14 @@
 		E17CD2AC1AD5383500C1716D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E17CD2AD1AD5384C00C1716D /* User.swift */,
-				E46467491AD9798A005CD18B /* Session.swift */,
 				E464674B1AD9B927005CD18B /* AppTools.swift */,
-				E46467521AD9D7AB005CD18B /* Response.swift */,
+				E4BC1B331AE693F000A7F41A /* Purchase.swift */,
 				E4BFF0601ADAB48900CAEF93 /* Relation.swift */,
 				E4BFF0681ADAF7D500CAEF93 /* RelationStatus.swift */,
+				E46467521AD9D7AB005CD18B /* Response.swift */,
+				E46467491AD9798A005CD18B /* Session.swift */,
 				E4BC1B2D1AE59F5B00A7F41A /* Transaction.swift */,
-				E4BC1B331AE693F000A7F41A /* Purchase.swift */,
+				E17CD2AD1AD5384C00C1716D /* User.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
