@@ -19,7 +19,7 @@ class User: JSONObject {
     var Username = ""
     var Friends: Array<User> = []
     var relationStatusToActiveUser: RelationStatus = RelationStatus.Undefined
-    var transactions: Array<Transaction> = []
+    //var transactions: Array<Transaction> = []
     
 //    override func setExtraPropertiesFromJSON(json:JSON)  {
 //        
@@ -32,11 +32,13 @@ class User: JSONObject {
     }
     
     
-    func getTransactions() -> JsonRequest? {
+    func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest? {
         
-        return Transaction.webApiGetMultipleObjects(Transaction.self, completion: { (objects) -> () in
+        let url = "\(User.webApiUrls().getUrl(UserID))/Transactions"
+        
+        return JsonRequest.create(url, parameters: ["userID" : friend.UserID], method: .GET).onDownloadSuccess({ (json, request) -> () in
             
-            self.transactions = objects
+            completion(transactions: Transaction.convertJsonToMultipleObjects(Transaction.self, json: json))
         })
     }
     

@@ -12,7 +12,8 @@ import ABToolKit
 class TransactionsViewController: BaseViewController {
 
     var tableView = UITableView()
-    var data = kActiveUser.transactions
+    var friend = User()
+    var transactions:Array<Transaction> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +29,11 @@ class TransactionsViewController: BaseViewController {
     
     override func refresh(refreshControl: UIRefreshControl?) {
         
-        kActiveUser.getTransactions()?.onDownloadFinished({ () -> () in
+        kActiveUser.getTransactionsBetweenFriend(friend, completion: { (transactions) -> () in
+            
+            self.transactions = transactions
+            
+        })?.onDownloadFinished({ () -> () in
             
             refreshControl?.endRefreshing()
             self.tableView.reloadData()
@@ -49,7 +54,7 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return data.count
+        return transactions.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

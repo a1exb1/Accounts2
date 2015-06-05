@@ -67,4 +67,12 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
 
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let friend = friends[indexPath.row]
+        
+        var v = TransactionsViewController()
+        v.friend = friend
+        navigationController?.pushViewController(v, animated: true)
+    }
 }
