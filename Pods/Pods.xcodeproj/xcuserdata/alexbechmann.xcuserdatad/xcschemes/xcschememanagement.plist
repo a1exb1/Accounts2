@@ -4,17 +4,32 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-DCKeyValueObjectMapping.xcscheme</key>
+		<key>Pods-Accounts-ABToolKit-ABToolKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-NSObject-ObjectMap.xcscheme</key>
+		<key>Pods-Accounts-ABToolKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods.xcscheme</key>
+		<key>Pods-Accounts-Alamofire.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-Accounts-SwiftyJSON.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-Accounts-SwiftyUserDefaults.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-Accounts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -22,17 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>4B27E28B6845612383F136D3</key>
+		<key>80997A54E6D9E25E0FBFA4AC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>831D73924566017E96E73A74</key>
+		<key>856B954CB3CA88B7731AEE48</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BFF5AD54891A16CB6FA66AA4</key>
+		<key>A03C835E3546F9A7C490FD0E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A1B3B00746313FDA0E952940</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A208CFC07B3963FA38A19BA4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7A26337E47FE9F44C94B45F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
