@@ -14,5 +14,18 @@ class Transaction: JSONObject {
     var friend = User()
     var Amount: Double = 0
     var Description = ""
+    var purchase = Purchase()
     
+    override func setExtraPropertiesFromJSON(json: JSON) {
+        
+        self.friend = User.createObjectFromJson(json["User1"])
+        self.user = User.createObjectFromJson(json["User"])
+        
+        println(json["Purchase"].stringValue)
+        
+        if !json["Purchase"].dictionaryValue.isEmpty {
+            
+            self.purchase = Purchase.createObjectFromJson(json["Purchase"])
+        }
+    }
 }

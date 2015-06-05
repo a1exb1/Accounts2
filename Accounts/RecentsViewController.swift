@@ -64,20 +64,36 @@ class RecentsViewController: UIViewController {
 extension RecentsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        
         return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return self.user.transactions.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
-        
+        let cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
         let transaction = self.user.transactions[indexPath.row]
+
+        var isPositive = transaction.friend.UserID == Session.sharedInstance().activeUser.UserID
+    
+        var description = ""
         
-        cell.textLabel?.text = "amount: \(transaction.Amount)"
+        if transaction.purchase.PurchaseID > 0 {
+            
+            description = "Purchase: \(transaction.purchase.Description)"
+        }
+        else{
+            
+            description = transaction.Description
+        }
+        
+        cell.textLabel?.text = (isPositive ? transaction.user.Username : transaction.friend.Username) + "(\(description))"
+        cell.imageView?.image = Tools.imageWithColor(isPositive ? UIColor.greenColor() : UIColor.redColor(), size: CGSize(width: 15, height: 15))
+        cell.detailTextLabel?.text = "£" + transaction.Amount.toDecimalString(2)
         
         return cell
     }

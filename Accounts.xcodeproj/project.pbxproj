@@ -24,6 +24,7 @@
 		E464674A1AD9798A005CD18B /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46467491AD9798A005CD18B /* Session.swift */; };
 		E464674C1AD9B927005CD18B /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E464674B1AD9B927005CD18B /* AppTools.swift */; };
 		E46467531AD9D7AB005CD18B /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46467521AD9D7AB005CD18B /* Response.swift */; };
+		E47BC9361AEBF98B000A9ACE /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47BC9351AEBF98B000A9ACE /* IntExtension.swift */; };
 		E4BC1B291AE51D9200A7F41A /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B281AE51D9200A7F41A /* OverviewViewController.swift */; };
 		E4BC1B2C1AE54B2400A7F41A /* TextFieldWithLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B2B1AE54B2400A7F41A /* TextFieldWithLabelTableViewCell.swift */; };
 		E4BC1B2E1AE59F5B00A7F41A /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BC1B2D1AE59F5B00A7F41A /* Transaction.swift */; };
@@ -81,6 +82,7 @@
 		E46467491AD9798A005CD18B /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		E464674B1AD9B927005CD18B /* AppTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
 		E46467521AD9D7AB005CD18B /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		E47BC9351AEBF98B000A9ACE /* IntExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
 		E4BC1B281AE51D9200A7F41A /* OverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
 		E4BC1B2B1AE54B2400A7F41A /* TextFieldWithLabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldWithLabelTableViewCell.swift; sourceTree = "<group>"; };
 		E4BC1B2D1AE59F5B00A7F41A /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 				E4BFF0581AD9FA4700CAEF93 /* UIStoryboardExtension.swift */,
 				E4BFF05A1AD9FD4600CAEF93 /* StringExtension.swift */,
 				E4BC1B3B1AE7D6F000A7F41A /* UIViewExtension.swift */,
+				E47BC9351AEBF98B000A9ACE /* IntExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -563,6 +566,7 @@
 				E4BC1B7C1AE9090B00A7F41A /* JsonRequest.swift in Sources */,
 				E4BC1B341AE693F000A7F41A /* Purchase.swift in Sources */,
 				E464674C1AD9B927005CD18B /* AppTools.swift in Sources */,
+				E47BC9361AEBF98B000A9ACE /* IntExtension.swift in Sources */,
 				E4BC1B321AE6931A00A7F41A /* PurchaseViewController.swift in Sources */,
 				E464674A1AD9798A005CD18B /* Session.swift in Sources */,
 				E4BC1B361AE694E100A7F41A /* FriendsListViewController.swift in Sources */,

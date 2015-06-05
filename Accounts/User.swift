@@ -180,12 +180,13 @@ class User: JSONObject {
     
     class func activeUsersContaining(string: String, completion:(users:Array<User>) -> ()) {
         
-        var matches = Array<User>()
         var urlString = AppTools.WebMvcController(kMVCControllerName, action: "ActiveUsersMatching")
         var data:Dictionary<String, AnyObject> = [
             "searchText" : string,
             "UserID" : Session.sharedInstance().activeUser.UserID
         ]
+        
+        var matches = Array<User>()
         
         JsonRequest.create(urlString, parameters: data, method: .POST).onDownloadSuccess { (json, request) -> () in
             

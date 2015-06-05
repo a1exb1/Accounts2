@@ -126,8 +126,6 @@ extension FriendsListViewController: UITableViewDataSource, UITableViewDelegate 
             self.selectedFriends.append(friend)
         }
         
-        
-        
         tableView.reloadData()
         self.setupNavigationButtons()
     }
