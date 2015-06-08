@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		31D41566C543FDE2CACFBFC5 /* Pods_Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 229CCD75CA20DE50201D6067 /* Pods_Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		E48BC61D1B21EAB500A5E58F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E48BC61B1B21EAB500A5E58F /* Main.storyboard */; };
+		E47B28DF1B2477B000853EC2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28DE1B2477B000853EC2 /* MenuViewController.swift */; };
+		E47B28E11B249FFC00853EC2 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28E01B249FFC00853EC2 /* Friend.swift */; };
+		E47B28E31B24AF1A00853EC2 /* SavePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28E21B24AF1A00853EC2 /* SavePurchaseViewController.swift */; };
+		E47B28E51B24D10300853EC2 /* SelectFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28E41B24D10300853EC2 /* SelectFriendsViewController.swift */; };
 		E48BC61F1B21EAB500A5E58F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E48BC61E1B21EAB500A5E58F /* Images.xcassets */; };
 		E48BC6221B21EAB500A5E58F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E48BC6201B21EAB500A5E58F /* LaunchScreen.xib */; };
 		E48BC62E1B21EAB500A5E58F /* AccountsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC62D1B21EAB500A5E58F /* AccountsTests.swift */; };
@@ -19,6 +22,9 @@
 		E48BC6511B21EB7400A5E58F /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC64A1B21EB7400A5E58F /* Transaction.swift */; };
 		E48BC6591B21EBA200A5E58F /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */; };
 		E48BC65B1B21FC0700A5E58F /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC65A1B21FC0700A5E58F /* TransactionsViewController.swift */; };
+		E4DC32961B24682900FA16C3 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4DC32951B24682900FA16C3 /* Login.storyboard */; };
+		E4DC32981B24686100FA16C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4DC32971B24686100FA16C3 /* Main.storyboard */; };
+		E4DC329A1B2468AB00FA16C3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,9 +41,12 @@
 		229CCD75CA20DE50201D6067 /* Pods_Accounts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Accounts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D804DC3FB800178FC10E9A7 /* Pods-Accounts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accounts.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Accounts/Pods-Accounts.debug.xcconfig"; sourceTree = "<group>"; };
 		AC1D59DEE6922AAEB08C5128 /* Pods-Accounts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accounts.release.xcconfig"; path = "Pods/Target Support Files/Pods-Accounts/Pods-Accounts.release.xcconfig"; sourceTree = "<group>"; };
+		E47B28DE1B2477B000853EC2 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		E47B28E01B249FFC00853EC2 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		E47B28E21B24AF1A00853EC2 /* SavePurchaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavePurchaseViewController.swift; sourceTree = "<group>"; };
+		E47B28E41B24D10300853EC2 /* SelectFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectFriendsViewController.swift; sourceTree = "<group>"; };
 		E48BC6121B21EAB500A5E58F /* Accounts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Accounts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48BC6161B21EAB500A5E58F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E48BC61C1B21EAB500A5E58F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E48BC61E1B21EAB500A5E58F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E48BC6211B21EAB500A5E58F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		E48BC6271B21EAB500A5E58F /* AccountsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AccountsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,6 +59,9 @@
 		E48BC64A1B21EB7400A5E58F /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		E48BC65A1B21FC0700A5E58F /* TransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
+		E4DC32951B24682900FA16C3 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Login.storyboard; path = Storyboards/Login.storyboard; sourceTree = "<group>"; };
+		E4DC32971B24686100FA16C3 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
+		E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,8 +123,8 @@
 		E48BC6141B21EAB500A5E58F /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				E4DC32941B24680E00FA16C3 /* Storyboards */,
 				E48BC6371B21EB7400A5E58F /* Classes */,
-				E48BC61B1B21EAB500A5E58F /* Main.storyboard */,
 				E48BC61E1B21EAB500A5E58F /* Images.xcassets */,
 				E48BC6201B21EAB500A5E58F /* LaunchScreen.xib */,
 				E48BC6151B21EAB500A5E58F /* Supporting Files */,
@@ -177,6 +189,7 @@
 		E48BC63A1B21EB7400A5E58F /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -209,6 +222,7 @@
 		E48BC63F1B21EB7400A5E58F /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E47B28E21B24AF1A00853EC2 /* SavePurchaseViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -236,6 +250,7 @@
 			children = (
 				E48BC6441B21EB7400A5E58F /* RelationStatus.swift */,
 				E48BC6451B21EB7400A5E58F /* User.swift */,
+				E47B28E01B249FFC00853EC2 /* Friend.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -243,6 +258,7 @@
 		E48BC6461B21EB7400A5E58F /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E47B28DE1B2477B000853EC2 /* MenuViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -308,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */,
+				E47B28E41B24D10300853EC2 /* SelectFriendsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -317,6 +334,15 @@
 			children = (
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		E4DC32941B24680E00FA16C3 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				E4DC32971B24686100FA16C3 /* Main.storyboard */,
+				E4DC32951B24682900FA16C3 /* Login.storyboard */,
+			);
+			name = Storyboards;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -403,9 +429,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E48BC61D1B21EAB500A5E58F /* Main.storyboard in Resources */,
+				E4DC32961B24682900FA16C3 /* Login.storyboard in Resources */,
 				E48BC6221B21EAB500A5E58F /* LaunchScreen.xib in Resources */,
 				E48BC61F1B21EAB500A5E58F /* Images.xcassets in Resources */,
+				E4DC32981B24686100FA16C3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,8 +502,13 @@
 				E48BC64E1B21EB7400A5E58F /* AppDelegate.swift in Sources */,
 				E48BC64F1B21EB7400A5E58F /* RelationStatus.swift in Sources */,
 				E48BC6511B21EB7400A5E58F /* Transaction.swift in Sources */,
+				E47B28E31B24AF1A00853EC2 /* SavePurchaseViewController.swift in Sources */,
+				E47B28DF1B2477B000853EC2 /* MenuViewController.swift in Sources */,
+				E4DC329A1B2468AB00FA16C3 /* LoginViewController.swift in Sources */,
 				E48BC6591B21EBA200A5E58F /* FriendsViewController.swift in Sources */,
+				E47B28E11B249FFC00853EC2 /* Friend.swift in Sources */,
 				E48BC64D1B21EB7400A5E58F /* Purchase.swift in Sources */,
+				E47B28E51B24D10300853EC2 /* SelectFriendsViewController.swift in Sources */,
 				E48BC6501B21EB7400A5E58F /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -500,14 +532,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		E48BC61B1B21EAB500A5E58F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E48BC61C1B21EAB500A5E58F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		E48BC6201B21EAB500A5E58F /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

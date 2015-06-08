@@ -20,6 +20,7 @@ public class JsonRequest: NSObject {
     public var alamofireRequest: Request?
     
     internal var succeedDownloadClosures: [(json: JSON, request: JsonRequest) -> ()] = []
+    internal var succeedDownloadClosuresWithRequestInfo: [(json: JSON, request: JsonRequest, httpUrlRequest: NSURLRequest?, httpUrlResponse: NSHTTPURLResponse?) -> ()] = []
     internal var succeedContextClosures: [() -> ()] = []
     
     internal var failDownloadClosures: [(error: NSError, alert: UIAlertController) -> ()] = []
@@ -47,6 +48,11 @@ public class JsonRequest: NSObject {
         return self
     }
     
+    public func onDownloadSuccessWithRequestInfo(success: (json: JSON, request: JsonRequest, httpUrlRequest: NSURLRequest?, httpUrlResponse: NSHTTPURLResponse?) -> ()) -> Self {
+        self.succeedDownloadClosuresWithRequestInfo.append(success)
+        return self
+    }
+    
     public func onContextSuccess(success: () -> ()) -> Self {
         self.succeedContextClosures.append(success)
         return self
@@ -69,13 +75,16 @@ public class JsonRequest: NSObject {
         return self
     }
     
-    
-    
-    func succeedDownload(json: JSON) {
+    func succeedDownload(json: JSON, httpUrlRequest: NSURLRequest?, httpUrlResponse: NSHTTPURLResponse?) {
         
         for closure in self.succeedDownloadClosures {
             
             closure(json: json, request: self)
+        }
+        
+        for closure in self.succeedDownloadClosuresWithRequestInfo {
+            
+            closure(json: json, request: self, httpUrlRequest: httpUrlRequest, httpUrlResponse: httpUrlResponse)
         }
     }
     
@@ -138,7 +147,7 @@ public class JsonRequest: NSObject {
                 else{
                     
                     let json = JSON(data: data! as! NSData)
-                    self.succeedDownload(json)
+                    self.succeedDownload(json, httpUrlRequest: request, httpUrlResponse: response)
                 }
                 
                 self.finishDownload()

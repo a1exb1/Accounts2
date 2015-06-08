@@ -61,7 +61,7 @@ public class CompresJsonRequest: JsonRequest {
                         
                         let unpackedJson = JSON(data: dataFromString)
                         
-                        self.succeedDownload(unpackedJson)
+                        self.succeedDownload(unpackedJson, httpUrlRequest: request, httpUrlResponse: response)
                     }
                     else {
                         

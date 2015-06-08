@@ -8,6 +8,7 @@
 
 import UIKit
 import ABToolKit
+import SwiftyUserDefaults
 
 var kActiveUser = User()
 
@@ -22,7 +23,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Session.sharedSession().domain = "http://alex.bechmann.co.uk/iou"
         WebApiDefaults.sharedInstance().baseUrl = "\(Session.sharedSession().domain)/api"
         
+        if let user = User.userSavedOnDevice() {
+            
+            kActiveUser = user
+        }
+        else {
+            
+            setWindowToLogin()
+        }
+        
         return true
+    }
+    
+    private func setWindowToLogin() {
+        
+        let bounds: CGRect = UIScreen.mainScreen().bounds
+        window = UIWindow(frame: bounds)
+        window?.rootViewController = UIStoryboard.initialViewControllerFromStoryboardNamed("Login")
+        window?.makeKeyAndVisible()
     }
 
     func applicationWillResignActive(application: UIApplication) {

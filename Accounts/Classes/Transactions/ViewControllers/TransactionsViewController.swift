@@ -20,11 +20,11 @@ class TransactionsViewController: BaseViewController {
 
         setupTableView(tableView, delegate: self, dataSource: self)
     }
-
-    override func setupTableView(tableView: UITableView, delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
-        super.setupTableView(tableView, delegate: delegate, dataSource: dataSource)
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        refresh(nil)
     }
     
     override func refresh(refreshControl: UIRefreshControl?) {
@@ -33,7 +33,7 @@ class TransactionsViewController: BaseViewController {
             
             self.transactions = transactions
             
-        })?.onDownloadFinished({ () -> () in
+        }).onDownloadFinished({ () -> () in
             
             refreshControl?.endRefreshing()
             self.tableView.reloadData()
@@ -59,7 +59,25 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! UITableViewCell
+        let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
+        let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
+        let transaction = transactions[indexPath.row]
+        
+        let amount = String(format: "%.2f", transaction.Amount)
+        cell.textLabel?.text = "£\(amount)"
+        cell.textLabel?.textColor = friend.DifferenceBetweenActiveUser > 0 ? UIColor(hex: "53B01E") : UIColor(hex: "B0321E")
+        
+        if transaction.purchase.PurchaseID > 0 {
+         
+            cell.detailTextLabel?.text = "Purchase by \(transaction.user.Username) (£\(transaction.purchase.Amount))"
+        }
+        else {
+            
+            cell.detailTextLabel?.text = "Transfer"
+        }
+        
+        
+        //cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell
     }

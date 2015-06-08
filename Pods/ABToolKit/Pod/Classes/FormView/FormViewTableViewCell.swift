@@ -17,10 +17,10 @@ public protocol FormViewCellDelegate {
 
 public class FormViewTableViewCell: UITableViewCell {
 
-    var label = UILabel()
-    var textField = UITextField()
-    var configuation = FormViewConfiguration()
-    var delegate: FormViewCellDelegate?
+    public var label = UILabel()
+    public var textField = UITextField()
+    public var configuation = FormViewConfiguration()
+    public var delegate: FormViewCellDelegate?
     
     override public func drawRect(rect: CGRect) {
         super.drawRect(rect)
@@ -40,7 +40,7 @@ public class FormViewTableViewCell: UITableViewCell {
 
     // MARK: - Constraints
     
-    func setupLabelConstraints() {
+    public func setupLabelConstraints() {
         
         label.addTopConstraint(toView: contentView, relation: .Equal, constant: 0)
         label.addLeftConstraint(toView: contentView, relation: .Equal, constant: kPadding)
@@ -48,7 +48,7 @@ public class FormViewTableViewCell: UITableViewCell {
         label.addWidthConstraint(relation: .Equal, constant: 160)
     }
     
-    func setupTextFieldConstraints() {
+    public func setupTextFieldConstraints() {
         
         textField.addTopConstraint(toView: contentView, relation: .Equal, constant: 0)
         textField.addLeftConstraint(toView: label, attribute: NSLayoutAttribute.Right, relation: .Equal, constant: 0)
@@ -56,7 +56,7 @@ public class FormViewTableViewCell: UITableViewCell {
         textField.addBottomConstraint(toView: contentView, relation: .Equal, constant: 0)
     }
     
-    func textFieldChanged(textField: UITextField) {
+    public func textFieldChanged(textField: UITextField) {
         
         delegate?.valueDidChange(configuation.identifier, value: textField.text)
     }

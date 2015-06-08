@@ -9,7 +9,6 @@
 import UIKit
 import ABToolKit
 import SwiftyJSON
-import SwiftyUserDefaults
 
 private let kActiveUserDefaultsKey = "activeUser"
 
@@ -17,8 +16,13 @@ class User: JSONObject {
     
     var UserID = 0
     var Username = ""
-    var Friends: Array<User> = []
+    var Password = ""
+    var friends: Array<User> = []
+    
+    //friend
     var relationStatusToActiveUser: RelationStatus = RelationStatus.Undefined
+    var DifferenceBetweenActiveUser: Double = 0
+    
     //var transactions: Array<Transaction> = []
     
 //    override func setExtraPropertiesFromJSON(json:JSON)  {
@@ -28,21 +32,69 @@ class User: JSONObject {
     
     override func registerClassesForJsonMapping() {
     
-        registerClass(User.self, propertyKey: "Friends", jsonKey: "friends")
+        registerProperty("DifferenceBetweenActiveUser", withJsonKey: "Difference")
+        registerClass(User.self, forKey: "friends")
     }
     
     
-    func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest? {
+    class func login(username: String, password: String) -> JsonRequest {
         
-        let url = "\(User.webApiUrls().getUrl(UserID))/Transactions"
-        
-        return JsonRequest.create(url, parameters: ["userID" : friend.UserID], method: .GET).onDownloadSuccess({ (json, request) -> () in
+        return JsonRequest.create("http://alex.bechmann.co.uk/iou/api/Users/Login/?Username=\(username)&Password=\(password)", parameters: nil, method: .POST).onDownloadSuccessWithRequestInfo { (json, request, httpRequest, httpResponse) -> () in
             
-            completion(transactions: Transaction.convertJsonToMultipleObjects(Transaction.self, json: json))
+            if httpResponse?.statusCode == 200 {
+                
+                var user: User = User.createObjectFromJson(json)
+                User.saveUserOnDevice(user as User?)
+                kActiveUser = user
+                
+                request.succeedContext()
+            }
+            else {
+                
+                request.failContext()
+            }
+            
+        }
+    }
+    
+    func logout() {
+        
+        User.saveUserOnDevice(nil)
+    }
+
+    
+//    func getTransactionsLog(completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest? {
+//        
+//        let url = "\(User.webApiUrls().getUrl(UserID))/Transactions"
+//        
+//        return JsonRequest.create(url, parameters: ["userID" : UserID], method: .GET).onDownloadSuccess({ (json, request) -> () in
+//            
+//            completion(transactions: Transaction.convertJsonToMultipleObjects(Transaction.self, json: json))
+//        })
+//    }
+    
+    func getFriends() -> JsonRequest {
+        
+        let s: String = User.webApiUrls().getUrl(UserID)!
+        
+        let url = "\(s)/Friends"
+
+        return JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
+            
+            self.friends = User.convertJsonToMultipleObjects(User.self, json: json)
         })
     }
     
-    
+    func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
+        
+        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate%20desc"
+        
+        return JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
+            
+            let transactions:Array<Transaction> = Transaction.convertJsonToMultipleObjects(Transaction.self, json: json)
+            completion(transactions: transactions)
+        })
+    }
     
 //    func getUnconfirmedInvites(completion:(invites:Array<Relation>) -> ()) {
 //        
@@ -79,12 +131,45 @@ class User: JSONObject {
     
     func saveUserOnDevice() {
 
-        Defaults[kActiveUserDefaultsKey] = kActiveUser
+        User.saveUserOnDevice(self as User?)
+    }
+    
+    class func saveUserOnDevice(user: User?) {
+        
+        if let u = user {
+            
+            var objectData: NSData = NSKeyedArchiver.archivedDataWithRootObject(u)
+            NSUserDefaults.standardUserDefaults().setObject(objectData, forKey: kActiveUserDefaultsKey)
+        }
+        else {
+            
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(kActiveUserDefaultsKey)
+        }
+        
     }
     
     class func userSavedOnDevice() -> User? {
         
-        return Defaults[kActiveUserDefaultsKey].object as? User
+        if let objectData:NSData = NSUserDefaults.standardUserDefaults().objectForKey(kActiveUserDefaultsKey) as? NSData {
+            
+            let user: User = (NSKeyedUnarchiver.unarchiveObjectWithData(objectData) as? User)!
+            return user
+        }
+        
+        return nil
+    }
+    
+    required convenience init(coder decoder: NSCoder) {
+        self.init()
+        
+        self.UserID = decoder.decodeObjectForKey("UserID") as! Int
+        self.Username = decoder.decodeObjectForKey("Username") as! String
+    }
+    
+    func encodeWithCoder(coder: NSCoder) {
+        
+        coder.encodeObject(UserID, forKey: "UserID")
+        coder.encodeObject(Username, forKey: "Username")
     }
     
 //    func refreshFriendsList() -> JsonRequest {
@@ -99,33 +184,33 @@ class User: JSONObject {
 ////        })
 //    }
     
-    func confirmedFriends() -> Array<User> {
-        
-        var rc = Array<User>()
-        
-        for friend in self.Friends {
-            
-            if friend.relationStatusToActiveUser == .Confirmed {
-                rc.append(friend)
-            }
-        }
-        
-        return rc
-    }
-    
-    func pendingFriends() -> Array<User> {
-        
-        var rc = Array<User>()
-        
-        for friend in self.Friends {
-            
-            if friend.relationStatusToActiveUser == .Pending {
-                rc.append(friend)
-            }
-        }
-        
-        return rc
-    }
+//    func confirmedFriends() -> Array<User> {
+//        
+//        var rc = Array<User>()
+//        
+//        for friend in self.Friends {
+//            
+//            if friend.relationStatusToActiveUser == .Confirmed {
+//                rc.append(friend)
+//            }
+//        }
+//        
+//        return rc
+//    }
+//    
+//    func pendingFriends() -> Array<User> {
+//        
+//        var rc = Array<User>()
+//        
+//        for friend in self.Friends {
+//            
+//            if friend.relationStatusToActiveUser == .Pending {
+//                rc.append(friend)
+//            }
+//        }
+//        
+//        return rc
+//    }
 
     
     class func activeUsersContaining(string: String, completion:(users:Array<User>) -> ()) {
@@ -143,5 +228,10 @@ class User: JSONObject {
 //            let matches: Array<User> = User.convertJsonToMultipleObjects(json)
 //            completion(users: matches)
 //        }
+    }
+    
+    override func webApiRestObjectID() -> Int? {
+        
+        return UserID
     }
 }

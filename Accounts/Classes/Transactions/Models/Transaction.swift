@@ -8,9 +8,11 @@
 
 import UIKit
 import ABToolKit
+import SwiftyJSON
 
 class Transaction: JSONObject {
    
+    var TransactionID: Int = 0
     var user = User()
     var friend = User()
     var Amount: Double = 0
@@ -19,8 +21,20 @@ class Transaction: JSONObject {
     
     override func registerClassesForJsonMapping() {
         
-        registerClass(User.self, propertyKey: "user", jsonKey: "User")
-        registerClass(User.self, propertyKey: "friend", jsonKey: "User1")
-        registerClass(Purchase.self, propertyKey: "purchase", jsonKey: "Purchase")
+        //registerClass(User.self, propertyKey: "user", jsonKey: "User")
+        //registerClass(User.self, propertyKey: "friend", jsonKey: "User1")
+        //registerClass(Purchase.self, propertyKey: "purchase", jsonKey: "Purchase")
+    }
+    
+    override func setExtraPropertiesFromJSON(json: JSON) {
+       
+        user = User.createObjectFromJson(json["User"])
+        friend = User.createObjectFromJson(json["User1"])
+        purchase = Purchase.createObjectFromJson(json["Purchase"])
+    }
+    
+    override func webApiRestObjectID() -> Int? {
+        
+        return TransactionID
     }
 }

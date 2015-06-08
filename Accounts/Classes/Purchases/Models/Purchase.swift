@@ -15,44 +15,58 @@ class Purchase: JSONObject {
     var friends: [User] = []
     var Amount: Double = 0
     var Description = ""
+    var UserID = kActiveUser.UserID
     
     var billSplitDictionary = Dictionary<User, Double>()
     
     func save() -> JsonRequest? {
         
+        if !modelIsValid() {
+            
+            return nil
+        }
+        
+        var urlString = ""
+        
         if PurchaseID > 0 {
             
+            println("update not supported yet (or ever)")
+            return nil
         }
         else{
             
-            
+            urlString = "\(Purchase.webApiUrls().insertUrl()!)/"
         }
         
-        //TODO: INSERT ONLY ATM
-        var urlString = "" // AppTools.WebMvcController("Transaction", action: "AddPurchase") + "?Amount=\(self.Amount)&UserID=\(kActiveUser.UserID)"
+        splitTheBill()
         
+        var c = 0
         for friend in self.friends {
             
-            urlString = urlString + "&relationUserIDs=\(friend.UserID)&relationUserAmounts=\(self.billSplitDictionary[friend]!)"
+            let prefix = c == 0 ? "?" : "&"
+            
+            urlString = urlString + "\(prefix)RelationUserIDs=\(friend.UserID)&RelationUserAmounts=\(self.billSplitDictionary[friend]!)"
+            
+            c++
         }
+    
+        let params = convertToDictionary(["UserID", "Amount"], includeNestedProperties: false)
+
+        return JsonRequest.create(urlString, parameters: params, method: .POST).onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
+
+            if httpUrlResponse?.statusCode == 200 || httpUrlResponse?.statusCode == 201 {
+                
+                request.succeedContext()
+            }
+            else {
+                
+                request.failContext()
+            }
+            
+        }).onDownloadFailure( { (error, alert) in
         
-//        return JsonRequest.create(urlString, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
-//            
-//            var response:Response = Response.createObjectFromJson(json["Response"])
-//            
-//            if response.Status == ResponseStatus.Success {
-//                
-//                request.succeedContext()
-//            }
-//            else{
-//                
-//                Tools.ShowAlertControllerOK(response.Message, completionHandler: { (response) -> () in
-//                })
-//                
-//                request.failContext()
-//            }
-//        })
-        return nil // temp
+            alert.show()
+        })
     }
     
     func splitTheBill() {
@@ -64,5 +78,35 @@ class Purchase: JSONObject {
             
             self.billSplitDictionary[friend] = amount
         }
+    }
+    
+    override func webApiRestObjectID() -> Int? {
+        
+        return PurchaseID
+    }
+    
+    func modelIsValid() -> Bool{
+        
+        var modelIsValid = true
+        var errorMessage = ""
+        
+        
+        if !(Amount > 0) {
+         
+            errorMessage = "Amount is 0"
+        }
+        
+        if friends.count == 0 {
+            
+            errorMessage == "You havnt split this with anyone!"
+        }
+        
+        if errorMessage.characterCount() > 0 {
+            
+            UIAlertView(title: "Purchase not saved!", message: errorMessage, delegate: nil, cancelButtonTitle: "OK").show()
+            return false
+        }
+        
+        return true
     }
 }

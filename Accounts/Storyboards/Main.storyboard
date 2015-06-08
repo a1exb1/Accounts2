@@ -21,12 +21,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CUP-Tl-s4C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1311" y="-379"/>
+            <point key="canvasLocation" x="2123" y="-379"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="L3v-PN-ZsC">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sJ2-DI-iLJ" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" systemItem="contacts" id="Cpx-HO-c3K"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="lBi-5x-Nq1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -39,7 +40,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MKg-gA-Mzs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="499" y="-379"/>
+            <point key="canvasLocation" x="1311" y="-379"/>
         </scene>
     </scenes>
 </document>
