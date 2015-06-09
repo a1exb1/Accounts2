@@ -66,10 +66,6 @@ class Purchase: JSONObject {
         var params = convertToDictionary(["Amount"], includeNestedProperties: false)
         params["UserID"] = user.UserID
         
-        println(urlString)
-        println(params)
-        return nil
-        
         return JsonRequest.create(urlString, parameters: params, method: httpMethod).onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
 
             if httpUrlResponse?.statusCode == 200 || httpUrlResponse?.statusCode == 201 || httpUrlResponse?.statusCode == 204 {
