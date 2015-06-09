@@ -8,9 +8,9 @@
 
 import UIKit
 
-extension Int {
+public extension Int {
     
-    func toStringWithDecimalPlaces(decimals:Int) -> String {
+    public func toStringWithDecimalPlaces(decimals:Int) -> String {
         
         return String(format: "%.2f", self)
     }

@@ -15,19 +15,48 @@ protocol SelectFriendsDelegate {
     func didSelectFriends(friends: Array<User>)
 }
 
+protocol SelectFriendDelegate {
+    
+    func didSelectFriend(friend: User)
+}
+
 class SelectFriendsViewController: BaseViewController {
 
     var tableView = UITableView()
-    var delegate: SelectFriendsDelegate?
+    var selectMultipleFriendsDelegate: SelectFriendsDelegate?
+    var selectFriendDelegate: SelectFriendDelegate?
     var friendIsSelected = Dictionary<Int, Bool>()
+    var allowEditing = false
+    var allowMultipleSelection = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupTableView(tableView, delegate: self, dataSource: self)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "done")
-        self.title = "Select friends"
+        if allowMultipleSelection {
+
+            if allowEditing {
+                
+                title = "Select friends"
+                navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "done")
+            }
+            else {
+                
+                title = "Friends"
+            }
+        }
+        else {
+            
+            if allowEditing {
+                
+                title = "Select friend"
+            }
+            else {
+                
+                title = "Friend"
+            }
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -64,7 +93,7 @@ class SelectFriendsViewController: BaseViewController {
             }
         }
         
-        delegate?.didSelectFriends(friends)
+        selectMultipleFriendsDelegate?.didSelectFriends(friends)
         navigationController?.popViewControllerAnimated(true)
     }
 
@@ -80,6 +109,11 @@ class SelectFriendsViewController: BaseViewController {
             
             friendIsSelected[friend.UserID] = true
         }
+    }
+    
+    func setSelectedFriend(friend: User) {
+        
+        setSelectedFriends([friend])
     }
 }
 
@@ -116,17 +150,28 @@ extension SelectFriendsViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        let friend = kActiveUser.friends[indexPath.row]
-        
-        if let v = friendIsSelected[friend.UserID] {
+        if allowEditing {
             
-            friendIsSelected.removeValueForKey(friend.UserID)
-        }
-        else {
+            let friend = kActiveUser.friends[indexPath.row]
             
-            friendIsSelected[friend.UserID] = true
+            if allowMultipleSelection {
+                
+                if let v = friendIsSelected[friend.UserID] {
+                    
+                    friendIsSelected.removeValueForKey(friend.UserID)
+                }
+                else {
+                    
+                    friendIsSelected[friend.UserID] = true
+                }
+                
+                tableView.reloadData()
+            }
+            else {
+                
+                selectFriendDelegate?.didSelectFriend(friend)
+                navigationController?.popViewControllerAnimated(true)
+            }
         }
-        
-        tableView.reloadData()
     }
 }

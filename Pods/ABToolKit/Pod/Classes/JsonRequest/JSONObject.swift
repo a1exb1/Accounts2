@@ -388,6 +388,11 @@ public class JSONObject: NSObject, WebApiManagerDelegate, JsonMappingDelegate {
     
     public func webApiInsert(keysToInclude: Array<String>?) -> JsonRequest?{
         
+        if !modelIsValid() {
+            
+            println("model is not valid")
+        }
+        
         if let url = self.dynamicType.webApiUrls().insertUrl() {
         
             return JsonRequest.create(url, parameters: self.convertToDictionary(nil, includeNestedProperties: false), method: .POST)
@@ -407,6 +412,11 @@ public class JSONObject: NSObject, WebApiManagerDelegate, JsonMappingDelegate {
     }
     
     public func webApiUpdate(keysToInclude: Array<String>?) -> JsonRequest?{
+        
+        if !modelIsValid() {
+            
+            println("model is not valid")
+        }
         
         if let url = self.dynamicType.webApiUrls().updateUrl(webApiManagerDelegate?.webApiRestObjectID()) {
             
@@ -514,8 +524,6 @@ public class JSONObject: NSObject, WebApiManagerDelegate, JsonMappingDelegate {
         
         return nil
     }
-
-    
     
     public class func convertJsonToMultipleObjects<T : JSONObject>(type: T.Type, json: JSON) -> Array<T> {
         
@@ -528,5 +536,10 @@ public class JSONObject: NSObject, WebApiManagerDelegate, JsonMappingDelegate {
         }
         
         return objects
+    }
+    
+    public func modelIsValid() -> Bool {
+        
+        return true
     }
 }

@@ -20,7 +20,7 @@ class User: JSONObject {
     var friends: Array<User> = []
     
     //friend
-    var relationStatusToActiveUser: RelationStatus = RelationStatus.Undefined
+    //var relationStatusToActiveUser: RelationStatus = RelationStatus.Undefined
     var DifferenceBetweenActiveUser: Double = 0
     
     //var transactions: Array<Transaction> = []
@@ -53,7 +53,6 @@ class User: JSONObject {
                 
                 request.failContext()
             }
-            
         }
     }
     
@@ -87,7 +86,7 @@ class User: JSONObject {
     
     func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
         
-        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate%20desc"
+        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate%20desc,TransactionID" // not doing it for purchases
         
         return JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
             

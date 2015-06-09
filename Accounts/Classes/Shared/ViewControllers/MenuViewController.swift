@@ -18,18 +18,13 @@ class MenuViewController: BaseViewController {
 
         setupTableView(tableView, delegate: self, dataSource: self)
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .Plain, target: self, action: "close")
+        addCloseButton()
     }
 
     override func setupTableView(tableView: UITableView, delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
         super.setupTableView(tableView, delegate: delegate, dataSource: dataSource)
         
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-    }
-    
-    func close() {
-        
-        dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

@@ -8,6 +8,8 @@
 
 import UIKit
 import ABToolKit
+import Alamofire
+import SwiftyJSON
 
 class Purchase: JSONObject {
    
@@ -15,9 +17,20 @@ class Purchase: JSONObject {
     var friends: [User] = []
     var Amount: Double = 0
     var Description = ""
-    var UserID = kActiveUser.UserID
-    
+    var user = User()
     var billSplitDictionary = Dictionary<User, Double>()
+    var DatePurchased:NSDate = NSDate()
+    
+    override func registerClassesForJsonMapping() {
+        
+        registerDate("DatePurchased")
+        
+    }
+    
+    override func setExtraPropertiesFromJSON(json: JSON) {
+        
+        user.UserID = json["UserID"].intValue
+    }
     
     func save() -> JsonRequest? {
         
@@ -25,36 +38,41 @@ class Purchase: JSONObject {
             
             return nil
         }
-        
+
         var urlString = ""
+        let httpMethod: Alamofire.Method = PurchaseID == 0 ? .POST : .PUT
         
         if PurchaseID > 0 {
             
-            println("update not supported yet (or ever)")
-            return nil
+            urlString = Purchase.webApiUrls().updateUrl(PurchaseID)!
         }
-        else{
+        else {
             
-            urlString = "\(Purchase.webApiUrls().insertUrl()!)/"
+            urlString = Purchase.webApiUrls().insertUrl()!
         }
         
+        
+        user = kActiveUser
         splitTheBill()
         
         var c = 0
         for friend in self.friends {
             
             let prefix = c == 0 ? "?" : "&"
-            
             urlString = urlString + "\(prefix)RelationUserIDs=\(friend.UserID)&RelationUserAmounts=\(self.billSplitDictionary[friend]!)"
-            
             c++
         }
     
-        let params = convertToDictionary(["UserID", "Amount"], includeNestedProperties: false)
+        var params = convertToDictionary(["Amount"], includeNestedProperties: false)
+        params["UserID"] = user.UserID
+        
+        println(urlString)
+        println(params)
+        return nil
+        
+        return JsonRequest.create(urlString, parameters: params, method: httpMethod).onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
 
-        return JsonRequest.create(urlString, parameters: params, method: .POST).onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
-
-            if httpUrlResponse?.statusCode == 200 || httpUrlResponse?.statusCode == 201 {
+            if httpUrlResponse?.statusCode == 200 || httpUrlResponse?.statusCode == 201 || httpUrlResponse?.statusCode == 204 {
                 
                 request.succeedContext()
             }
@@ -85,28 +103,40 @@ class Purchase: JSONObject {
         return PurchaseID
     }
     
-    func modelIsValid() -> Bool{
+    override func modelIsValid() -> Bool {
+
+        var errors:Array<String> = []
         
-        var modelIsValid = true
-        var errorMessage = ""
-        
-        
-        if !(Amount > 0) {
+        if Amount == 0 {
          
-            errorMessage = "Amount is 0"
+            errors.append("Amount is 0")
         }
         
         if friends.count == 0 {
             
-            errorMessage == "You havnt split this with anyone!"
+            errors.append("You havnt split this with anyone!")
         }
         
-        if errorMessage.characterCount() > 0 {
+        if Description == "" {
             
-            UIAlertView(title: "Purchase not saved!", message: errorMessage, delegate: nil, cancelButtonTitle: "OK").show()
-            return false
+            errors.append("Description is empty")
         }
         
-        return true
+        var c = 1
+        var errorMessageString = ""
+        
+        for error in errors {
+            
+            let suffix = c == errors.count ? "" : ", "
+            errorMessageString += "\(error)\(suffix)"
+            c++
+        }
+        
+        if errors.count > 0 {
+            
+            //UIAlertView(title: "Purchase not saved!", message: errorMessageString, delegate: nil, cancelButtonTitle: "OK").show()
+        }
+        
+        return errors.count > 0 ? false : true
     }
 }

@@ -15,6 +15,11 @@ public extension String {
         return count(self.utf16)
     }
     
+    public func length() -> Int {
+        
+        return count(self.utf16)
+    }
+    
     public func contains(find: String) -> Bool {
         
         if let temp = self.rangeOfString(find) {

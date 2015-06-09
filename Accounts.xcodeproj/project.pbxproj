@@ -12,6 +12,9 @@
 		E47B28E11B249FFC00853EC2 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28E01B249FFC00853EC2 /* Friend.swift */; };
 		E47B28E31B24AF1A00853EC2 /* SavePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28E21B24AF1A00853EC2 /* SavePurchaseViewController.swift */; };
 		E47B28E51B24D10300853EC2 /* SelectFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28E41B24D10300853EC2 /* SelectFriendsViewController.swift */; };
+		E47B28ED1B25823700853EC2 /* CurrencyTextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28EC1B25823700853EC2 /* CurrencyTextFieldDelegate.swift */; };
+		E47B28F01B25922000853EC2 /* BaseViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28EF1B25922000853EC2 /* BaseViewController+Extension.swift */; };
+		E47B28F21B25EB8600853EC2 /* SaveTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28F11B25EB8600853EC2 /* SaveTransactionViewController.swift */; };
 		E48BC61F1B21EAB500A5E58F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E48BC61E1B21EAB500A5E58F /* Images.xcassets */; };
 		E48BC6221B21EAB500A5E58F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E48BC6201B21EAB500A5E58F /* LaunchScreen.xib */; };
 		E48BC62E1B21EAB500A5E58F /* AccountsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC62D1B21EAB500A5E58F /* AccountsTests.swift */; };
@@ -45,6 +48,9 @@
 		E47B28E01B249FFC00853EC2 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		E47B28E21B24AF1A00853EC2 /* SavePurchaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavePurchaseViewController.swift; sourceTree = "<group>"; };
 		E47B28E41B24D10300853EC2 /* SelectFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectFriendsViewController.swift; sourceTree = "<group>"; };
+		E47B28EC1B25823700853EC2 /* CurrencyTextFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyTextFieldDelegate.swift; sourceTree = "<group>"; };
+		E47B28EF1B25922000853EC2 /* BaseViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BaseViewController+Extension.swift"; sourceTree = "<group>"; };
+		E47B28F11B25EB8600853EC2 /* SaveTransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveTransactionViewController.swift; sourceTree = "<group>"; };
 		E48BC6121B21EAB500A5E58F /* Accounts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Accounts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48BC6161B21EAB500A5E58F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E48BC61E1B21EAB500A5E58F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -241,6 +247,7 @@
 				E48BC6431B21EB7400A5E58F /* Models */,
 				E48BC6461B21EB7400A5E58F /* ViewControllers */,
 				E48BC6471B21EB7400A5E58F /* Views */,
+				E47B28EC1B25823700853EC2 /* CurrencyTextFieldDelegate.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -258,6 +265,7 @@
 		E48BC6461B21EB7400A5E58F /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E47B28EF1B25922000853EC2 /* BaseViewController+Extension.swift */,
 				E47B28DE1B2477B000853EC2 /* MenuViewController.swift */,
 			);
 			path = ViewControllers;
@@ -292,6 +300,7 @@
 			isa = PBXGroup;
 			children = (
 				E48BC65A1B21FC0700A5E58F /* TransactionsViewController.swift */,
+				E47B28F11B25EB8600853EC2 /* SaveTransactionViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -501,12 +510,15 @@
 				E48BC65B1B21FC0700A5E58F /* TransactionsViewController.swift in Sources */,
 				E48BC64E1B21EB7400A5E58F /* AppDelegate.swift in Sources */,
 				E48BC64F1B21EB7400A5E58F /* RelationStatus.swift in Sources */,
+				E47B28F21B25EB8600853EC2 /* SaveTransactionViewController.swift in Sources */,
 				E48BC6511B21EB7400A5E58F /* Transaction.swift in Sources */,
 				E47B28E31B24AF1A00853EC2 /* SavePurchaseViewController.swift in Sources */,
 				E47B28DF1B2477B000853EC2 /* MenuViewController.swift in Sources */,
 				E4DC329A1B2468AB00FA16C3 /* LoginViewController.swift in Sources */,
+				E47B28F01B25922000853EC2 /* BaseViewController+Extension.swift in Sources */,
 				E48BC6591B21EBA200A5E58F /* FriendsViewController.swift in Sources */,
 				E47B28E11B249FFC00853EC2 /* Friend.swift in Sources */,
+				E47B28ED1B25823700853EC2 /* CurrencyTextFieldDelegate.swift in Sources */,
 				E48BC64D1B21EB7400A5E58F /* Purchase.swift in Sources */,
 				E47B28E51B24D10300853EC2 /* SelectFriendsViewController.swift in Sources */,
 				E48BC6501B21EB7400A5E58F /* User.swift in Sources */,

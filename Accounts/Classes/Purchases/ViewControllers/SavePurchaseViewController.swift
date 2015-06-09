@@ -10,104 +10,156 @@
 import UIKit
 import ABToolKit
 
-class SavePurchaseViewController: BaseViewController {
+class SavePurchaseViewController: FormViewController {
 
-    var tableView = UITableView()
     var purchase = Purchase()
-    var data = []
-    var textFields = Array<UITextField>()
+    var allowEditing = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        allowEditing = purchase.user.UserID == kActiveUser.UserID || purchase.PurchaseID == 0
 
-        setupTableView(tableView, delegate: self, dataSource: self)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "save")
-    }
+        if allowEditing && purchase.PurchaseID == 0 {
 
-    override func setupTableView(tableView: UITableView, delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
-        super.setupTableView(tableView, delegate: delegate, dataSource: dataSource)
-        
-        tableView.registerClass(FormViewTableViewCell.self, forCellReuseIdentifier: "FormCell")
+            title = "New purchase"
+        }
+        else if allowEditing && purchase.PurchaseID > 0 {
+
+            title = "Edit purchase"
+        }
+        else {
+            
+            title = "Purchase"
+        }
     }
     
     func save() {
-        
-        
-        
+
         purchase.save()?.onContextSuccess({ () -> () in
-            
-            navigationController?.popViewControllerAnimated(true)
-            
+
+            self.dismissViewControllerFromCurrentContextAnimated(true)
+
         }).onContextFailure({ () -> () in
-            
+
             UIAlertView(title: "Error", message: "Purchase not saved!", delegate: nil, cancelButtonTitle: "OK").show()
         })
     }
     
-    func textFieldDidChange(textField: UITextField) {
+    func showOrHideSaveButton() {
         
-        if textField == textFields[0] {
+        if allowEditing && purchase.modelIsValid() {
             
-            purchase.Amount = (textField.text as NSString).doubleValue
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "save")
+            navigationItem.rightBarButtonItem?.enabled = true
+        }
+        else {
+            
+            navigationItem.rightBarButtonItem?.enabled = false
         }
     }
 }
 
-extension SavePurchaseViewController: UITableViewDelegate, UITableViewDataSource {
+extension SavePurchaseViewController: FormViewDelegate {
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func formViewElements() -> Array<Array<FormViewConfiguration>> {
         
-        return 1
+        var sections = Array<Array<FormViewConfiguration>>()
+        sections.append([
+            FormViewConfiguration.textField("Description", value: purchase.Description, identifier: "Description"),
+            FormViewConfiguration.textFieldCurrency("Amount", value: "£\(purchase.Amount.toStringWithDecimalPlaces(2))", identifier: "Amount"),
+            FormViewConfiguration.normalCell("Friends")
+            ])
+        
+        if purchase.PurchaseID > 0 && purchase.user.UserID == kActiveUser.UserID {
+         
+            sections.append([
+                FormViewConfiguration.button("Delete", buttonTextColor: UIColor.redColor(), identifier: "Delete")
+            ])
+        }
+        
+        return sections
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func formViewTextFieldEditingChanged(identifier: String, text: String) {
         
-        return 2
+        if identifier == "Description" {
+            
+            purchase.Description = text
+        }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func formViewTextFieldCurrencyEditingChanged(identifier: String, value: Double) {
         
-        if indexPath.row == 0{
+        if identifier == "Amount" {
             
-            let cell = tableView.dequeueReusableCellWithIdentifier("FormCell") as! FormViewTableViewCell
+            purchase.Amount = value
+        }
+    }
+    
+    func formViewButtonTapped(identifier: String) {
+        
+        
+    }
+    
+    func formViewDidSelectRow(identifier: String) {
+        
+        if identifier == "Friends" {
             
-            cell.label.text = "Amount"
-            cell.textField.text = "\(purchase.Amount)"
-            cell.textField.keyboardType = UIKeyboardType.DecimalPad
-            cell.textField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.AllEvents)
-            textFields.append(cell.textField)
+            let v = SelectFriendsViewController()
+            v.selectMultipleFriendsDelegate = self
+            v.setSelectedFriends(purchase.friends)
+            v.allowEditing = allowEditing
+            v.allowMultipleSelection = true
+            navigationController?.pushViewController(v, animated: true)
+        }
+    }
+    
+    func formViewDateChanged(identifier: String, date: NSDate) {
+        
+        if identifier == "Delete" {
+            
+            purchase.webApiDelete()?.onDownloadFinished({ () -> () in
+                
+                navigationController?.popViewControllerAnimated(true)
+            })
+        }
+    }
+    
+    func formViewManuallySetCell(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, identifier: String) -> UITableViewCell {
+        
+        if identifier == "Friends" {
+
+            let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
+            let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
+
+            cell.textLabel?.text = "Split between:"
+            cell.detailTextLabel?.text = "\(purchase.friends.count)"
+            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             
             return cell
         }
         
-        let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-        let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
-        
-        cell.textLabel?.text = "Split between:"
-        cell.detailTextLabel?.text = "\(purchase.friends.count)"
-        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-        
-        return cell
+        return UITableViewCell()
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func formViewElementIsEditable(identifier: String) -> Bool {
         
-        if indexPath.row == 1 {
-            
-            let v = SelectFriendsViewController()
-            v.delegate = self
-            v.setSelectedFriends(purchase.friends)
-            navigationController?.pushViewController(v, animated: true)
-        }
+        return allowEditing
+    }
+    
+    func formViewElementDidChange(identifier: String, value: AnyObject?) {
+        
+        showOrHideSaveButton()
     }
 }
 
 extension SavePurchaseViewController: SelectFriendsDelegate {
-    
+
     func didSelectFriends(friends: Array<User>) {
-        
+
         purchase.friends = friends
-        tableView.reloadData()
+        showOrHideSaveButton()
+        reloadForm()
     }
 }

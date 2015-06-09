@@ -38,7 +38,7 @@ class LoginViewController: FormViewController {
 
 extension LoginViewController: FormViewDelegate {
     
-    func formViewElements() -> Array<Array<FormViewConfiguration>> {
+    override func formViewElements() -> Array<Array<FormViewConfiguration>> {
         
         var sections = Array<Array<FormViewConfiguration>>()
         sections.append([
@@ -48,16 +48,16 @@ extension LoginViewController: FormViewDelegate {
         return sections
     }
     
-    func formViewElementChanged(identifier: String, value: AnyObject) {
+    func formViewTextFieldEditingChanged(identifier: String, text: String) {
         
         switch identifier {
             
         case "Username":
-        user.Username = value as! String
+        user.Username = text
         break
             
         case "Password":
-        user.Password = value as! String
+        user.Password = text
         break;
             
         default: break;

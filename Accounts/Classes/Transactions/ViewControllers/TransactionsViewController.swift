@@ -19,6 +19,7 @@ class TransactionsViewController: BaseViewController {
         super.viewDidLoad()
 
         setupTableView(tableView, delegate: self, dataSource: self)
+        title = "Transactions with \(friend.Username)"
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -63,22 +64,93 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
         let transaction = transactions[indexPath.row]
         
-        let amount = String(format: "%.2f", transaction.Amount)
-        cell.textLabel?.text = "£\(amount)"
-        cell.textLabel?.textColor = friend.DifferenceBetweenActiveUser > 0 ? UIColor(hex: "53B01E") : UIColor(hex: "B0321E")
+        var amount = transaction.Amount
         
         if transaction.purchase.PurchaseID > 0 {
-         
-            cell.detailTextLabel?.text = "Purchase by \(transaction.user.Username) (£\(transaction.purchase.Amount))"
+
+            let dateString:String = transaction.purchase.DatePurchased.toString(DateFormat.Date.rawValue)
+            cell.detailTextLabel?.text = transaction.purchase.Description
         }
         else {
             
-            cell.detailTextLabel?.text = "Transfer"
+            let dateString:String = transaction.TransactionDate.toString(DateFormat.Date.rawValue)
+            cell.detailTextLabel?.text = transaction.Description
         }
         
+        if transaction.user.UserID == kActiveUser.UserID {
+
+            //moneyIsOwedToActiveUser
+            amount = -amount
+            cell.textLabel?.textColor = UIColor(hex: "B0321E")
+        }
+        else {
+            
+            //activeUserOwes
+            cell.textLabel?.textColor = UIColor(hex: "53B01E")
+        }
         
-        //cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        cell.textLabel?.text = "£\(amount.toStringWithDecimalPlaces(2))"
+        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let transaction = transactions[indexPath.row]
+        
+        if transaction.purchase.PurchaseID > 0 {
+            
+            let v = SavePurchaseViewController()
+            v.purchase = transaction.purchase
+            navigationController?.pushViewController(v, animated: true)
+        }
+        
+        else {
+            
+            let v = SaveTransactionViewController()
+            v.transaction = transaction
+            navigationController?.pushViewController(v, animated: true)
+        }
+    }
+    
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        
+        let transaction = transactions[indexPath.row]
+        
+        if canDeleteTransactionAtIndexPath(indexPath) {
+         
+            return UITableViewCellEditingStyle.Delete
+        }
+        
+        return UITableViewCellEditingStyle.None
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let transaction = transactions[indexPath.row]
+        
+        if editingStyle == .Delete {
+            
+            if canDeleteTransactionAtIndexPath(indexPath) {
+                
+                transaction.webApiDelete()?.onDownloadFinished({ () -> () in
+                    
+                    self.refresh(nil)
+                })
+            }
+        }
+    }
+    
+    func canDeleteTransactionAtIndexPath(indexPath:NSIndexPath) -> Bool {
+        
+        let transaction = transactions[indexPath.row]
+        
+        if transaction.user.UserID == kActiveUser.UserID && transaction.purchase.PurchaseID == 0 {
+            
+            return true
+        }
+        
+        return false
     }
 }

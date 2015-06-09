@@ -18,8 +18,9 @@ class FriendsViewController: BaseViewController {
 
         setupTableView(tableView, delegate: self, dataSource: self)
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "openMenu")
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "openMenu")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+        title = "Friends"
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -48,7 +49,31 @@ class FriendsViewController: BaseViewController {
     
     func add() {
         
-        navigationController?.pushViewController(SavePurchaseViewController(), animated: true)
+        var alert = UIAlertController(title: "Add new", message: "", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        
+        let purchaseAction = UIAlertAction(title: "Purchase", style: UIAlertActionStyle.Default) { (action) -> Void in
+            
+            let v = SavePurchaseViewController()
+            v.addCloseButton()
+            self.presentViewController(UINavigationController(rootViewController: v), animated: true, completion: nil)
+        }
+        
+        let transactionAction = UIAlertAction(title: "Transaction", style: UIAlertActionStyle.Default) { (action) -> Void in
+            
+            let v = SaveTransactionViewController()
+            v.addCloseButton()
+            self.presentViewController(UINavigationController(rootViewController: v), animated: true, completion: nil)
+        }
+        
+        let closeAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive) { (action) -> Void in
+            
+            alert.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+        alert.addAction(purchaseAction)
+        alert.addAction(transactionAction)
+        alert.addAction(closeAction)
+        alert.show()
     }
 }
 
@@ -71,9 +96,11 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         let friend = kActiveUser.friends[indexPath.row]
         
         cell.textLabel?.text = friend.Username
-        let amount = friend.DifferenceBetweenActiveUser.toStringWithDecimalPlaces(2)
-        cell.detailTextLabel?.text = "£\(amount)"
-        cell.detailTextLabel?.textColor = friend.DifferenceBetweenActiveUser > 0 ? UIColor(hex: "53B01E") : UIColor(hex: "B0321E")
+        let amount = abs(friend.DifferenceBetweenActiveUser).toStringWithDecimalPlaces(2)
+        let readableText = friend.DifferenceBetweenActiveUser < 0 ? "You owe" : "Owes you"
+        
+        cell.detailTextLabel?.text = "\(readableText) £\(amount)"
+        cell.detailTextLabel?.textColor = friend.DifferenceBetweenActiveUser < 0 ? UIColor(hex: "B0321E") : UIColor(hex: "53B01E")
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell
