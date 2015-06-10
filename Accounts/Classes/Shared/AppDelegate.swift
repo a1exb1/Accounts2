@@ -12,6 +12,17 @@ import SwiftyUserDefaults
 
 var kActiveUser = User()
 
+let kViewBackgroundColor = UIColor(hex: "333333")
+let kTableViewSeperatorColor = UIColor(hex: "222222")
+
+let kTableViewCellBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+let kTableViewCellTextColor = UIColor.whiteColor()
+let kTableViewCellDetailTextColor = UIColor.lightGrayColor()
+
+let kNavigationBarBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.85)
+
+let kNavigationBarPositiveActionColor = UIColor.yellowColor()
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -22,6 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         Session.sharedSession().domain = "http://alex.bechmann.co.uk/iou"
         WebApiDefaults.sharedInstance().baseUrl = "\(Session.sharedSession().domain)/api"
+        JSONMappingDefaults.sharedInstance().webApiSendDateFormat = DateFormat.DateTime.rawValue
+        
+        setupAppearances()
         
         if let user = User.userSavedOnDevice() {
             
@@ -33,6 +47,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         return true
+    }
+    
+    func setupAppearances() {
+        
+        UITableView.appearance().backgroundColor = kViewBackgroundColor
+        UITableView.appearance().separatorColor = kTableViewSeperatorColor
+        
+        UITableViewCell.appearance().backgroundColor = kTableViewCellBackgroundColor
+        UITableViewCell.appearance().textLabel?.textColor = kTableViewCellTextColor
+        
+        UINavigationBar.appearance().tintColor = UIColor.redColor()
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(kNavigationBarBackgroundColor, size: CGSize(width: 10, height: 10)), forBarMetrics: UIBarMetrics.Default)
+        UINavigationBar.appearance().barStyle = UIBarStyle.Black
+        
+        FormViewTextFieldCell.appearance().textLabel?.textColor = UIColor.whiteColor()
     }
     
     private func setWindowToLogin() {

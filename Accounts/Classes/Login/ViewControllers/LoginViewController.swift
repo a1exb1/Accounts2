@@ -9,7 +9,7 @@
 import UIKit
 import ABToolKit
 
-class LoginViewController: FormViewController {
+class LoginViewController: ACFormViewController {
 
     var user = User()
     
@@ -19,6 +19,7 @@ class LoginViewController: FormViewController {
         super.viewDidLoad()
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .Plain, target: self, action: "login")
+        navigationItem.rightBarButtonItem?.tintColor = kNavigationBarPositiveActionColor
     }
     
     func login() {
@@ -62,5 +63,16 @@ extension LoginViewController: FormViewDelegate {
             
         default: break;
         }
+    }
+}
+
+extension LoginViewController: UITableViewDelegate {
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath)
+        setupTableViewCellAppearance(cell)
+        
+        return cell
     }
 }

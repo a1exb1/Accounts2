@@ -10,7 +10,7 @@
 import UIKit
 import ABToolKit
 
-class SaveTransactionViewController: FormViewController {
+class SaveTransactionViewController: ACFormViewController {
 
     var transaction = Transaction()
     var allowEditing = false
@@ -23,11 +23,12 @@ class SaveTransactionViewController: FormViewController {
             transaction.user = kActiveUser
         }
 
-        allowEditing = transaction.TransactionID == 0 || transaction.user.UserID == kActiveUser.UserID
+        allowEditing = true // transaction.TransactionID == 0 || transaction.user.UserID == kActiveUser.UserID
         
         if allowEditing && transaction.TransactionID == 0 {
             
             title = "New transaction"
+            transaction.user = kActiveUser
         }
         else if allowEditing && transaction.TransactionID > 0 {
             
@@ -53,17 +54,30 @@ class SaveTransactionViewController: FormViewController {
         })
     }
     
-    func showOrHideSaveButton() {
+    override func close (){
         
-        if allowEditing && transaction.modelIsValid() {
+        if transaction.TransactionID == 0 {
             
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "save")
-            navigationItem.rightBarButtonItem?.enabled = true
+            UIAlertController.showAlertControllerWithButtonTitle("Close", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Closing will not save this transaction") { (response) -> () in
+                
+                super.close()
+            }
         }
         else {
             
-            navigationItem.rightBarButtonItem?.enabled = false
+            super.close()
         }
+    }
+    
+    func showOrHideSaveButton() {
+        
+        if allowEditing {
+            
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "save")
+            navigationItem.rightBarButtonItem?.tintColor = kNavigationBarPositiveActionColor
+        }
+        
+        navigationItem.rightBarButtonItem?.enabled = allowEditing && transaction.modelIsValid()
     }
 }
 
@@ -74,11 +88,16 @@ extension SaveTransactionViewController: FormViewDelegate {
         var sections = Array<Array<FormViewConfiguration>>()
         sections.append([
             FormViewConfiguration.textField("Description", value: transaction.Description, identifier: "Description"),
-            FormViewConfiguration.textFieldCurrency("Amount", value: "£\(transaction.Amount.toStringWithDecimalPlaces(2))", identifier: "Amount"),
-            FormViewConfiguration.normalCell("Friend")
+            FormViewConfiguration.textFieldCurrency("Amount", value: Formatter.formatCurrencyAsString(transaction.Amount), identifier: "Amount")
         ])
         
-        if transaction.TransactionID > 0 && transaction.user.UserID == kActiveUser.UserID {
+        sections.append([
+            FormViewConfiguration.normalCell("User"),
+            FormViewConfiguration.normalCell("Friend"),
+            FormViewConfiguration.textField("Transaction date", value: transaction.TransactionDate.toString(DateFormat.DateTime.rawValue), identifier: "TransactionDate")
+        ])
+        
+        if transaction.TransactionID > 0 {
             
             sections.append([
                 FormViewConfiguration.button("Delete", buttonTextColor: UIColor.redColor(), identifier: "Delete")
@@ -95,8 +114,20 @@ extension SaveTransactionViewController: FormViewDelegate {
             let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
             let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
             
-            cell.textLabel?.text = "Transfer to:"
+            cell.textLabel?.text = "Transfer to"
             cell.detailTextLabel?.text = "\(transaction.friend.Username)"
+            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+            
+            return cell
+        }
+        
+        if identifier == "User" {
+            
+            let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
+            let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
+            
+            cell.textLabel?.text = "Transfer from"
+            cell.detailTextLabel?.text = "\(transaction.user.Username)"
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             
             return cell
@@ -125,9 +156,15 @@ extension SaveTransactionViewController: FormViewDelegate {
         
         if identifier == "Delete" {
 
-            transaction.webApiDelete()?.onDownloadFinished({ () -> () in
-
-                navigationController?.popViewControllerAnimated(true)
+            UIAlertController.showAlertControllerWithButtonTitle("Delete?", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Delete transaction for \(Formatter.formatCurrencyAsString(transaction.Amount))?", completion: { (response) -> () in
+                
+                if response == AlertResponse.Confirm {
+                    
+                    self.transaction.webApiDelete()?.onDownloadFinished({ () -> () in
+                        
+                        navigationController?.popViewControllerAnimated(true)
+                    })
+                }
             })
         }
     }
@@ -136,15 +173,27 @@ extension SaveTransactionViewController: FormViewDelegate {
         
         if identifier == "Friend" {
 
-            let v = SelectFriendsViewController()
-            v.selectFriendDelegate = self
-            v.setSelectedFriend(transaction.friend)
-            v.allowEditing = allowEditing
+            let usersToChooseFrom = User.userListExcludingID(transaction.user.UserID)
+            
+            let v = SelectUsersViewController(identifier: identifier, user: transaction.friend, selectUserDelegate: self, allowEditing: allowEditing, usersToChooseFrom: usersToChooseFrom)
+            navigationController?.pushViewController(v, animated: true)
+        }
+        
+        if identifier == "User" {
+            
+            let usersToChooseFrom = User.userListExcludingID(nil)
+            
+            let v = SelectUsersViewController(identifier: identifier, user: transaction.user, selectUserDelegate: self, allowEditing: allowEditing, usersToChooseFrom: usersToChooseFrom)
             navigationController?.pushViewController(v, animated: true)
         }
     }
     
     override func formViewElementIsEditable(identifier: String) -> Bool {
+        
+        if identifier == "TransactionDate" {
+            
+            return false
+        }
         
         return allowEditing
     }
@@ -155,11 +204,31 @@ extension SaveTransactionViewController: FormViewDelegate {
     }
 }
 
-extension SaveTransactionViewController: SelectFriendDelegate {
+extension SaveTransactionViewController: UITableViewDelegate {
     
-    func didSelectFriend(friend: User) {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        transaction.friend = friend
+        let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath)
+        setupTableViewCellAppearance(cell)
+        
+        return cell
+    }
+}
+
+extension SaveTransactionViewController: SelectUserDelegate {
+    
+    func didSelectUser(user: User, identifier: String) {
+        
+        if identifier == "Friend" {
+            
+            transaction.friend = user
+        }
+        if identifier == "User" {
+        
+            transaction.user = user
+            transaction.friend = User()
+        }
+        
         showOrHideSaveButton()
         reloadForm()
     }

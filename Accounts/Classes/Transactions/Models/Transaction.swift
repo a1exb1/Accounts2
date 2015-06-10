@@ -20,6 +20,7 @@ class Transaction: JSONObject {
     var Description = ""
     var purchase = Purchase()
     var TransactionDate:NSDate = NSDate()
+    var DateEntered: NSDate = NSDate()
     
     override func registerClassesForJsonMapping() {
         
@@ -27,6 +28,7 @@ class Transaction: JSONObject {
         //registerClass(User.self, propertyKey: "friend", jsonKey: "User1")
         //registerClass(Purchase.self, propertyKey: "purchase", jsonKey: "Purchase")
         registerDate("TransactionDate")
+        registerDate("DateEntered")
     }
     
     override func setExtraPropertiesFromJSON(json: JSON) {
@@ -34,8 +36,6 @@ class Transaction: JSONObject {
         user = User.createObjectFromJson(json["User"])
         friend = User.createObjectFromJson(json["User1"])
         purchase = Purchase.createObjectFromJson(json["Purchase"])
-        
-        //println(json["Purchase"])
     }
     
     override func webApiRestObjectID() -> Int? {
@@ -55,6 +55,11 @@ class Transaction: JSONObject {
         if friend.UserID == 0 {
             
             errors.append("This transaction isnt going to anyone!")
+        }
+        
+        if Amount == 0 {
+            
+            errors.append("The amount is 0")
         }
         
         if Description == "" {

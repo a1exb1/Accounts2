@@ -20,16 +20,34 @@ class Purchase: JSONObject {
     var user = User()
     var billSplitDictionary = Dictionary<User, Double>()
     var DatePurchased:NSDate = NSDate()
+    var DateEntered: NSDate = NSDate()
+    //var transactions = Array<Transaction>()
     
     override func registerClassesForJsonMapping() {
         
         registerDate("DatePurchased")
-        
+        registerDate("DateEntered")
+        registerClass(Transaction.self, propertyKey: "transactions", jsonKey: "Transactions")
+        //registerClass(User.self, propertyKey: "user", jsonKey: "User")
+        //registerClass(User.self, propertyKey: "friends", jsonKey: "RelationUsers")
     }
     
     override func setExtraPropertiesFromJSON(json: JSON) {
         
         user.UserID = json["UserID"].intValue
+        
+        friends = User.convertJsonToMultipleObjects(User.self, json: json["RelationUsers"])
+        
+        for friend in friends {
+            
+            if friend.UserID == user.UserID {
+                
+                let index = find(friends, friend)!
+                friends.removeAtIndex(index)
+            }
+        }
+        
+        user = User.createObjectFromJson(json["User"])
     }
     
     func save() -> JsonRequest? {
@@ -51,8 +69,6 @@ class Purchase: JSONObject {
             urlString = Purchase.webApiUrls().insertUrl()!
         }
         
-        
-        user = kActiveUser
         splitTheBill()
         
         var c = 0
@@ -63,8 +79,11 @@ class Purchase: JSONObject {
             c++
         }
     
-        var params = convertToDictionary(["Amount"], includeNestedProperties: false)
+        var params = convertToDictionary(nil, includeNestedProperties: false)
         params["UserID"] = user.UserID
+        
+        println(params)
+        
         
         return JsonRequest.create(urlString, parameters: params, method: httpMethod).onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
 

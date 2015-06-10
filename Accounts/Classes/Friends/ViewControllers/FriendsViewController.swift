@@ -9,7 +9,7 @@
 import UIKit
 import ABToolKit
 
-class FriendsViewController: BaseViewController {
+class FriendsViewController: ACBaseViewController {
 
     var tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Plain)
     
@@ -94,6 +94,8 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
         let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
         let friend = kActiveUser.friends[indexPath.row]
+        
+        setupTableViewCellAppearance(cell)
         
         cell.textLabel?.text = friend.Username
         let amount = abs(friend.DifferenceBetweenActiveUser).toStringWithDecimalPlaces(2)

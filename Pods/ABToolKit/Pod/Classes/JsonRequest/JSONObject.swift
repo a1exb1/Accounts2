@@ -395,7 +395,7 @@ public class JSONObject: NSObject, WebApiManagerDelegate, JsonMappingDelegate {
         
         if let url = self.dynamicType.webApiUrls().insertUrl() {
         
-            return JsonRequest.create(url, parameters: self.convertToDictionary(nil, includeNestedProperties: false), method: .POST)
+            return JsonRequest.create(url, parameters: self.convertToDictionary(keysToInclude, includeNestedProperties: false), method: .POST)
         }
         else{
             

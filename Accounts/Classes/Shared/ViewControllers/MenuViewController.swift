@@ -46,6 +46,8 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.textLabel?.text = "Logout"
         
+        setupTableViewCellAppearance(cell)
+        
         return cell
     }
     

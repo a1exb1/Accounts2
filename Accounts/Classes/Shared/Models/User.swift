@@ -86,7 +86,7 @@ class User: JSONObject {
     
     func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
         
-        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate%20desc,TransactionID" // not doing it for purchases
+        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate%20desc" // not doing it for purchases
         
         return JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
             
@@ -232,5 +232,34 @@ class User: JSONObject {
     override func webApiRestObjectID() -> Int? {
         
         return UserID
+    }
+    
+    class func userListExcludingID(id: Int?) -> Array<User> {
+        
+        var usersToChooseFrom = [User]()
+        var allUsersInContext = [User]()
+        
+        for friend in kActiveUser.friends {
+            
+            allUsersInContext.append(friend)
+        }
+        allUsersInContext.append(kActiveUser)
+        
+        for user in allUsersInContext {
+            
+            if let excludeID = id {
+                
+                if user.UserID != excludeID{
+                    
+                    usersToChooseFrom.append(user)
+                }
+            }
+            else {
+                
+                usersToChooseFrom.append(user)
+            }
+        }
+        
+        return usersToChooseFrom
     }
 }

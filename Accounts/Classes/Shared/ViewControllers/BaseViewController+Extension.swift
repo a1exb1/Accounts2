@@ -2,7 +2,7 @@
 //  BaseViewController+Extension.swift
 //  Accounts
 //
-//  Created by Alex Bechmann on 08/06/2015.
+//  Created by Alex Bechmann on 10/06/2015.
 //  Copyright (c) 2015 Alex Bechmann. All rights reserved.
 //
 
@@ -10,6 +10,11 @@ import UIKit
 import ABToolKit
 
 extension BaseViewController {
+    
+    func setupView() {
+        
+        view.backgroundColor = kViewBackgroundColor
+    }
     
     func addCloseButton() {
         
@@ -19,5 +24,17 @@ extension BaseViewController {
     func close() {
         
         dismissViewControllerFromCurrentContextAnimated(true)
+    }
+    
+    func setupTableViewCellAppearance(originalCell: UITableViewCell) {
+        
+        if let cell = originalCell as? FormViewTextFieldCell {
+            
+            cell.label.textColor = kTableViewCellTextColor
+            cell.textField.textColor = kTableViewCellDetailTextColor
+        }
+        
+        originalCell.textLabel?.textColor = kTableViewCellTextColor
+        originalCell.detailTextLabel?.textColor = kTableViewCellDetailTextColor
     }
 }
