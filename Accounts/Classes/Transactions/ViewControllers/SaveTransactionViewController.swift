@@ -88,7 +88,7 @@ extension SaveTransactionViewController: FormViewDelegate {
         var sections = Array<Array<FormViewConfiguration>>()
         sections.append([
             FormViewConfiguration.textField("Description", value: transaction.Description, identifier: "Description"),
-            FormViewConfiguration.textFieldCurrency("Amount", value: Formatter.formatCurrencyAsString(transaction.Amount), identifier: "Amount")
+            FormViewConfiguration.textFieldCurrency("Amount", value: Formatter.formatCurrencyAsString(transaction.localeAmount), identifier: "Amount")
         ])
         
         sections.append([
@@ -148,7 +148,7 @@ extension SaveTransactionViewController: FormViewDelegate {
         
         if identifier == "Amount" {
 
-            transaction.Amount = value
+            transaction.localeAmount = value
         }
     }
     
@@ -156,7 +156,7 @@ extension SaveTransactionViewController: FormViewDelegate {
         
         if identifier == "Delete" {
 
-            UIAlertController.showAlertControllerWithButtonTitle("Delete?", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Delete transaction for \(Formatter.formatCurrencyAsString(transaction.Amount))?", completion: { (response) -> () in
+            UIAlertController.showAlertControllerWithButtonTitle("Delete?", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Delete transaction for \(Formatter.formatCurrencyAsString(transaction.localeAmount))?", completion: { (response) -> () in
                 
                 if response == AlertResponse.Confirm {
                     

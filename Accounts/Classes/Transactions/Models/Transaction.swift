@@ -10,6 +10,7 @@ import UIKit
 import ABToolKit
 import SwiftyJSON
 import Alamofire
+import SwiftyUserDefaults
 
 class Transaction: JSONObject {
    
@@ -17,6 +18,38 @@ class Transaction: JSONObject {
     var user = User()
     var friend = User()
     var Amount: Double = 0
+    
+    var localeAmount: Double {
+        
+        get {
+            
+            let currency = Defaults[kCurrencySettingKey].string
+            
+            if currency == "DKK" {
+                
+                return self.Amount * 10
+            }
+            else {
+                
+                return self.Amount
+            }
+        }
+        
+        set(newValue) {
+            
+            let currency = Defaults[kCurrencySettingKey].string
+            
+            if currency == "DKK" {
+                
+                self.Amount = newValue / 10
+            }
+            else {
+                
+                self.Amount = newValue
+            }
+        }
+    }
+    
     var Description = ""
     var purchase = Purchase()
     var TransactionDate:NSDate = NSDate()

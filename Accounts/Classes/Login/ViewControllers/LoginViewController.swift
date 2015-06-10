@@ -70,8 +70,14 @@ extension LoginViewController: UITableViewDelegate {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath)
+        let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FormViewTextFieldCell
         setupTableViewCellAppearance(cell)
+        
+        if indexPath.row == 1 {
+            
+            cell.textField.autocapitalizationType = UITextAutocapitalizationType.None
+            cell.textField.secureTextEntry = true
+        }
         
         return cell
     }

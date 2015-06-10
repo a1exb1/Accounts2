@@ -10,12 +10,45 @@ import UIKit
 import ABToolKit
 import Alamofire
 import SwiftyJSON
+import SwiftyUserDefaults
 
 class Purchase: JSONObject {
    
     var PurchaseID: Int = 0
     var friends: [User] = []
     var Amount: Double = 0
+    
+    var localeAmount: Double {
+        
+        get {
+            
+            let currency = Defaults[kCurrencySettingKey].string
+            
+            if currency == "DKK" {
+                
+                return self.Amount * 10
+            }
+            else {
+                
+                return self.Amount
+            }
+        }
+        
+        set(newValue) {
+            
+            let currency = Defaults[kCurrencySettingKey].string
+            
+            if currency == "DKK" {
+                
+                self.Amount = newValue / 10
+            }
+            else {
+                
+                self.Amount = newValue
+            }
+        }
+    }
+    
     var Description = ""
     var user = User()
     var billSplitDictionary = Dictionary<User, Double>()

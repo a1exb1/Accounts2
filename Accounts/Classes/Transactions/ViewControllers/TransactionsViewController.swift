@@ -99,14 +99,14 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         
         setupTableViewCellAppearance(cell)
         
-        var amount = transaction.Amount
+        var amount = transaction.localeAmount
         
         if transaction.purchase.PurchaseID > 0 {
 
             let dateString:String = transaction.purchase.DatePurchased.toString(DateFormat.Date.rawValue)
             cell.textLabel?.text = "Purchase: \(transaction.purchase.Description)"
             
-            amount = transaction.purchase.Amount
+            amount = transaction.purchase.localeAmount
         }
         else {
             
@@ -126,7 +126,7 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
             }
         }
         
-        cell.detailTextLabel?.text = "£\(amount.toStringWithDecimalPlaces(2))"
+        cell.detailTextLabel?.text = Formatter.formatCurrencyAsString(amount)
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell

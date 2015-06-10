@@ -93,6 +93,13 @@ extension FormViewTextFieldCell: UITextFieldDelegate {
             newText = formatter.stringFromNumber(numberFromField)
             
             textField.text = String(newText)
+            
+            if config.currencyLocale == NSLocale(localeIdentifier: "da_DK") {
+                
+                textField.text = textField.text.replaceString("kr", withString: "").removeLastCharacter()
+                textField.text = "kr, \(textField.text)"
+            }
+            
             formViewDelegate?.formViewTextFieldCurrencyEditingChanged?(config.identifier, value: numberFromField)
             formViewDelegate?.formViewElementDidChange?(config.identifier, value: numberFromField)
             

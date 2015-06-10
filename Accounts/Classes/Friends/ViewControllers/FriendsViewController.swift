@@ -98,11 +98,11 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         setupTableViewCellAppearance(cell)
         
         cell.textLabel?.text = friend.Username
-        let amount = abs(friend.DifferenceBetweenActiveUser).toStringWithDecimalPlaces(2)
-        let readableText = friend.DifferenceBetweenActiveUser < 0 ? "You owe" : "Owes you"
+        let amount = abs(friend.localeDifferenceBetweenActiveUser)
+        let readableText = friend.localeDifferenceBetweenActiveUser < 0 ? "You owe" : "Owes you"
         
-        cell.detailTextLabel?.text = "\(readableText) £\(amount)"
-        cell.detailTextLabel?.textColor = friend.DifferenceBetweenActiveUser < 0 ? UIColor(hex: "B0321E") : UIColor(hex: "53B01E")
+        cell.detailTextLabel?.text = "\(readableText) \(Formatter.formatCurrencyAsString(amount))"
+        cell.detailTextLabel?.textColor = friend.localeDifferenceBetweenActiveUser < 0 ? UIColor(hex: "B0321E") : UIColor(hex: "53B01E")
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell

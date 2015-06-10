@@ -20,8 +20,10 @@ let kTableViewCellTextColor = UIColor.whiteColor()
 let kTableViewCellDetailTextColor = UIColor.lightGrayColor()
 
 let kNavigationBarBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.85)
-
 let kNavigationBarPositiveActionColor = UIColor.yellowColor()
+let kNavigationBarTintColor = UIColor.greenColor()
+
+let kCurrencySettingKey = "Currency"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -46,6 +48,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             setWindowToLogin()
         }
         
+        if !Defaults.hasKey(kCurrencySettingKey) {
+            
+            Defaults[kCurrencySettingKey] = "GBP"
+        }
+        
         return true
     }
     
@@ -57,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITableViewCell.appearance().backgroundColor = kTableViewCellBackgroundColor
         UITableViewCell.appearance().textLabel?.textColor = kTableViewCellTextColor
         
-        UINavigationBar.appearance().tintColor = UIColor.redColor()
+        UINavigationBar.appearance().tintColor = kNavigationBarTintColor
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(kNavigationBarBackgroundColor, size: CGSize(width: 10, height: 10)), forBarMetrics: UIBarMetrics.Default)
         UINavigationBar.appearance().barStyle = UIBarStyle.Black

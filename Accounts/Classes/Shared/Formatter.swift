@@ -7,10 +7,18 @@
 //
 
 import UIKit
+import SwiftyUserDefaults
 
 class Formatter: NSObject {
    
     class func formatCurrencyAsString(value: Double) -> String {
+        
+        let currency = Defaults[kCurrencySettingKey].string
+        
+        if currency == "DKK" {
+            
+            return "kr, \(value.toStringWithDecimalPlaces(2))"
+        }
         
         return "£\(value.toStringWithDecimalPlaces(2))"
     }

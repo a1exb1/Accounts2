@@ -9,6 +9,7 @@
 
 import UIKit
 import ABToolKit
+import SwiftyUserDefaults
 
 class SavePurchaseViewController: ACFormViewController {
 
@@ -80,10 +81,13 @@ extension SavePurchaseViewController: FormViewDelegate {
     
     override func formViewElements() -> Array<Array<FormViewConfiguration>> {
         
+        let currency = Defaults[kCurrencySettingKey].string
+        let locale: NSLocale? = currency == "DKK" ? NSLocale(localeIdentifier: "da_DK") : nil
+        
         var sections = Array<Array<FormViewConfiguration>>()
         sections.append([
             FormViewConfiguration.textField("Description", value: purchase.Description, identifier: "Description"),
-            FormViewConfiguration.textFieldCurrency("Amount", value: Formatter.formatCurrencyAsString(purchase.Amount), identifier: "Amount"),
+            FormViewConfiguration.textFieldCurrency("Amount", value: Formatter.formatCurrencyAsString(purchase.localeAmount), identifier: "Amount", locale: locale)
         ])
         sections.append([
             FormViewConfiguration.normalCell("User"),
@@ -113,7 +117,7 @@ extension SavePurchaseViewController: FormViewDelegate {
         
         if identifier == "Amount" {
             
-            purchase.Amount = value
+            purchase.localeAmount = value
         }
     }
     
@@ -121,7 +125,7 @@ extension SavePurchaseViewController: FormViewDelegate {
         
         if identifier == "Delete" {
             
-            UIAlertController.showAlertControllerWithButtonTitle("Delete?", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Delete purchase: \(purchase.Description) for \(Formatter.formatCurrencyAsString(purchase.Amount))?", completion: { (response) -> () in
+            UIAlertController.showAlertControllerWithButtonTitle("Delete?", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Delete purchase: \(purchase.Description) for \(Formatter.formatCurrencyAsString(purchase.localeAmount))?", completion: { (response) -> () in
                 
                 if response == AlertResponse.Confirm {
                     

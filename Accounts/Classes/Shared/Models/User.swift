@@ -9,6 +9,7 @@
 import UIKit
 import ABToolKit
 import SwiftyJSON
+import SwiftyUserDefaults
 
 private let kActiveUserDefaultsKey = "activeUser"
 
@@ -22,6 +23,37 @@ class User: JSONObject {
     //friend
     //var relationStatusToActiveUser: RelationStatus = RelationStatus.Undefined
     var DifferenceBetweenActiveUser: Double = 0
+    
+    var localeDifferenceBetweenActiveUser: Double {
+        
+        get {
+            
+            let currency = Defaults[kCurrencySettingKey].string
+            
+            if currency == "DKK" {
+                
+                return self.DifferenceBetweenActiveUser * 10
+            }
+            else {
+                
+                return self.DifferenceBetweenActiveUser
+            }
+        }
+        
+        set(newValue) {
+            
+            let currency = Defaults[kCurrencySettingKey].string
+            
+            if currency == "DKK" {
+                
+                self.DifferenceBetweenActiveUser = newValue / 10
+            }
+            else {
+                
+                self.DifferenceBetweenActiveUser = newValue
+            }
+        }
+    }
     
     //var transactions: Array<Transaction> = []
     

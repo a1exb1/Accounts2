@@ -32,7 +32,7 @@ public class FormViewButtonCell: FormViewCell {
             
         }
         
-        button.titleLabel?.textColor = config.buttonTextColor
+        button.setTitleColor(config.buttonTextColor, forState: UIControlState.Normal)
     }
     
     func buttonTapped() {

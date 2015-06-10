@@ -8,6 +8,11 @@
 
 import UIKit
 import ABToolKit
+import SwiftyUserDefaults
+
+private let kCurrencyIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+private let kLogoutIndexPath = NSIndexPath(forRow: 0, inSection: 1)
+
 
 class MenuViewController: BaseViewController {
 
@@ -20,19 +25,13 @@ class MenuViewController: BaseViewController {
         
         addCloseButton()
     }
-
-    override func setupTableView(tableView: UITableView, delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
-        super.setupTableView(tableView, delegate: delegate, dataSource: dataSource)
-        
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-    }
 }
 
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         
-        return 1
+        return 2
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -42,20 +41,39 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! UITableViewCell
-        
-        cell.textLabel?.text = "Logout"
+        let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
+        let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
         
         setupTableViewCellAppearance(cell)
+        
+        if indexPath == kCurrencyIndexPath {
+            
+            cell.textLabel?.text = "Currency"
+            cell.detailTextLabel?.text = Defaults[kCurrencySettingKey].string
+            cell.accessoryType = .DisclosureIndicator
+        }
+        
+        else if indexPath == kLogoutIndexPath {
+            
+            cell.textLabel?.text = "Logout (Logged in as \(kActiveUser.Username))"
+        }
         
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        kActiveUser.logout()
-        
-        let v = UIStoryboard.initialViewControllerFromStoryboardNamed("Login")
-        presentViewController(v, animated: true, completion: nil)
+        if indexPath == kCurrencyIndexPath {
+            
+            let v = SelectCurrencyViewController()
+            navigationController?.pushViewController(v, animated: true)
+        }
+        if indexPath == kLogoutIndexPath {
+            
+            kActiveUser.logout()
+            
+            let v = UIStoryboard.initialViewControllerFromStoryboardNamed("Login")
+            presentViewController(v, animated: true, completion: nil)
+        }
     }
 }
