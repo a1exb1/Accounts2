@@ -106,6 +106,18 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
             let dateString:String = transaction.purchase.DatePurchased.toString(DateFormat.Date.rawValue)
             cell.textLabel?.text = "Purchase: \(transaction.purchase.Description)"
             
+            if transaction.purchase.user.UserID == kActiveUser.UserID {
+                
+                //moneyIsOwedToActiveUser
+                amount = -amount
+                cell.detailTextLabel?.textColor = UIColor(hex: "B0321E")
+            }
+            else {
+                
+                //activeUserOwes
+                cell.detailTextLabel?.textColor = UIColor(hex: "53B01E")
+            }
+            
             amount = transaction.purchase.localeAmount
         }
         else {

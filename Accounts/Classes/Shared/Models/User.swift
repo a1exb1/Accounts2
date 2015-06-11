@@ -9,7 +9,6 @@
 import UIKit
 import ABToolKit
 import SwiftyJSON
-import SwiftyUserDefaults
 
 private let kActiveUserDefaultsKey = "activeUser"
 
@@ -28,9 +27,9 @@ class User: JSONObject {
         
         get {
             
-            let currency = Defaults[kCurrencySettingKey].string
+            let currencyIdentifier = Settings.getCurrencyLocaleWithIdentifier().identifier
             
-            if currency == "DKK" {
+            if currencyIdentifier == "DKK" {
                 
                 return self.DifferenceBetweenActiveUser * 10
             }
@@ -42,9 +41,9 @@ class User: JSONObject {
         
         set(newValue) {
             
-            let currency = Defaults[kCurrencySettingKey].string
+            let currencyIdentifier = Settings.getCurrencyLocaleWithIdentifier().identifier
             
-            if currency == "DKK" {
+            if currencyIdentifier == "DKK" {
                 
                 self.DifferenceBetweenActiveUser = newValue / 10
             }

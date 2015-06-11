@@ -13,9 +13,9 @@ class Formatter: NSObject {
    
     class func formatCurrencyAsString(value: Double) -> String {
         
-        let currency = Defaults[kCurrencySettingKey].string
+        let currencyIdentifier = Settings.getCurrencyLocaleWithIdentifier().identifier
         
-        if currency == "DKK" {
+        if currencyIdentifier == "DKK" {
             
             return "kr, \(value.toStringWithDecimalPlaces(2))"
         }

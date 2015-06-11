@@ -10,7 +10,6 @@ import UIKit
 import ABToolKit
 import SwiftyJSON
 import Alamofire
-import SwiftyUserDefaults
 
 class Transaction: JSONObject {
    
@@ -23,9 +22,9 @@ class Transaction: JSONObject {
         
         get {
             
-            let currency = Defaults[kCurrencySettingKey].string
+            let currencyIdentifier = Settings.getCurrencyLocaleWithIdentifier().identifier
             
-            if currency == "DKK" {
+            if currencyIdentifier == "DKK" {
                 
                 return self.Amount * 10
             }
@@ -37,9 +36,9 @@ class Transaction: JSONObject {
         
         set(newValue) {
             
-            let currency = Defaults[kCurrencySettingKey].string
+            let currencyIdentifier = Settings.getCurrencyLocaleWithIdentifier().identifier
             
-            if currency == "DKK" {
+            if currencyIdentifier == "DKK" {
                 
                 self.Amount = newValue / 10
             }

@@ -8,7 +8,6 @@
 
 import UIKit
 import ABToolKit
-import SwiftyUserDefaults
 
 class SelectCurrencyViewController: ACBaseViewController {
 
@@ -49,7 +48,7 @@ extension SelectCurrencyViewController: UITableViewDelegate, UITableViewDataSour
         
         cell.textLabel?.text = currency
         
-        if currency == Defaults[kCurrencySettingKey].string {
+        if currency == Settings.getCurrencyLocaleWithIdentifier().identifier {
             
             cell.accessoryType = .Checkmark
         }
@@ -65,7 +64,7 @@ extension SelectCurrencyViewController: UITableViewDelegate, UITableViewDataSour
         
         let currency = data[indexPath.row]
         
-        Defaults[kCurrencySettingKey] = currency
+        Settings.setLocaleByIdentifier(currency)
         
         tableView.reloadData()
     }

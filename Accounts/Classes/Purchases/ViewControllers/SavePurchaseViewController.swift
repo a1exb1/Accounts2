@@ -9,7 +9,6 @@
 
 import UIKit
 import ABToolKit
-import SwiftyUserDefaults
 
 class SavePurchaseViewController: ACFormViewController {
 
@@ -81,8 +80,7 @@ extension SavePurchaseViewController: FormViewDelegate {
     
     override func formViewElements() -> Array<Array<FormViewConfiguration>> {
         
-        let currency = Defaults[kCurrencySettingKey].string
-        let locale: NSLocale? = currency == "DKK" ? NSLocale(localeIdentifier: "da_DK") : nil
+        let locale: NSLocale? = Settings.getCurrencyLocaleWithIdentifier().locale
         
         var sections = Array<Array<FormViewConfiguration>>()
         sections.append([

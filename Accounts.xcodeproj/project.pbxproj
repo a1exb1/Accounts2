@@ -13,6 +13,7 @@
 		E46CCFA91B285A7C000ACFE2 /* ACBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46CCFA81B285A7C000ACFE2 /* ACBaseViewController.swift */; };
 		E46CCFAB1B285BFA000ACFE2 /* BaseViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46CCFAA1B285BFA000ACFE2 /* BaseViewController+Extension.swift */; };
 		E46F1BDD1B28A8C0000571DF /* SelectCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46F1BDC1B28A8C0000571DF /* SelectCurrencyViewController.swift */; };
+		E46F1BE01B2986D8000571DF /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46F1BDF1B2986D8000571DF /* Settings.swift */; };
 		E47B28DF1B2477B000853EC2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28DE1B2477B000853EC2 /* MenuViewController.swift */; };
 		E47B28E11B249FFC00853EC2 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28E01B249FFC00853EC2 /* Friend.swift */; };
 		E47B28E31B24AF1A00853EC2 /* SavePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28E21B24AF1A00853EC2 /* SavePurchaseViewController.swift */; };
@@ -52,6 +53,7 @@
 		E46CCFA81B285A7C000ACFE2 /* ACBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACBaseViewController.swift; sourceTree = "<group>"; };
 		E46CCFAA1B285BFA000ACFE2 /* BaseViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BaseViewController+Extension.swift"; sourceTree = "<group>"; };
 		E46F1BDC1B28A8C0000571DF /* SelectCurrencyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewController.swift; sourceTree = "<group>"; };
+		E46F1BDF1B2986D8000571DF /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		E47B28DE1B2477B000853EC2 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		E47B28E01B249FFC00853EC2 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		E47B28E21B24AF1A00853EC2 /* SavePurchaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavePurchaseViewController.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 		E46F1BDA1B28A8AF000571DF /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				E46F1BDE1B2986CC000571DF /* Models */,
 				E46F1BDB1B28A8AF000571DF /* ViewControllers */,
 			);
 			path = Settings;
@@ -126,6 +129,14 @@
 				E46F1BDC1B28A8C0000571DF /* SelectCurrencyViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		E46F1BDE1B2986CC000571DF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E46F1BDF1B2986D8000571DF /* Settings.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		E48BC6091B21EAB500A5E58F = {
@@ -550,6 +561,7 @@
 				E46F1BDD1B28A8C0000571DF /* SelectCurrencyViewController.swift in Sources */,
 				E46CCFA51B284F53000ACFE2 /* Formatter.swift in Sources */,
 				E48BC6501B21EB7400A5E58F /* User.swift in Sources */,
+				E46F1BE01B2986D8000571DF /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

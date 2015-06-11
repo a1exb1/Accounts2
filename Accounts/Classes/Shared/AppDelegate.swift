@@ -12,8 +12,8 @@ import SwiftyUserDefaults
 
 var kActiveUser = User()
 
-let kViewBackgroundColor = UIColor(hex: "333333")
-let kTableViewSeperatorColor = UIColor(hex: "222222")
+let kViewBackgroundColor = UIColor(hex: "222222")
+let kTableViewSeperatorColor = kTableViewCellBackgroundColor
 
 let kTableViewCellBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
 let kTableViewCellTextColor = UIColor.whiteColor()

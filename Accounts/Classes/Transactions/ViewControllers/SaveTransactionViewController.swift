@@ -9,6 +9,7 @@
 
 import UIKit
 import ABToolKit
+import SwiftyUserDefaults
 
 class SaveTransactionViewController: ACFormViewController {
 
@@ -85,10 +86,12 @@ extension SaveTransactionViewController: FormViewDelegate {
     
     override func formViewElements() -> Array<Array<FormViewConfiguration>> {
         
+        let locale = Settings.getCurrencyLocaleWithIdentifier().locale
+        
         var sections = Array<Array<FormViewConfiguration>>()
         sections.append([
             FormViewConfiguration.textField("Description", value: transaction.Description, identifier: "Description"),
-            FormViewConfiguration.textFieldCurrency("Amount", value: Formatter.formatCurrencyAsString(transaction.localeAmount), identifier: "Amount")
+            FormViewConfiguration.textFieldCurrency("Amount", value: Formatter.formatCurrencyAsString(transaction.localeAmount), identifier: "Amount", locale: locale)
         ])
         
         sections.append([
