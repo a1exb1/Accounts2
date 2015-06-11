@@ -1,13 +1,28 @@
 PODS:
-  - DCKeyValueObjectMapping (1.4)
-  - NSObject-ObjectMap (2.3.1)
+  - ABToolKit (0.1.0):
+    - Alamofire (~> 1.2.1)
+    - SwiftyJSON (~> 2.2.0)
+    - SwiftyUserDefaults
+  - Alamofire (1.2.2)
+  - SwiftyJSON (2.2.0)
+  - SwiftyUserDefaults (1.1.0)
 
 DEPENDENCIES:
-  - DCKeyValueObjectMapping
-  - NSObject-ObjectMap (~> 2.0)
+  - ABToolKit (from `/Users/alexbechmann/Documents/iOS/cocoapods/ABToolKit`)
+
+EXTERNAL SOURCES:
+  ABToolKit:
+    :git: "/Users/alexbechmann/Documents/iOS/cocoapods/ABToolKit"
+
+CHECKOUT OPTIONS:
+  ABToolKit:
+    :commit: 5eab233d63b3da35d5ef6a68efd9a8f2a3f066ab
+    :git: "/Users/alexbechmann/Documents/iOS/cocoapods/ABToolKit"
 
 SPEC CHECKSUMS:
-  DCKeyValueObjectMapping: 04cd5a338c03ce1c02488926cab6e1d1f704a093
-  NSObject-ObjectMap: 3223c0c994a8e3de44ccb74ddf3e63c86821c015
+  ABToolKit: 617b4927c34be3337a9d6ca086f4b37b2321d4d5
+  Alamofire: 11a6022f5089887d92ffb5a3014c97a0a915ab98
+  SwiftyJSON: 0b3e6c07af17ff745e77e8e9984097b55c956e5c
+  SwiftyUserDefaults: ae600cd466daa1420a058d09aefbf45ccb6caf1e
 
-COCOAPODS: 0.36.3
+COCOAPODS: 0.37.1

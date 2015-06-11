@@ -2,8 +2,8 @@
 //  AccountsTests.swift
 //  AccountsTests
 //
-//  Created by Alex Bechmann on 07/04/2015.
-//  Copyright (c) 2015 Ustwo. All rights reserved.
+//  Created by Alex Bechmann on 05/06/2015.
+//  Copyright (c) 2015 Alex Bechmann. All rights reserved.
 //
 
 import UIKit
