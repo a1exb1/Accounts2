@@ -9,6 +9,7 @@
 import UIKit
 import ABToolKit
 import SwiftyUserDefaults
+import Alamofire
 
 var kActiveUser = User()
 
@@ -23,8 +24,6 @@ let kNavigationBarBackgroundColor = UIColor.blackColor().colorWithAlphaComponent
 let kNavigationBarPositiveActionColor = UIColor.yellowColor()
 let kNavigationBarTintColor = UIColor.greenColor()
 
-let kCurrencySettingKey = "Currency"
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -33,9 +32,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        let settings = CompresJSON.sharedInstance().settings
+        
+        settings.encryptionKey = "7e4bac048ef766e83f0ec8c079e1f90c2eb690a9"
+        settings.shouldCompress = false
+        settings.shouldEncrypt = false
+        //settings.encryptUrlComponents = true
+        
         Session.sharedSession().domain = "http://alex.bechmann.co.uk/iou"
         WebApiDefaults.sharedInstance().baseUrl = "\(Session.sharedSession().domain)/api"
-        JSONMappingDefaults.sharedInstance().webApiSendDateFormat = DateFormat.DateTime.rawValue
+        
+        JSONMappingDefaults.sharedInstance().webApiSendDateFormat = DateFormat.ISO8601.rawValue
+        JSONMappingDefaults.sharedInstance().dateFormat = DateFormat.ISO8601.rawValue
+        
+        //ALAMOFIRE HEADERS
+        AppDelegate.setAlamofireHeaders(false, contentEncoding: "deflate")
         
         setupAppearances()
         
@@ -46,11 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else {
             
             setWindowToLogin()
-        }
-        
-        if !Defaults.hasKey(kCurrencySettingKey) {
-            
-            Defaults[kCurrencySettingKey] = "GBP"
         }
         
         return true
@@ -70,6 +76,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barStyle = UIBarStyle.Black
         
         FormViewTextFieldCell.appearance().textLabel?.textColor = UIColor.whiteColor()
+    }
+    
+    class func setAlamofireHeaders(shouldEncrypt: Bool, contentEncoding: String) {
+        
+        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders =
+        [
+            "CompresJSON-Encrypt": shouldEncrypt,
+            "Accept-Encoding1": contentEncoding,
+            "Accept-Encoding": contentEncoding
+        ]
     }
     
     private func setWindowToLogin() {

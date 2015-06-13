@@ -12,7 +12,7 @@ import SwiftyJSON
 
 private let kActiveUserDefaultsKey = "activeUser"
 
-class User: JSONObject {
+class User: CompresJSONObject {
     
     var UserID = 0
     var Username = ""
@@ -68,9 +68,9 @@ class User: JSONObject {
     }
     
     
-    class func login(username: String, password: String) -> JsonRequest {
+    class func login(username: String, password: String) -> CompresJsonRequest {
         
-        return JsonRequest.create("http://alex.bechmann.co.uk/iou/api/Users/Login/?Username=\(username)&Password=\(password)", parameters: nil, method: .POST).onDownloadSuccessWithRequestInfo { (json, request, httpRequest, httpResponse) -> () in
+        return CompresJsonRequest.create("http://alex.bechmann.co.uk/iou/api/Users/Login/?Username=\(username)&Password=\(password)", parameters: nil, method: .POST).onDownloadSuccessWithRequestInfo { (json, request, httpRequest, httpResponse) -> () in
             
             if httpResponse?.statusCode == 200 {
                 
@@ -84,7 +84,7 @@ class User: JSONObject {
                 
                 request.failContext()
             }
-        }
+        } as! CompresJsonRequest
     }
     
     func logout() {
@@ -103,27 +103,40 @@ class User: JSONObject {
 //        })
 //    }
     
-    func getFriends() -> JsonRequest {
+    func getFriends() -> CompresJsonRequest {
         
         let s: String = User.webApiUrls().getUrl(UserID)!
         
         let url = "\(s)/Friends"
 
-        return JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
+        return CompresJsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
             
             self.friends = User.convertJsonToMultipleObjects(User.self, json: json)
-        })
+        }) as! CompresJsonRequest
     }
     
-    func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
+    func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> CompresJsonRequest {
         
         let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate%20desc" // not doing it for purchases
         
-        return JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
+        let request = CompresJsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
             
             let transactions:Array<Transaction> = Transaction.convertJsonToMultipleObjects(Transaction.self, json: json)
             completion(transactions: transactions)
+        }) as! CompresJsonRequest
+        
+        request.alamofireRequest?.responseString(encoding: nil, completionHandler: { (request, response, str, error) -> Void in
+        
+        let contentLength: AnyObject = response!.allHeaderFields["Content-Length"]!
+        var length: CGFloat = CGFloat("\(contentLength)".toInt()!) / 1024
+        let l = NSString(format: "%.02f", length)
+        println("Content-Length: \(l)kb")
+            
+            
+        
         })
+        
+        return request
     }
     
 //    func getUnconfirmedInvites(completion:(invites:Array<Relation>) -> ()) {

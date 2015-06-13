@@ -9,6 +9,8 @@
 import UIKit
 import SwiftyUserDefaults
 
+let kCurrencySettingKey = "Currency"
+
 private let kCurrencySettingLocaleDictionary: Dictionary<String, String> = [
     "GBP": "en_GB",
     "DKK": "da_DK"
