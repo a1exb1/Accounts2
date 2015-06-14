@@ -59,7 +59,7 @@ class SaveTransactionViewController: ACFormViewController {
         
         if transaction.TransactionID == 0 {
             
-            UIAlertController.showAlertControllerWithButtonTitle("Close", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Closing will not save this transaction") { (response) -> () in
+            UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back will delete this transaction! Are you sure?") { (response) -> () in
                 
                 super.close()
             }
@@ -103,7 +103,7 @@ extension SaveTransactionViewController: FormViewDelegate {
         if transaction.TransactionID > 0 {
             
             sections.append([
-                FormViewConfiguration.button("Delete", buttonTextColor: UIColor.redColor(), identifier: "Delete")
+                FormViewConfiguration.button("Delete", buttonTextColor: kFormDeleteButtonTextColor, identifier: "Delete")
             ])
         }
         

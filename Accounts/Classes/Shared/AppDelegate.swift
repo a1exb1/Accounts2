@@ -13,16 +13,25 @@ import Alamofire
 
 var kActiveUser = User()
 
-let kViewBackgroundColor = UIColor(hex: "222222")
-let kTableViewSeperatorColor = kTableViewCellBackgroundColor
+let kViewBackgroundColor = UIColor.whiteColor()
+let kViewBackgroundGradientTop =  UIColor(hex: "00AEE5")
+let kViewBackgroundGradientBottom =  UIColor(hex: "00BF6A")
 
-let kTableViewCellBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+let kTableViewCellBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.55)
 let kTableViewCellTextColor = UIColor.whiteColor()
-let kTableViewCellDetailTextColor = UIColor.lightGrayColor()
+let kTableViewCellDetailTextColor = UIColor.whiteColor()
+let kTableViewCellSeperatorStyle = UITableViewCellSeparatorStyle.SingleLine
+let kTableViewCellSeperatorColor = UIColor.clearColor()
+let kTableViewCellHeight: CGFloat = 50
+let kTableViewBackgroundColor = UIColor.clearColor()
 
-let kNavigationBarBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.85)
-let kNavigationBarPositiveActionColor = UIColor.yellowColor()
-let kNavigationBarTintColor = UIColor.greenColor()
+let kNavigationBarPositiveActionColor = kNavigationBarTintColor
+let kNavigationBarTintColor = UIColor(hex: "00AEE5")
+let kNavigationBarBarTintColor:UIColor = UIColor.whiteColor().colorWithAlphaComponent(0.85)
+let kNavigationBarTitleColor = UIColor.blackColor()
+let kNavigationBarStyle = UIBarStyle.Default
+
+let kFormDeleteButtonTextColor = AccountColor.negativeColor()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -64,18 +73,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func setupAppearances() {
         
-        UITableView.appearance().backgroundColor = kViewBackgroundColor
-        UITableView.appearance().separatorColor = kTableViewSeperatorColor
+        UINavigationBar.appearance().tintColor = kNavigationBarTintColor
+        UINavigationBar.appearance().barTintColor = kNavigationBarBarTintColor
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(kNavigationBarBarTintColor, size: CGSize(width: 10, height: 10)), forBarMetrics: UIBarMetrics.Default)
+        UINavigationBar.appearance().barStyle = kNavigationBarStyle
         
         UITableViewCell.appearance().backgroundColor = kTableViewCellBackgroundColor
         UITableViewCell.appearance().textLabel?.textColor = kTableViewCellTextColor
         
-        UINavigationBar.appearance().tintColor = kNavigationBarTintColor
-        UINavigationBar.appearance().shadowImage = UIImage()
-        UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(kNavigationBarBackgroundColor, size: CGSize(width: 10, height: 10)), forBarMetrics: UIBarMetrics.Default)
-        UINavigationBar.appearance().barStyle = UIBarStyle.Black
-        
-        FormViewTextFieldCell.appearance().textLabel?.textColor = UIColor.whiteColor()
+        UITableView.appearance().separatorStyle = kTableViewCellSeperatorStyle
+        UITableView.appearance().separatorColor = kTableViewCellSeperatorColor
+        UITableView.appearance().backgroundColor = kTableViewBackgroundColor
     }
     
     class func setAlamofireHeaders(shouldEncrypt: Bool, contentEncoding: String) {

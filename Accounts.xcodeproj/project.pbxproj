@@ -30,9 +30,13 @@
 		E48BC6511B21EB7400A5E58F /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC64A1B21EB7400A5E58F /* Transaction.swift */; };
 		E48BC6591B21EBA200A5E58F /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */; };
 		E48BC65B1B21FC0700A5E58F /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC65A1B21FC0700A5E58F /* TransactionsViewController.swift */; };
+		E49569141B2DB07600E07B00 /* CompresJSONSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49569131B2DB07600E07B00 /* CompresJSONSettingsViewController.swift */; };
+		E49569161B2DB50C00E07B00 /* AccountColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49569151B2DB50C00E07B00 /* AccountColor.swift */; };
+		E49569181B2DC87000E07B00 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = E49569171B2DC87000E07B00 /* Assets */; };
 		E4DC32961B24682900FA16C3 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4DC32951B24682900FA16C3 /* Login.storyboard */; };
 		E4DC32981B24686100FA16C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4DC32971B24686100FA16C3 /* Main.storyboard */; };
 		E4DC329A1B2468AB00FA16C3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */; };
+		E4EAA99D1B2DFED200C021C0 /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EAA99C1B2DFED200C021C0 /* AppTools.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,9 +79,13 @@
 		E48BC64A1B21EB7400A5E58F /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		E48BC65A1B21FC0700A5E58F /* TransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
+		E49569131B2DB07600E07B00 /* CompresJSONSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompresJSONSettingsViewController.swift; sourceTree = "<group>"; };
+		E49569151B2DB50C00E07B00 /* AccountColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountColor.swift; sourceTree = "<group>"; };
+		E49569171B2DC87000E07B00 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		E4DC32951B24682900FA16C3 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Login.storyboard; path = Storyboards/Login.storyboard; sourceTree = "<group>"; };
 		E4DC32971B24686100FA16C3 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
 		E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E4EAA99C1B2DFED200C021C0 /* AppTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				E46F1BDC1B28A8C0000571DF /* SelectCurrencyViewController.swift */,
+				E49569131B2DB07600E07B00 /* CompresJSONSettingsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -144,6 +153,7 @@
 		E48BC6091B21EAB500A5E58F = {
 			isa = PBXGroup;
 			children = (
+				E49569171B2DC87000E07B00 /* Assets */,
 				E48BC6141B21EAB500A5E58F /* Accounts */,
 				E48BC62A1B21EAB500A5E58F /* AccountsTests */,
 				E48BC6131B21EAB500A5E58F /* Products */,
@@ -285,6 +295,8 @@
 				E48BC6461B21EB7400A5E58F /* ViewControllers */,
 				E48BC6471B21EB7400A5E58F /* Views */,
 				E46CCFA41B284F53000ACFE2 /* Formatter.swift */,
+				E49569151B2DB50C00E07B00 /* AccountColor.swift */,
+				E4EAA99C1B2DFED200C021C0 /* AppTools.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -478,6 +490,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4DC32961B24682900FA16C3 /* Login.storyboard in Resources */,
+				E49569181B2DC87000E07B00 /* Assets in Resources */,
 				E46F1BE31B29BFAE000571DF /* encryptor_compressor.txt in Resources */,
 				E48BC6221B21EAB500A5E58F /* LaunchScreen.xib in Resources */,
 				E48BC61F1B21EAB500A5E58F /* Images.xcassets in Resources */,
@@ -560,8 +573,11 @@
 				E48BC6591B21EBA200A5E58F /* FriendsViewController.swift in Sources */,
 				E46CCFA71B285A61000ACFE2 /* ACFormViewController.swift in Sources */,
 				E47B28E11B249FFC00853EC2 /* Friend.swift in Sources */,
+				E49569161B2DB50C00E07B00 /* AccountColor.swift in Sources */,
+				E49569141B2DB07600E07B00 /* CompresJSONSettingsViewController.swift in Sources */,
 				E48BC64D1B21EB7400A5E58F /* Purchase.swift in Sources */,
 				E47B28E51B24D10300853EC2 /* SelectUsersViewController.swift in Sources */,
+				E4EAA99D1B2DFED200C021C0 /* AppTools.swift in Sources */,
 				E46F1BDD1B28A8C0000571DF /* SelectCurrencyViewController.swift in Sources */,
 				E46CCFA51B284F53000ACFE2 /* Formatter.swift in Sources */,
 				E48BC6501B21EB7400A5E58F /* User.swift in Sources */,

@@ -53,7 +53,7 @@ class SavePurchaseViewController: ACFormViewController {
     
         if purchase.PurchaseID == 0 {
             
-            UIAlertController.showAlertControllerWithButtonTitle("Close", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Closing will not save this purchase") { (response) -> () in
+            UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back delete this purchase! Are you sure?") { (response) -> () in
                 
                 super.close()
             }
@@ -96,7 +96,7 @@ extension SavePurchaseViewController: FormViewDelegate {
         if purchase.PurchaseID > 0 {
          
             sections.append([
-                FormViewConfiguration.button("Delete", buttonTextColor: UIColor.redColor(), identifier: "Delete")
+                FormViewConfiguration.button("Delete", buttonTextColor: kFormDeleteButtonTextColor, identifier: "Delete")
             ])
         }
         

@@ -11,14 +11,40 @@ import ABToolKit
 
 class ACFormViewController: FormViewController {
 
+    var blurView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.ExtraLight))
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupView()
+        setBackgroundGradient()
+        //setupNavigationBarAppearance()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func setupNavigationBarAppearance() {
+        
+        blurView.removeFromSuperview()
+        
+        if let navigationController = navigationController{
+            
+            let frame = navigationController.navigationBar.frame
+            
+            blurView.frame = CGRect(x: frame.origin.x, y: -frame.origin.y, width: frame.width, height: frame.height + frame.origin.y)
+        }
+        
+        navigationController?.navigationBar.addSubview(blurView)
+    }
+    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        
+        setupNavigationBarAppearance()
+    }
+}
+
+extension ACFormViewController: UITableViewDelegate {
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        return kTableViewCellHeight
     }
 }

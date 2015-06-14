@@ -14,9 +14,9 @@ private let kCurrencyIndexPath = NSIndexPath(forRow: 0, inSection: 0)
 private let kLogoutIndexPath = NSIndexPath(forRow: 0, inSection: 1)
 
 
-class MenuViewController: BaseViewController {
+class MenuViewController: ACBaseViewController {
 
-    var tableView = UITableView()
+    var tableView = UITableView(frame: CGRectZero, style: .Grouped)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +55,8 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         
         else if indexPath == kLogoutIndexPath {
             
-            cell.textLabel?.text = "Logout (Logged in as \(kActiveUser.Username))"
+            cell.textLabel?.text = "Logout"
+            cell.detailTextLabel?.text = "Logged in as \(kActiveUser.Username)"
         }
         
         return cell
@@ -70,10 +71,16 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         }
         if indexPath == kLogoutIndexPath {
             
-            kActiveUser.logout()
-            
-            let v = UIStoryboard.initialViewControllerFromStoryboardNamed("Login")
-            presentViewController(v, animated: true, completion: nil)
+            UIAlertController.showAlertControllerWithButtonTitle("Logout", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Are you sure you want to logout?", completion: { (response) -> () in
+                
+                if response == AlertResponse.Confirm {
+                    
+                    kActiveUser.logout()
+                    
+                    let v = UIStoryboard.initialViewControllerFromStoryboardNamed("Login")
+                    self.presentViewController(v, animated: true, completion: nil)
+                }
+            })
         }
     }
 }

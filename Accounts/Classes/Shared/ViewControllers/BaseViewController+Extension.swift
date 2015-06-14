@@ -37,4 +37,12 @@ extension BaseViewController {
         originalCell.textLabel?.textColor = kTableViewCellTextColor
         originalCell.detailTextLabel?.textColor = kTableViewCellDetailTextColor
     }
+    
+    func setBackgroundGradient() {
+        
+        var gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = view.bounds
+        gradient.colors = [kViewBackgroundGradientTop.CGColor, kViewBackgroundGradientBottom.CGColor]
+        view.layer.insertSublayer(gradient, atIndex: 0)
+    }
 }

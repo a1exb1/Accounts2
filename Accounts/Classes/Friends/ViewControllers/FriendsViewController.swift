@@ -9,18 +9,51 @@
 import UIKit
 import ABToolKit
 
+private let kPlusImage = AppTools.iconAssetNamed("746-plus-circle-selected.png")
+private let kMinusImage = AppTools.iconAssetNamed("34-circle.minus.png")
+private let kMenuIcon = AppTools.iconAssetNamed("740-gear-toolbar-selected.png")
+
 class FriendsViewController: ACBaseViewController {
 
-    var tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Plain)
+    var tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Grouped)
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupTableView(tableView, delegate: self, dataSource: self)
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: .Plain, target: self, action: "openMenu")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: kMenuIcon, style: .Plain, target: self, action: "openMenu")
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
         title = "Friends"
+        
+        view.showLoader()
+    }
+    
+    func data() -> Array<Array<User>> {
+        
+        var rc = Array<Array<User>>()
+        
+        var friendsWhoOweMoney = Array<User>()
+        var friendsWhoYouOweMoney = Array<User>()
+        
+        //owes you money
+        for friend in kActiveUser.friends {
+            
+            if friend.localeDifferenceBetweenActiveUser < 0 {
+                
+                friendsWhoOweMoney.append(friend)
+            }
+        }
+        
+        for friend in kActiveUser.friends {
+            
+            if friend.localeDifferenceBetweenActiveUser >= 0 {
+                
+                friendsWhoYouOweMoney.append(friend)
+            }
+        }
+        
+        return [friendsWhoOweMoney, friendsWhoYouOweMoney]
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -29,12 +62,19 @@ class FriendsViewController: ACBaseViewController {
         refresh(nil)
     }
     
+    override func setupTableView(tableView: UITableView, delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
+        super.setupTableView(tableView, delegate: delegate, dataSource: dataSource)
+        
+        setupTableViewRefreshControl(tableView)
+    }
+    
     override func refresh(refreshControl: UIRefreshControl?) {
 
         kActiveUser.getFriends().onDownloadFinished({ () -> () in
             
             refreshControl?.endRefreshing()
             self.tableView.reloadData()
+            self.view.hideLoader()
             
         }).onDownloadFailure({ (error, alert) -> () in
             
@@ -81,28 +121,37 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         
-        return 1
+        return data().count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return kActiveUser.friends.count
+        return data()[section].count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-        let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
-        let friend = kActiveUser.friends[indexPath.row]
+        let cell = tableView.dequeueOrCreateReusableCellWithIdentifier("Cell", requireNewCell: { (identifier) -> (UITableViewCell) in
+            
+            return UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: identifier)
+        })
+        
+        let friend = data()[indexPath.section][indexPath.row]
         
         setupTableViewCellAppearance(cell)
         
         cell.textLabel?.text = friend.Username
         let amount = abs(friend.localeDifferenceBetweenActiveUser)
-        let readableText = friend.localeDifferenceBetweenActiveUser < 0 ? "You owe" : "Owes you"
         
-        cell.detailTextLabel?.text = "\(readableText) \(Formatter.formatCurrencyAsString(amount))"
-        cell.detailTextLabel?.textColor = friend.localeDifferenceBetweenActiveUser < 0 ? UIColor(hex: "B0321E") : UIColor(hex: "53B01E")
+        let readableText = friend.localeDifferenceBetweenActiveUser < 0 ? "You owe" : "Owes you"
+        let tintColor = friend.localeDifferenceBetweenActiveUser < 0 ? AccountColor.negativeColor() : AccountColor.positiveColor()
+        
+        cell.imageView?.image = friend.localeDifferenceBetweenActiveUser < 0 ? kMinusImage : kPlusImage
+        cell.imageView?.tintWithColor(tintColor)
+        
+        cell.detailTextLabel?.text = Formatter.formatCurrencyAsString(amount)
+        cell.detailTextLabel?.textColor = tintColor
+        
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell
@@ -110,10 +159,27 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        let friend = kActiveUser.friends[indexPath.row]
+        let friend = data()[indexPath.section][indexPath.row]
         
         var v = TransactionsViewController()
         v.friend = friend
         navigationController?.pushViewController(v, animated: true)
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+
+        if data()[section].count > 0 {
+            
+            if section == 0 {
+                
+                return "People you owe"
+            }
+            if section == 1 {
+                
+                return "People who owe you"
+            }
+        }
+        
+        return ""
     }
 }

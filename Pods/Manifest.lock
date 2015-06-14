@@ -16,7 +16,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   ABToolKit:
-    :commit: 1585a5acc9fd4be13a592099abe3bef9a1a40ffb
+    :commit: b89fa8fa6997622e2e4df8885f0fcff2d5d6527f
     :git: "/Users/alexbechmann/Documents/iOS/cocoapods/ABToolKit"
 
 SPEC CHECKSUMS:

@@ -9,11 +9,15 @@
 import UIKit
 import ABToolKit
 
+private let kPurchaseImage = AppTools.iconAssetNamed("1007-price-tag-toolbar.png")
+private let kTransactionImage = AppTools.iconAssetNamed("922-suitcase-toolbar.png")
+
 class TransactionsViewController: ACBaseViewController {
 
-    var tableView = UITableView()
+    var tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Plain)
     var friend = User()
     var transactions:Array<Transaction> = []
+    var noDataView: UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,12 +26,44 @@ class TransactionsViewController: ACBaseViewController {
         title = "Transactions with \(friend.Username)"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+        
+        view.showLoader()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
         refresh(nil)
+    }
+    
+    override func setupTableView(tableView: UITableView, delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
+        super.setupTableView(tableView, delegate: delegate, dataSource: dataSource)
+        
+        setupTableViewRefreshControl(tableView)
+    }
+    
+    func showOrHideNoDataView() {
+        
+        if noDataView == nil {
+            
+            noDataView = UILabel()
+            noDataView!.text = "Nothing to see here!"
+            noDataView?.font = UIFont.systemFontOfSize(40)
+            noDataView?.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+            noDataView?.lineBreakMode = NSLineBreakMode.ByWordWrapping
+            noDataView?.numberOfLines = 0
+            noDataView?.textAlignment = NSTextAlignment.Center
+            
+            noDataView?.setTranslatesAutoresizingMaskIntoConstraints(false)
+            view.addSubview(noDataView!)
+            noDataView?.fillSuperView(UIEdgeInsets(top: 40, left: 40, bottom: -40, right: -40))
+            noDataView?.layer.opacity = 0
+        }
+        
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            
+            self.noDataView?.layer.opacity = transactions.count > 0 ? 0 : 1
+        })
     }
     
     override func refresh(refreshControl: UIRefreshControl?) {
@@ -40,6 +76,8 @@ class TransactionsViewController: ACBaseViewController {
             
             refreshControl?.endRefreshing()
             self.tableView.reloadData()
+            self.view.hideLoader()
+            self.showOrHideNoDataView()
             
         }).onDownloadFailure({ (error, alert) -> () in
             
@@ -93,8 +131,11 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-        let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
+        let cell = tableView.dequeueOrCreateReusableCellWithIdentifier("Cell", requireNewCell: { (identifier) -> (UITableViewCell) in
+            
+            return UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: identifier)
+        })
+        
         let transaction = transactions[indexPath.row]
         
         setupTableViewCellAppearance(cell)
@@ -103,43 +144,48 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         
         if transaction.purchase.PurchaseID > 0 {
 
+            amount = transaction.purchase.localeAmount
+            
             let dateString:String = transaction.purchase.DatePurchased.toString(DateFormat.Date.rawValue)
-            cell.textLabel?.text = "Purchase: \(transaction.purchase.Description)"
+            cell.textLabel?.text = "\(transaction.purchase.Description)"
             
             if transaction.purchase.user.UserID == kActiveUser.UserID {
                 
                 //moneyIsOwedToActiveUser
                 amount = -amount
-                cell.detailTextLabel?.textColor = UIColor(hex: "B0321E")
+                cell.detailTextLabel?.textColor = AccountColor.negativeColor()
             }
             else {
                 
                 //activeUserOwes
-                cell.detailTextLabel?.textColor = UIColor(hex: "53B01E")
+                cell.detailTextLabel?.textColor = AccountColor.positiveColor()
             }
-            
-            amount = transaction.purchase.localeAmount
+        
+            cell.imageView?.image = kPurchaseImage
         }
         else {
             
             let dateString:String = transaction.TransactionDate.toString(DateFormat.Date.rawValue)
-            cell.textLabel?.text = "Transaction: \(transaction.Description)"
+            cell.textLabel?.text = "\(transaction.Description)"
             
             if transaction.user.UserID == kActiveUser.UserID {
                 
                 //moneyIsOwedToActiveUser
                 amount = -amount
-                cell.detailTextLabel?.textColor = UIColor(hex: "B0321E")
+                cell.detailTextLabel?.textColor = AccountColor.negativeColor()
             }
             else {
                 
                 //activeUserOwes
-                cell.detailTextLabel?.textColor = UIColor(hex: "53B01E")
+                cell.detailTextLabel?.textColor = AccountColor.positiveColor()
             }
+            
+            cell.imageView?.image = kTransactionImage
         }
         
         cell.detailTextLabel?.text = Formatter.formatCurrencyAsString(amount)
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        cell.imageView?.tintWithColor(UIColor.whiteColor())
         
         return cell
     }
