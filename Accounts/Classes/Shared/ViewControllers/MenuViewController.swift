@@ -19,6 +19,7 @@ private let kCurrencyIndexPath = NSIndexPath(forRow: 0, inSection: kCurrencySect
 private let kCompresJSONEncryptIndexPath = NSIndexPath(forItem: 0, inSection: kCompresJSONSettingsSection)
 private let kCompresJSONCompressIndexPath = NSIndexPath(forItem: 1, inSection: kCompresJSONSettingsSection)
 private let kAcceptEncodingIndexPath = NSIndexPath(forItem: 2, inSection: kCompresJSONSettingsSection)
+private let kHTTPSEnabledIndexPath = NSIndexPath(forItem: 3, inSection: kCompresJSONSettingsSection)
 
 private let kLogoutIndexPath = NSIndexPath(forRow: 0, inSection: kLogoutSection)
 
@@ -28,7 +29,7 @@ class MenuViewController: ACBaseViewController {
     var tableView = UITableView(frame: CGRectZero, style: .Grouped)
     let data = [
         [kCurrencyIndexPath],
-        [kCompresJSONEncryptIndexPath, kCompresJSONCompressIndexPath, kAcceptEncodingIndexPath],
+        [kCompresJSONEncryptIndexPath, kCompresJSONCompressIndexPath, kAcceptEncodingIndexPath, kHTTPSEnabledIndexPath],
         [kLogoutIndexPath]
     ]
     
@@ -95,6 +96,11 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.textLabel?.text = "Use CompresJSON Compression"
                 cell.detailTextLabel?.text = "\(settings.compresJSONCompress)"
             }
+            if indexPath == kHTTPSEnabledIndexPath {
+                
+                cell.textLabel?.text = "Use HTTPS"
+                cell.detailTextLabel?.text = "\(settings.httpsEnabled)"
+            }
             if indexPath == kAcceptEncodingIndexPath {
                 
                 cell.textLabel?.text = "Accept encoding"
@@ -144,6 +150,12 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
                 v.delegate = self
                 navigationController?.pushViewController(v, animated: true)
             }
+            if indexPath == kHTTPSEnabledIndexPath {
+                
+                let v = BoolSettingViewController(identifier: kCompresJSONSettingsKeys.httpsEnabledKey, currentValue: settings.httpsEnabled, title: "Use HTTPS")
+                v.delegate = self
+                navigationController?.pushViewController(v, animated: true)
+            }
             if indexPath == kAcceptEncodingIndexPath {
                 
                 navigationController?.pushViewController(AcceptEncodingSettingViewController(), animated: true)
@@ -164,6 +176,11 @@ extension MenuViewController: BoolSettingDelegate {
         if identifier == kCompresJSONSettingsKeys.compresJSONCompressKey {
             
             Settings.setCompresJSONCompression(value)
+        }
+        
+        if identifier == kCompresJSONSettingsKeys.httpsEnabledKey {
+            
+            Settings.setHTTPSEnabled(value)
         }
         
         tableView.reloadData()

@@ -99,6 +99,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CompresJSON.sharedInstance().settings.shouldEncrypt = compresJSONSettings.compresJSONEncrypt
         CompresJSON.sharedInstance().settings.shouldCompress = compresJSONSettings.compresJSONCompress
         
+        let s = compresJSONSettings.httpsEnabled ? "s" : ""
+        
+        Session.sharedSession().domain = "http\(s)://alex.bechmann.co.uk/iou"
+        WebApiDefaults.sharedInstance().baseUrl = "\(Session.sharedSession().domain)/api"
+        
         Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders =
         [
             "CompresJSON-Encrypt": "\(compresJSONSettings.compresJSONEncrypt)",
