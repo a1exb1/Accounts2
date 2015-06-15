@@ -11,6 +11,8 @@ import SwiftyUserDefaults
 
 let kCurrencySettingKey = "Currency"
 
+let kCompresJSONSettingsKeys = (compresJSONEncryptKey: "compresJSONEncrypt", compresJSONCompressKey: "compresJSONCompress", acceptEncodingKey: "alamofireAcceptEncoding")
+
 private let kCurrencySettingLocaleDictionary: Dictionary<String, String> = [
     "GBP": "en_GB",
     "DKK": "da_DK"
@@ -24,6 +26,7 @@ class Settings: NSObject {
             
             Defaults[kCurrencySettingKey] = "GBP"
         }
+        setDefaultValueIfNotExistsForKey(kCurrencySettingKey, value: "GBP")
         
         let currencyIdentifier: String = Defaults[kCurrencySettingKey].string!
         
@@ -34,5 +37,53 @@ class Settings: NSObject {
     class func setLocaleByIdentifier(identifier: String) {
         
         Defaults[kCurrencySettingKey] = identifier
+    }
+    
+    class func setDefaultValueIfNotExistsForKey(key: String, value: AnyObject) {
+        
+        if !Defaults.hasKey(key) {
+            
+            Defaults[key] = value
+        }
+    }
+    
+    //MARK: - CompresJSON
+    
+    class func getCompresJSONSettings() -> (compresJSONEncrypt: Bool, compresJSONCompress: Bool, acceptEncoding: String) {
+        
+        let keys = kCompresJSONSettingsKeys
+        
+        setDefaultValueIfNotExistsForKey(keys.compresJSONEncryptKey, value: false)
+        setDefaultValueIfNotExistsForKey(keys.compresJSONCompressKey, value: false)
+        setDefaultValueIfNotExistsForKey(keys.acceptEncodingKey, value: "deflate")
+        
+        return (compresJSONEncrypt: Defaults[keys.compresJSONEncryptKey].bool!,  compresJSONCompress: Defaults[keys.compresJSONCompressKey].bool!, acceptEncoding: Defaults[keys.acceptEncodingKey].string!)
+    }
+    
+    class func setAcceptEncoding(value: String) {
+        
+        let keys = kCompresJSONSettingsKeys
+        
+        Defaults[keys.acceptEncodingKey] = value
+        
+        AppDelegate.setAlamofireHeaders()
+    }
+    
+    class func setCompresJSONEncryption(value: Bool) {
+        
+        let keys = kCompresJSONSettingsKeys
+        
+        Defaults[keys.compresJSONEncryptKey] = value
+        
+        AppDelegate.setAlamofireHeaders()
+    }
+    
+    class func setCompresJSONCompression(value: Bool) {
+        
+        let keys = kCompresJSONSettingsKeys
+        
+        Defaults[keys.compresJSONCompressKey] = value
+        
+        AppDelegate.setAlamofireHeaders()
     }
 }

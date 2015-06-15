@@ -182,4 +182,11 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         
         return ""
     }
+    
+    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        let header = view as! UITableViewHeaderFooterView
+        
+        header.textLabel.textColor = UIColor.whiteColor()
+    }
 }

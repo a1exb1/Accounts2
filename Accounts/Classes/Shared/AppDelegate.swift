@@ -17,13 +17,15 @@ let kViewBackgroundColor = UIColor.whiteColor()
 let kViewBackgroundGradientTop =  UIColor(hex: "00AEE5")
 let kViewBackgroundGradientBottom =  UIColor(hex: "00BF6A")
 
+let kTableViewBackgroundColor = UIColor.clearColor()
+
 let kTableViewCellBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.55)
 let kTableViewCellTextColor = UIColor.whiteColor()
 let kTableViewCellDetailTextColor = UIColor.whiteColor()
 let kTableViewCellSeperatorStyle = UITableViewCellSeparatorStyle.SingleLine
 let kTableViewCellSeperatorColor = UIColor.clearColor()
 let kTableViewCellHeight: CGFloat = 50
-let kTableViewBackgroundColor = UIColor.clearColor()
+let kTableViewCellTintColor = UIColor.whiteColor()
 
 let kNavigationBarPositiveActionColor = kNavigationBarTintColor
 let kNavigationBarTintColor = UIColor(hex: "00AEE5")
@@ -55,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         JSONMappingDefaults.sharedInstance().dateFormat = DateFormat.ISO8601.rawValue
         
         //ALAMOFIRE HEADERS
-        AppDelegate.setAlamofireHeaders(false, contentEncoding: "deflate")
+        AppDelegate.setAlamofireHeaders()
         
         setupAppearances()
         
@@ -81,19 +83,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UITableViewCell.appearance().backgroundColor = kTableViewCellBackgroundColor
         UITableViewCell.appearance().textLabel?.textColor = kTableViewCellTextColor
+        UITableViewCell.appearance().tintColor = kTableViewCellTintColor
         
         UITableView.appearance().separatorStyle = kTableViewCellSeperatorStyle
         UITableView.appearance().separatorColor = kTableViewCellSeperatorColor
         UITableView.appearance().backgroundColor = kTableViewBackgroundColor
+        
+        FormViewTextFieldCell.appearance().textLabel?.textColor = UIColor.yellowColor()
     }
     
-    class func setAlamofireHeaders(shouldEncrypt: Bool, contentEncoding: String) {
+    class func setAlamofireHeaders() {
+        
+        var compresJSONSettings = Settings.getCompresJSONSettings()
+        
+        CompresJSON.sharedInstance().settings.shouldEncrypt = compresJSONSettings.compresJSONEncrypt
+        CompresJSON.sharedInstance().settings.shouldCompress = compresJSONSettings.compresJSONCompress
         
         Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders =
         [
-            "CompresJSON-Encrypt": shouldEncrypt,
-            "Accept-Encoding1": contentEncoding,
-            "Accept-Encoding": contentEncoding
+            "CompresJSON-Encrypt": "\(compresJSONSettings.compresJSONEncrypt)",
+            "CompresJSON-Compress": "\(compresJSONSettings.compresJSONCompress)",
+            "Accept-Encoding1": compresJSONSettings.acceptEncoding,
+            "Accept-Encoding": compresJSONSettings.acceptEncoding
         ]
     }
     

@@ -82,7 +82,17 @@ class TransactionsViewController: ACBaseViewController {
         }).onDownloadFailure({ (error, alert) -> () in
             
             alert.show()
-        })
+            
+        }).onDownloadSuccess { (json, request) -> () in
+            
+            request.alamofireRequest?.responseString(encoding: nil, completionHandler: { (request, response, str, error) -> Void in
+                
+                let contentLength: AnyObject = response!.allHeaderFields["Content-Length"]!
+                var length: CGFloat = CGFloat("\(contentLength)".toInt()!) / 1024
+                let l = NSString(format: "%.02f", length)
+                println("Content-Length: \(l)kb")
+            })
+        }
     }
     
     func add() {
