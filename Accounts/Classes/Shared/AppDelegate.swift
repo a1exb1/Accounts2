@@ -74,7 +74,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             setWindowToLogin()
         }
         
+        registerForNotifications()
+        
         return true
+    }
+    
+    func registerForNotifications() {
+        
+        UIApplication.sharedApplication().registerForRemoteNotifications()
+        
+        var settings = UIUserNotificationSettings(forTypes: UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, categories: ["NEW_PAYMENT"])
+        
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+    }
+    
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        
+        
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        
+        Defaults["Device_Token"] = deviceToken
+        println(deviceToken.base64String())
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        
+        println(userInfo)
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        
+        println(error)
     }
     
     func setupAppearances() {
