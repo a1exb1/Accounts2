@@ -222,6 +222,11 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
                 
                 cell.roundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, cornerRadiusSize: CGSize(width: 10, height: 10))
             }
+            
+            if indexPath.row == 0 && indexPath.row == numberOfRowsInSections - 1 {
+                
+                cell.roundCorners(UIRectCorner.AllCorners, cornerRadiusSize: CGSize(width: 10, height: 10))
+            }
         }
     }
     
