@@ -60,40 +60,4 @@ class Settings: NSObject {
         
         return (compresJSONEncrypt: Defaults[keys.compresJSONEncryptKey].bool!,  compresJSONCompress: Defaults[keys.compresJSONCompressKey].bool!, acceptEncoding: Defaults[keys.acceptEncodingKey].string!, httpsEnabled: Defaults[keys.httpsEnabledKey].bool!)
     }
-    
-    class func setAcceptEncoding(value: String) {
-        
-        let keys = kCompresJSONSettingsKeys
-        
-        Defaults[keys.acceptEncodingKey] = value
-        
-        AppDelegate.setAlamofireHeaders()
-    }
-    
-    class func setCompresJSONEncryption(value: Bool) {
-        
-        let keys = kCompresJSONSettingsKeys
-        
-        Defaults[keys.compresJSONEncryptKey] = value
-        
-        AppDelegate.setAlamofireHeaders()
-    }
-    
-    class func setCompresJSONCompression(value: Bool) {
-        
-        let keys = kCompresJSONSettingsKeys
-        
-        Defaults[keys.compresJSONCompressKey] = value
-        
-        AppDelegate.setAlamofireHeaders()
-    }
-    
-    class func setHTTPSEnabled(value: Bool) {
-        
-        let keys = kCompresJSONSettingsKeys
-        
-        Defaults[keys.httpsEnabledKey] = value
-        
-        AppDelegate.setAlamofireHeaders()
-    }
 }

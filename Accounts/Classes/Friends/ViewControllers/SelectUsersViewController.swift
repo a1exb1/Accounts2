@@ -181,9 +181,7 @@ extension SelectUsersViewController: UITableViewDelegate, UITableViewDataSource 
         }
         
         cell.accessoryType = selected ? UITableViewCellAccessoryType.Checkmark : UITableViewCellAccessoryType.None
-        
-        setupTableViewCellAppearance(cell)
-        
+
         return cell
     }
     

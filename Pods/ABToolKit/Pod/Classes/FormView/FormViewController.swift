@@ -31,7 +31,7 @@ private let kButtonCellIdentifier = "ButtonCell"
 
 public class FormViewController: BaseViewController {
     
-    var tableView = UITableView(frame: CGRectZero, style: .Grouped)
+    public var tableView = UITableView(frame: CGRectZero, style: .Grouped)
     var data: Array<Array<FormViewConfiguration>> = []
     var selectedIndexPath: NSIndexPath?
     public var formViewDelegate: FormViewDelegate?

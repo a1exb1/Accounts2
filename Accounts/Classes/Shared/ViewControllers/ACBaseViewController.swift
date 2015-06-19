@@ -16,9 +16,12 @@ class ACBaseViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
         setupView()
-        setBackgroundGradient()
-        //setupNavigationBarAppearance()
     }
     
     func setupNavigationBarAppearance() {
@@ -33,11 +36,6 @@ class ACBaseViewController: BaseViewController {
         }
         
         navigationController?.navigationBar.addSubview(blurView)
-    }
-    
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        
-        setupNavigationBarAppearance()
     }
 }
 

@@ -12,21 +12,29 @@ import ABToolKit
 private let kPlusImage = AppTools.iconAssetNamed("746-plus-circle-selected.png")
 private let kMinusImage = AppTools.iconAssetNamed("34-circle.minus.png")
 private let kMenuIcon = AppTools.iconAssetNamed("740-gear-toolbar-selected.png")
+private let kPopoverContentSize = CGSize(width: 320, height: 360)
 
 class FriendsViewController: ACBaseViewController {
 
     var tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Grouped)
+    var addBarButtonItem: UIBarButtonItem?
+    var popoverController: UIPopoverController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupTableView(tableView, delegate: self, dataSource: self)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: kMenuIcon, style: .Plain, target: self, action: "openMenu")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
-        title = "Friends"
         
+        addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+        navigationItem.rightBarButtonItem = addBarButtonItem
+        
+        title = "Friends"
         view.showLoader()
+        
+        setBackgroundGradient()
+        setTableViewAppearanceForBackgroundGradient(tableView)
     }
     
     func data() -> Array<Array<User>> {
@@ -84,36 +92,37 @@ class FriendsViewController: ACBaseViewController {
     
     func openMenu() {
         
-        presentViewController(UINavigationController(rootViewController:MenuViewController()), animated: true, completion: nil)
+        let v = UINavigationController(rootViewController:MenuViewController())
+        v.modalPresentationStyle = UIModalPresentationStyle.FormSheet
+        presentViewController(v, animated: true, completion: nil)
     }
     
     func add() {
         
-        var alert = UIAlertController(title: "Add new", message: "", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let view = SelectPurchaseOrTransactionViewController()
+        let v = UINavigationController(rootViewController: view)
+
+        v.modalPresentationStyle = .Popover
+        v.preferredContentSize = kPopoverContentSize
+        v.popoverPresentationController?.barButtonItem = addBarButtonItem
+        v.popoverPresentationController?.delegate = self
         
-        let purchaseAction = UIAlertAction(title: "Purchase", style: UIAlertActionStyle.Default) { (action) -> Void in
-            
-            let v = SavePurchaseViewController()
-            v.addCloseButton()
-            self.presentViewController(UINavigationController(rootViewController: v), animated: true, completion: nil)
-        }
+        presentViewController(v, animated: true, completion: nil)
+    }
+    
+    override func setupTableViewConstraints(tableView: UITableView) {
         
-        let transactionAction = UIAlertAction(title: "Transaction", style: UIAlertActionStyle.Default) { (action) -> Void in
-            
-            let v = SaveTransactionViewController()
-            v.addCloseButton()
-            self.presentViewController(UINavigationController(rootViewController: v), animated: true, completion: nil)
-        }
+        tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
         
-        let closeAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive) { (action) -> Void in
-            
-            alert.dismissViewControllerAnimated(true, completion: nil)
-        }
+        tableView.addLeftConstraint(toView: view, attribute: NSLayoutAttribute.Left, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
+        tableView.addRightConstraint(toView: view, attribute: NSLayoutAttribute.Right, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
         
-        alert.addAction(purchaseAction)
-        alert.addAction(transactionAction)
-        alert.addAction(closeAction)
-        alert.show()
+        tableView.addWidthConstraint(relation: NSLayoutRelation.LessThanOrEqual, constant: kTableViewMaxWidth)
+        
+        tableView.addTopConstraint(toView: view, relation: .Equal, constant: 0)
+        tableView.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
+        
+        tableView.addCenterXConstraint(toView: view)
     }
 }
 
@@ -136,9 +145,9 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: identifier)
         })
         
-        let friend = data()[indexPath.section][indexPath.row]
+        setTableViewCellAppearanceForBackgroundGradient(cell)
         
-        setupTableViewCellAppearance(cell)
+        let friend = data()[indexPath.section][indexPath.row]
         
         cell.textLabel?.text = friend.Username
         let amount = abs(friend.localeDifferenceBetweenActiveUser)
@@ -155,6 +164,26 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let numberOfRowsInSections:Int = tableView.numberOfRowsInSection(indexPath.section)
+        
+        cell.roundCorners(UIRectCorner.AllCorners, cornerRadiusSize: CGSize(width: 0, height: 0))
+        
+        if view.bounds.width > kTableViewMaxWidth {
+            
+            if indexPath.row == 0 {
+                
+                cell.roundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, cornerRadiusSize: CGSize(width: 10, height: 10))
+            }
+            
+            if indexPath.row == numberOfRowsInSections - 1 {
+                
+                cell.roundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, cornerRadiusSize: CGSize(width: 10, height: 10))
+            }
+        }
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -188,5 +217,13 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         let header = view as! UITableViewHeaderFooterView
         
         header.textLabel.textColor = UIColor.whiteColor()
+    }
+}
+
+extension FriendsViewController: UIPopoverPresentationControllerDelegate {
+    
+    func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
+        
+        refresh(nil)
     }
 }

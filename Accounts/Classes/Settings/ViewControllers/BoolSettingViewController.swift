@@ -58,7 +58,6 @@ extension BoolSettingViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! UITableViewCell
-        setupTableViewCellAppearance(cell)
         
         cell.textLabel?.text = "\(data[indexPath.row])"
         cell.accessoryType = data[indexPath.row] == currentValue ? .Checkmark : .None

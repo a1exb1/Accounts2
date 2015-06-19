@@ -44,7 +44,7 @@ public class CompresJsonRequest: JsonRequest {
         
         if let params = self.parameters {
             
-            if shouldEncrypt {
+            if shouldEncrypt || shouldCompress{
                 
                 var err: NSError?
                 var json: String = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)!.toString()
@@ -78,7 +78,7 @@ public class CompresJsonRequest: JsonRequest {
                 else{
                     let json = JSON(data: data! as! NSData)
                     
-                    if self.shouldEncrypt {
+                    if self.shouldEncrypt || self.shouldCompress {
                         
                         let encryptedJson = json["data"].stringValue
                         let unencryptedJson = CompresJSON.decryptAndDecompressAsNecessary(encryptedJson, shouldEncrypt: self.shouldEncrypt, shouldCompress: self.shouldCompress)

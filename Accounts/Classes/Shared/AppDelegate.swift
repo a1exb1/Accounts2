@@ -35,6 +35,8 @@ let kNavigationBarStyle = UIBarStyle.Default
 
 let kFormDeleteButtonTextColor = AccountColor.negativeColor()
 
+let kTableViewMaxWidth:CGFloat = 500
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -43,12 +45,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        let settings = CompresJSON.sharedInstance().settings
-        
-        settings.encryptionKey = "7e4bac048ef766e83f0ec8c079e1f90c2eb690a9"
-        settings.shouldCompress = false
-        settings.shouldEncrypt = false
-        //settings.encryptUrlComponents = true
+//        let settings = CompresJSON.sharedInstance().settings
+//        
+//        settings.encryptionKey = "7e4bac048ef766e83f0ec8c079e1f90c2eb690a9"
+//        settings.shouldCompress = false
+//        settings.shouldEncrypt = false
         
         Session.sharedSession().domain = "http://alex.bechmann.co.uk/iou"
         WebApiDefaults.sharedInstance().baseUrl = "\(Session.sharedSession().domain)/api"
@@ -56,8 +57,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         JSONMappingDefaults.sharedInstance().webApiSendDateFormat = DateFormat.ISO8601.rawValue
         JSONMappingDefaults.sharedInstance().dateFormat = DateFormat.ISO8601.rawValue
         
-        //ALAMOFIRE HEADERS
-        AppDelegate.setAlamofireHeaders()
+        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders =
+            [
+                "Accept-Encoding1": "deflate",
+                "Accept-Encoding": "deflate"
+        ]
         
         setupAppearances()
         
@@ -77,40 +81,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UINavigationBar.appearance().tintColor = kNavigationBarTintColor
         UINavigationBar.appearance().barTintColor = kNavigationBarBarTintColor
-        UINavigationBar.appearance().shadowImage = UIImage()
+        //UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(kNavigationBarBarTintColor, size: CGSize(width: 10, height: 10)), forBarMetrics: UIBarMetrics.Default)
         UINavigationBar.appearance().barStyle = kNavigationBarStyle
-        
-        UITableViewCell.appearance().backgroundColor = kTableViewCellBackgroundColor
-        UITableViewCell.appearance().textLabel?.textColor = kTableViewCellTextColor
-        UITableViewCell.appearance().tintColor = kTableViewCellTintColor
-        
-        UITableView.appearance().separatorStyle = kTableViewCellSeperatorStyle
-        UITableView.appearance().separatorColor = kTableViewCellSeperatorColor
-        UITableView.appearance().backgroundColor = kTableViewBackgroundColor
-        
-        FormViewTextFieldCell.appearance().textLabel?.textColor = UIColor.yellowColor()
-    }
-    
-    class func setAlamofireHeaders() {
-        
-        var compresJSONSettings = Settings.getCompresJSONSettings()
-        
-        CompresJSON.sharedInstance().settings.shouldEncrypt = compresJSONSettings.compresJSONEncrypt
-        CompresJSON.sharedInstance().settings.shouldCompress = compresJSONSettings.compresJSONCompress
-        
-        let s = compresJSONSettings.httpsEnabled ? "s" : ""
-        
-        Session.sharedSession().domain = "http\(s)://alex.bechmann.co.uk/iou"
-        WebApiDefaults.sharedInstance().baseUrl = "\(Session.sharedSession().domain)/api"
-        
-        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders =
-        [
-            "CompresJSON-Encrypt": "\(compresJSONSettings.compresJSONEncrypt)",
-            "CompresJSON-Compress": "\(compresJSONSettings.compresJSONCompress)",
-            "Accept-Encoding1": compresJSONSettings.acceptEncoding,
-            "Accept-Encoding": compresJSONSettings.acceptEncoding
-        ]
     }
     
     private func setWindowToLogin() {

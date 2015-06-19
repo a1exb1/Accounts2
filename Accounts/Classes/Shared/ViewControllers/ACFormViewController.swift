@@ -16,9 +16,12 @@ class ACFormViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
         setupView()
-        setBackgroundGradient()
-        //setupNavigationBarAppearance()
     }
 
     func setupNavigationBarAppearance() {
@@ -35,10 +38,11 @@ class ACFormViewController: FormViewController {
         navigationController?.navigationBar.addSubview(blurView)
     }
     
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        
-        setupNavigationBarAppearance()
-    }
+//    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+//        super.didRotateFromInterfaceOrientation(fromInterfaceOrientation)
+//        
+//        setupNavigationBarAppearance()
+//    }
 }
 
 extension ACFormViewController: UITableViewDelegate {

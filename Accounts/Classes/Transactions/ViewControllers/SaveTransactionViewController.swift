@@ -41,13 +41,25 @@ class SaveTransactionViewController: ACFormViewController {
         }
         
         showOrHideSaveButton()
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: "pop")
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if isInsidePopover() {
+            
+            tableView.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        }
     }
     
     func save() {
 
         transaction.save()?.onContextSuccess({ () -> () in
 
-            self.dismissViewControllerFromCurrentContextAnimated(true)
+            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+            self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
 
         }).onContextFailure({ () -> () in
             
@@ -55,19 +67,24 @@ class SaveTransactionViewController: ACFormViewController {
         })
     }
     
-    override func close (){
+    func pop() {
         
         if transaction.TransactionID == 0 {
             
             UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back will delete this transaction! Are you sure?") { (response) -> () in
                 
-                super.close()
+                if response == AlertResponse.Confirm {
+                    
+                    self.dismissViewControllerFromCurrentContextAnimated(true)
+                }
             }
         }
         else {
             
-            super.close()
+            self.dismissViewControllerFromCurrentContextAnimated(true)
         }
+        
+        navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(navigationController!.popoverPresentationController!)
     }
     
     func showOrHideSaveButton() {
@@ -112,10 +129,12 @@ extension SaveTransactionViewController: FormViewDelegate {
     
     func formViewManuallySetCell(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, identifier: String) -> UITableViewCell {
         
-        if identifier == "Friend" {
+        let cell = tableView.dequeueOrCreateReusableCellWithIdentifier("Cell", requireNewCell: { (identifier) -> (UITableViewCell) in
             
-            let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-            let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
+            return UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
+        })
+        
+        if identifier == "Friend" {
             
             cell.textLabel?.text = "Transfer to"
             cell.detailTextLabel?.text = "\(transaction.friend.Username)"
@@ -125,9 +144,6 @@ extension SaveTransactionViewController: FormViewDelegate {
         }
         
         if identifier == "User" {
-            
-            let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-            let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
             
             cell.textLabel?.text = "Transfer from"
             cell.detailTextLabel?.text = "\(transaction.user.Username)"
@@ -165,7 +181,8 @@ extension SaveTransactionViewController: FormViewDelegate {
                     
                     self.transaction.webApiDelete()?.onDownloadFinished({ () -> () in
                         
-                        navigationController?.popViewControllerAnimated(true)
+                        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                        self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
                     })
                 }
             })
@@ -212,7 +229,12 @@ extension SaveTransactionViewController: UITableViewDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath)
-        setupTableViewCellAppearance(cell)
+        
+        if let c = cell as? FormViewTextFieldCell {
+            
+            c.label.textColor = UIColor.blackColor()
+            c.textField.textColor = UIColor.lightGrayColor()
+        }
         
         return cell
     }

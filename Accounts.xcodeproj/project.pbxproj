@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		31D41566C543FDE2CACFBFC5 /* Pods_Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 229CCD75CA20DE50201D6067 /* Pods_Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E41A30491B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41A30481B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift */; };
+		E458F9741B3461C700FC4E20 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E458F9731B3461C700FC4E20 /* UIView+Extension.swift */; };
 		E46CCFA51B284F53000ACFE2 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46CCFA41B284F53000ACFE2 /* Formatter.swift */; };
 		E46CCFA71B285A61000ACFE2 /* ACFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46CCFA61B285A61000ACFE2 /* ACFormViewController.swift */; };
 		E46CCFA91B285A7C000ACFE2 /* ACBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46CCFA81B285A7C000ACFE2 /* ACBaseViewController.swift */; };
@@ -37,7 +39,6 @@
 		E4DC329A1B2468AB00FA16C3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */; };
 		E4EAA99D1B2DFED200C021C0 /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EAA99C1B2DFED200C021C0 /* AppTools.swift */; };
 		E4EAA99F1B2ED1C100C021C0 /* BoolSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EAA99E1B2ED1C100C021C0 /* BoolSettingViewController.swift */; };
-		E4EAA9A11B2EDC8800C021C0 /* AcceptEncodingSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EAA9A01B2EDC8800C021C0 /* AcceptEncodingSettingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		229CCD75CA20DE50201D6067 /* Pods_Accounts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Accounts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D804DC3FB800178FC10E9A7 /* Pods-Accounts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accounts.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Accounts/Pods-Accounts.debug.xcconfig"; sourceTree = "<group>"; };
 		AC1D59DEE6922AAEB08C5128 /* Pods-Accounts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accounts.release.xcconfig"; path = "Pods/Target Support Files/Pods-Accounts/Pods-Accounts.release.xcconfig"; sourceTree = "<group>"; };
+		E41A30481B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPurchaseOrTransactionViewController.swift; sourceTree = "<group>"; };
+		E458F9731B3461C700FC4E20 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		E46CCFA41B284F53000ACFE2 /* Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		E46CCFA61B285A61000ACFE2 /* ACFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACFormViewController.swift; sourceTree = "<group>"; };
 		E46CCFA81B285A7C000ACFE2 /* ACBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACBaseViewController.swift; sourceTree = "<group>"; };
@@ -87,7 +90,6 @@
 		E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E4EAA99C1B2DFED200C021C0 /* AppTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
 		E4EAA99E1B2ED1C100C021C0 /* BoolSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoolSettingViewController.swift; sourceTree = "<group>"; };
-		E4EAA9A01B2EDC8800C021C0 /* AcceptEncodingSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcceptEncodingSettingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +142,6 @@
 			children = (
 				E46F1BDC1B28A8C0000571DF /* SelectCurrencyViewController.swift */,
 				E4EAA99E1B2ED1C100C021C0 /* BoolSettingViewController.swift */,
-				E4EAA9A01B2EDC8800C021C0 /* AcceptEncodingSettingViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -300,6 +301,7 @@
 				E46CCFA41B284F53000ACFE2 /* Formatter.swift */,
 				E49569151B2DB50C00E07B00 /* AccountColor.swift */,
 				E4EAA99C1B2DFED200C021C0 /* AppTools.swift */,
+				E458F9731B3461C700FC4E20 /* UIView+Extension.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -321,6 +323,7 @@
 				E46CCFA61B285A61000ACFE2 /* ACFormViewController.swift */,
 				E46CCFA81B285A7C000ACFE2 /* ACBaseViewController.swift */,
 				E46CCFAA1B285BFA000ACFE2 /* BaseViewController+Extension.swift */,
+				E41A30481B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -577,15 +580,16 @@
 				E46CCFA71B285A61000ACFE2 /* ACFormViewController.swift in Sources */,
 				E47B28E11B249FFC00853EC2 /* Friend.swift in Sources */,
 				E49569161B2DB50C00E07B00 /* AccountColor.swift in Sources */,
+				E41A30491B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift in Sources */,
 				E4EAA99F1B2ED1C100C021C0 /* BoolSettingViewController.swift in Sources */,
 				E48BC64D1B21EB7400A5E58F /* Purchase.swift in Sources */,
 				E47B28E51B24D10300853EC2 /* SelectUsersViewController.swift in Sources */,
+				E458F9741B3461C700FC4E20 /* UIView+Extension.swift in Sources */,
 				E4EAA99D1B2DFED200C021C0 /* AppTools.swift in Sources */,
 				E46F1BDD1B28A8C0000571DF /* SelectCurrencyViewController.swift in Sources */,
 				E46CCFA51B284F53000ACFE2 /* Formatter.swift in Sources */,
 				E48BC6501B21EB7400A5E58F /* User.swift in Sources */,
 				E46F1BE01B2986D8000571DF /* Settings.swift in Sources */,
-				E4EAA9A11B2EDC8800C021C0 /* AcceptEncodingSettingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

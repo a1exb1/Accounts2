@@ -8,9 +8,11 @@
 
 import UIKit
 import ABToolKit
+import SwiftyJSON
 
 private let kPurchaseImage = AppTools.iconAssetNamed("1007-price-tag-toolbar.png")
 private let kTransactionImage = AppTools.iconAssetNamed("922-suitcase-toolbar.png")
+private let kPopoverContentSize = CGSize(width: 390, height: 440)
 
 class TransactionsViewController: ACBaseViewController {
 
@@ -18,16 +20,27 @@ class TransactionsViewController: ACBaseViewController {
     var friend = User()
     var transactions:Array<Transaction> = []
     var noDataView: UILabel?
+    var addBarButtonItem: UIBarButtonItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            
+            tableView = UITableView(frame: CGRectZero, style: .Grouped)
+        }
+        
         setupTableView(tableView, delegate: self, dataSource: self)
         title = "Transactions with \(friend.Username)"
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+        addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+        navigationItem.rightBarButtonItem = addBarButtonItem
         
         view.showLoader()
+        tableView.layer.opacity = 0
+        
+        setBackgroundGradient()
+        setTableViewAppearanceForBackgroundGradient(tableView)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -62,11 +75,14 @@ class TransactionsViewController: ACBaseViewController {
         
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             
-            self.noDataView?.layer.opacity = transactions.count > 0 ? 0 : 1
+            self.noDataView?.layer.opacity = self.transactions.count > 0 ? 0 : 1
+            self.tableView.layer.opacity = self.transactions.count > 0 ? 1 : 0
         })
     }
     
     override func refresh(refreshControl: UIRefreshControl?) {
+        
+        var startTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
         
         kActiveUser.getTransactionsBetweenFriend(friend, completion: { (transactions) -> () in
             
@@ -83,47 +99,36 @@ class TransactionsViewController: ACBaseViewController {
             
             alert.show()
             
-        }).onDownloadSuccess { (json, request) -> () in
-            
-            request.alamofireRequest?.responseString(encoding: nil, completionHandler: { (request, response, str, error) -> Void in
-                
-                let contentLength: AnyObject = response!.allHeaderFields["Content-Length"]!
-                var length: CGFloat = CGFloat("\(contentLength)".toInt()!) / 1024
-                let l = NSString(format: "%.02f", length)
-                println("Content-Length: \(l)kb")
-            })
-        }
+        })
     }
     
     func add() {
         
-        var alert = UIAlertController(title: "Add new", message: "", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let view = SelectPurchaseOrTransactionViewController()
+        view.contextualFriend = friend
+        let v = UINavigationController(rootViewController: view)
         
-        let purchaseAction = UIAlertAction(title: "Purchase", style: UIAlertActionStyle.Default) { (action) -> Void in
-            
-            let v = SavePurchaseViewController()
-            v.addCloseButton()
-            v.purchase.friends.append(self.friend)
-            self.presentViewController(UINavigationController(rootViewController: v), animated: true, completion: nil)
-        }
+        v.modalPresentationStyle = .Popover
+        v.preferredContentSize = kPopoverContentSize
+        v.popoverPresentationController?.barButtonItem = addBarButtonItem
+        v.popoverPresentationController?.delegate = self
         
-        let transactionAction = UIAlertAction(title: "Transaction", style: UIAlertActionStyle.Default) { (action) -> Void in
-            
-            let v = SaveTransactionViewController()
-            v.addCloseButton()
-            v.transaction.friend = self.friend
-            self.presentViewController(UINavigationController(rootViewController: v), animated: true, completion: nil)
-        }
+        presentViewController(v, animated: true, completion: nil)
+    }
+    
+    override func setupTableViewConstraints(tableView: UITableView) {
         
-        let closeAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive) { (action) -> Void in
-            
-            alert.dismissViewControllerAnimated(true, completion: nil)
-        }
+        tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
         
-        alert.addAction(purchaseAction)
-        alert.addAction(transactionAction)
-        alert.addAction(closeAction)
-        alert.show()
+        tableView.addLeftConstraint(toView: view, attribute: NSLayoutAttribute.Left, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
+        tableView.addRightConstraint(toView: view, attribute: NSLayoutAttribute.Right, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
+        
+        tableView.addWidthConstraint(relation: NSLayoutRelation.LessThanOrEqual, constant: kTableViewMaxWidth)
+        
+        tableView.addTopConstraint(toView: view, relation: .Equal, constant: 0)
+        tableView.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
+        
+        tableView.addCenterXConstraint(toView: view)
     }
 }
 
@@ -146,9 +151,9 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
             return UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: identifier)
         })
         
-        let transaction = transactions[indexPath.row]
+        setTableViewCellAppearanceForBackgroundGradient(cell)
         
-        setupTableViewCellAppearance(cell)
+        let transaction = transactions[indexPath.row]
         
         var amount = transaction.localeAmount
         
@@ -200,23 +205,59 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         return cell
     }
     
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let numberOfRowsInSections:Int = tableView.numberOfRowsInSection(indexPath.section)
+        
+        cell.roundCorners(UIRectCorner.AllCorners, cornerRadiusSize: CGSize(width: 0, height: 0))
+        
+        if view.bounds.width > kTableViewMaxWidth {
+            
+            if indexPath.row == 0 {
+                
+                cell.roundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, cornerRadiusSize: CGSize(width: 10, height: 10))
+            }
+            
+            if indexPath.row == numberOfRowsInSections - 1 {
+                
+                cell.roundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, cornerRadiusSize: CGSize(width: 10, height: 10))
+            }
+        }
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         let transaction = transactions[indexPath.row]
+        let cell = tableView.cellForRowAtIndexPath(indexPath)!
         
         if transaction.purchase.PurchaseID > 0 {
             
             let v = SavePurchaseViewController()
             v.purchase = transaction.purchase
-            navigationController?.pushViewController(v, animated: true)
+            
+            openView(v, sourceView: cell.contentView)
         }
         
         else {
             
             let v = SaveTransactionViewController()
             v.transaction = transaction
-            navigationController?.pushViewController(v, animated: true)
+            
+            openView(v, sourceView: cell.contentView)
         }
+    }
+    
+    func openView(view: UIViewController, sourceView: UIView?) {
+        
+        let v = UINavigationController(rootViewController: view)
+        
+        v.modalPresentationStyle = .Popover
+        v.preferredContentSize = kPopoverContentSize
+        v.popoverPresentationController?.sourceRect = sourceView!.bounds
+        v.popoverPresentationController?.sourceView = sourceView
+        v.popoverPresentationController?.delegate = self
+        
+        presentViewController(v, animated: true, completion: nil)
     }
     
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
@@ -257,5 +298,14 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         }
         
         return false
+    }
+}
+
+extension TransactionsViewController: UIPopoverPresentationControllerDelegate {
+    
+    func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
+        
+        deselectSelectedCell(tableView)
+        refresh(nil)
     }
 }

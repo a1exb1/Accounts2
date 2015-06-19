@@ -35,33 +35,30 @@ class SavePurchaseViewController: ACFormViewController {
         }
         
         showOrHideSaveButton()
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: "pop")
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if isInsidePopover() {
+            
+            tableView.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        }
     }
     
     func save() {
 
         purchase.save()?.onContextSuccess({ () -> () in
 
-            self.dismissViewControllerFromCurrentContextAnimated(true)
+            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+            self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
 
         }).onContextFailure({ () -> () in
 
             UIAlertView(title: "Error", message: "Purchase not saved!", delegate: nil, cancelButtonTitle: "OK").show()
         })
-    }
-    
-    override func close (){
-    
-        if purchase.PurchaseID == 0 {
-            
-            UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back delete this purchase! Are you sure?") { (response) -> () in
-                
-                super.close()
-            }
-        }
-        else {
-            
-            super.close()
-        }
     }
     
     func showOrHideSaveButton() {
@@ -73,6 +70,26 @@ class SavePurchaseViewController: ACFormViewController {
         }
         
         navigationItem.rightBarButtonItem?.enabled = allowEditing && purchase.modelIsValid()
+    }
+    
+    func pop() {
+        
+        if purchase.PurchaseID == 0 {
+            
+            UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back delete this purchase! Are you sure?") { (response) -> () in
+                
+                if response == AlertResponse.Confirm {
+                    
+                    self.dismissViewControllerFromCurrentContextAnimated(true)
+                }
+            }
+        }
+        else {
+            
+            dismissViewControllerFromCurrentContextAnimated(true)
+        }
+        
+        navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(navigationController!.popoverPresentationController!)
     }
 }
 
@@ -129,7 +146,8 @@ extension SavePurchaseViewController: FormViewDelegate {
                     
                     self.purchase.webApiDelete()?.onDownloadFinished({ () -> () in
                         
-                        self.close()
+                        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                        self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
                     })
                 }
             })
@@ -162,12 +180,14 @@ extension SavePurchaseViewController: FormViewDelegate {
     
     func formViewManuallySetCell(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, identifier: String) -> UITableViewCell {
         
+        let cell = tableView.dequeueOrCreateReusableCellWithIdentifier("Cell", requireNewCell: { (identifier) -> (UITableViewCell) in
+            
+            return UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: identifier)
+        })
+        
         if identifier == "Friends" {
-
-            let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-            let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
-
-            cell.textLabel?.text = "Split between"
+            
+            cell.textLabel?.text = "Split with"
             
             var friendCount = purchase.friends.count
             
@@ -187,10 +207,7 @@ extension SavePurchaseViewController: FormViewDelegate {
         
         if identifier == "User" {
             
-            let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-            let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
-            
-            cell.textLabel?.text = "Purchase by "
+            cell.textLabel?.text = "Purchased by "
             cell.detailTextLabel?.text = "\(purchase.user.Username)"
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             
@@ -221,7 +238,12 @@ extension SavePurchaseViewController: UITableViewDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath)
-        setupTableViewCellAppearance(cell)
+        
+        if let c = cell as? FormViewTextFieldCell {
+            
+            c.label.textColor = UIColor.blackColor()
+            c.textField.textColor = UIColor.lightGrayColor()
+        }
         
         return cell
     }
