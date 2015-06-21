@@ -128,37 +128,25 @@ class User: CompresJSONObject {
         return request
     }
     
-//    func getUnconfirmedInvites(completion:(invites:Array<Relation>) -> ()) {
-//        
-//        var urlString = AppTools.WebMvcController(kMVCControllerName, action: "FriendInvitations")
-//        var data: Dictionary<String, AnyObject> = [
-//            "UserID" : self.UserID
-//        ]
-//    
-//        JsonRequest.create(urlString, parameters: data, method: .POST).onDownloadSuccess { (json, request) -> () in
-//            
-//            let invites: Array<Relation> = Relation.convertJsonToMultipleObjects(Relation.self, json: json)
-//            completion(invites: invites)
-//        }
-//        
-//        Relation.webApiGetMultipleObjects(Relation.self, query: nil) { (objects) -> () in
-//            
-//            completion(invites: objects)
-//        }
-//    }
+    func getUnconfirmedInvites(completion:(invites:Array<User>) -> ()) -> JsonRequest {
+        
+        var urlString = "\(User.webApiUrls().getUrl(UserID))/FriendInvites"
+    
+        return JsonRequest.create(urlString, parameters: nil, method: .POST).onDownloadSuccess { (json, request) -> () in
+            
+            let invites: Array<User> = User.convertJsonToMultipleObjects(User.self, json: json["User"])
+            completion(invites: invites)
+        }
+    }
     
     func addFriend(relationUserID:Int, completion: () -> ()) {
         
-//        var urlString = AppTools.WebMvcController(kMVCControllerName, action: "AddFriend")
-//        var data = [
-//            "UserID": self.UserID,
-//            "relationUserID" : relationUserID
-//        ]
-//        
-//        JsonRequest.create(urlString, parameters: data, method: Method.POST).onDownloadSuccess { (json, request) -> () in
-//            
-//            completion()
-//        }
+        var urlString = "\(User.webApiUrls().getUrl(UserID))/AddFriend/\(relationUserID)"
+        
+        JsonRequest.create(urlString, parameters: nil, method: .POST).onDownloadSuccess { (json, request) -> () in
+            
+            completion()
+        }
     }
     
     func saveUserOnDevice() {
@@ -244,22 +232,20 @@ class User: CompresJSONObject {
 //        return rc
 //    }
 
-    
-    class func activeUsersContaining(string: String, completion:(users:Array<User>) -> ()) {
+    func register() -> JsonRequest? {
         
-//        var urlString = AppTools.WebMvcController(kMVCControllerName, action: "ActiveUsersMatching")
-//        var data:Dictionary<String, AnyObject> = [
-//            "searchText" : string,
-//            "UserID" : kActiveUser.UserID
-//        ]
-//        
-//        
-//        
-//        JsonRequest.create(urlString, parameters: data, method: .POST).onDownloadSuccess { (json, request) -> () in
-//            
-//            let matches: Array<User> = User.convertJsonToMultipleObjects(json)
-//            completion(users: matches)
-//        }
+        return webApiInsert()
+    }
+    
+    class func activeUsersContaining(string: String, completion:(users:Array<User>) -> ()) -> JsonRequest {
+        
+        var urlString = "\(User.webApiUrls().getUrl(kActiveUser.UserID))/ActiveUsersMatching/\(string)"
+
+        return JsonRequest.create(urlString, parameters: nil, method: .POST).onDownloadSuccess { (json, request) -> () in
+            
+            let matches: Array<User> = User.convertJsonToMultipleObjects(User.self, json: json)
+            completion(users: matches)
+        }
     }
     
     override func webApiRestObjectID() -> Int? {

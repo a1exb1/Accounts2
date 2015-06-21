@@ -18,7 +18,7 @@ class SelectPurchaseOrTransactionViewController: ACBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupTableView(tableView, delegate: self, dataSource: self)
         addCloseButton()
     }
@@ -27,11 +27,10 @@ class SelectPurchaseOrTransactionViewController: ACBaseViewController {
         super.viewWillAppear(animated)
         
         if isInsidePopover() {
-            
-            tableView = UITableView(frame: CGRectZero, style: .Grouped)
+
             navigationController?.view.backgroundColor = UIColor.clearColor()
             view.backgroundColor = UIColor.clearColor()
-            navigationController?.navigationBar.shadowImage = UINavigationBar().shadowImage
+            tableView.backgroundColor = UIColor.clearColor()
         }
     }
     

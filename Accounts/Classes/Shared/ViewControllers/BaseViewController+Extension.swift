@@ -85,3 +85,29 @@ extension BaseViewController {
         return view.frame != UIScreen.mainScreen().bounds
     }
 }
+
+extension BaseViewController: UITableViewDelegate {
+    
+    public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let numberOfRowsInSections:Int = tableView.numberOfRowsInSection(indexPath.section)
+        
+        if view.bounds.width > kTableViewMaxWidth {
+            
+            if indexPath.row == 0 {
+                
+                cell.roundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, cornerRadiusSize: kTableViewCellIpadCornerRadiusSize)
+            }
+            
+            if indexPath.row == numberOfRowsInSections - 1 {
+                
+                cell.roundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, cornerRadiusSize: kTableViewCellIpadCornerRadiusSize)
+            }
+            
+            if indexPath.row == 0 && indexPath.row == numberOfRowsInSections - 1 {
+                
+                cell.roundCorners(UIRectCorner.AllCorners, cornerRadiusSize: kTableViewCellIpadCornerRadiusSize)
+            }
+        }
+    }
+}

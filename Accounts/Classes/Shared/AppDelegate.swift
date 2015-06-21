@@ -36,6 +36,7 @@ let kNavigationBarStyle = UIBarStyle.Default
 let kFormDeleteButtonTextColor = AccountColor.negativeColor()
 
 let kTableViewMaxWidth:CGFloat = 500
+let kTableViewCellIpadCornerRadiusSize = CGSize(width: 10, height: 10)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -74,14 +75,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             setWindowToLogin()
         }
         
-        registerForNotifications()
+        //registerForLocalNotifications()
         
         return true
     }
     
-    func registerForNotifications() {
-        
-        UIApplication.sharedApplication().registerForRemoteNotifications()
+    func registerForLocalNotifications() {
         
         var settings = UIUserNotificationSettings(forTypes: UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, categories: ["NEW_PAYMENT"])
         
@@ -90,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
         
-        
+        UIApplication.sharedApplication().registerForRemoteNotifications()
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
@@ -116,6 +115,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(kNavigationBarBarTintColor, size: CGSize(width: 10, height: 10)), forBarMetrics: UIBarMetrics.Default)
         UINavigationBar.appearance().barStyle = kNavigationBarStyle
+        
+        UITableViewCell.appearance().tintColor = kViewBackgroundGradientTop
     }
     
     private func setWindowToLogin() {

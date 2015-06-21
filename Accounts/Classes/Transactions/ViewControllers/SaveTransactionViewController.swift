@@ -50,7 +50,9 @@ class SaveTransactionViewController: ACFormViewController {
         
         if isInsidePopover() {
             
-            tableView.backgroundColor = UIColor.groupTableViewBackgroundColor()
+//            navigationController?.view.backgroundColor = UIColor.clearColor()
+//            view.backgroundColor = UIColor.clearColor()
+//            tableView.backgroundColor = UIColor.clearColor()
         }
     }
     

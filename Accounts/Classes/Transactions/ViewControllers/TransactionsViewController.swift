@@ -205,31 +205,6 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         return cell
     }
     
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-        let numberOfRowsInSections:Int = tableView.numberOfRowsInSection(indexPath.section)
-        
-        cell.roundCorners(UIRectCorner.AllCorners, cornerRadiusSize: CGSize(width: 0, height: 0))
-        
-        if view.bounds.width > kTableViewMaxWidth {
-            
-            if indexPath.row == 0 {
-                
-                cell.roundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, cornerRadiusSize: CGSize(width: 10, height: 10))
-            }
-            
-            if indexPath.row == numberOfRowsInSections - 1 {
-                
-                cell.roundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, cornerRadiusSize: CGSize(width: 10, height: 10))
-            }
-            
-            if indexPath.row == 0 && indexPath.row == numberOfRowsInSections - 1 {
-                
-                cell.roundCorners(UIRectCorner.AllCorners, cornerRadiusSize: CGSize(width: 10, height: 10))
-            }
-        }
-    }
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         let transaction = transactions[indexPath.row]

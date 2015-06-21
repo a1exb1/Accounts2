@@ -9,6 +9,34 @@
 import UIKit
 import ABToolKit
 
+//class LoginViewController: ACFormViewController {
+//    
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        
+//        setupTableView(tableView, delegate: self, dataSource: self)
+//    }
+//    
+//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+//        
+//        return UITableViewCell()
+//    }
+//    
+//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+//        return 1
+//    }
+//    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return 1
+//    }
+//    
+//    func scrollViewDidScroll(scrollView: UIScrollView) {
+//        
+//        println("hi")
+//    }
+//}
+
+
 class LoginViewController: ACFormViewController {
 
     var user = User()
@@ -37,14 +65,26 @@ class LoginViewController: ACFormViewController {
     
     func login() {
         
-        User.login(user.Username, password: user.Password).onContextSuccess { () -> () in
-            
-            var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
-            self.presentViewController(v, animated: true, completion: nil)
-            
-        }.onContextFailure { () -> () in
+        var showAlert: () -> () = {
             
             UIAlertView(title: "Login failed!", message: "Incorrect username or password!", delegate: nil, cancelButtonTitle: "OK").show()
+        }
+        
+        if user.Username.length() > 0 && user.Password.length() > 0 {
+            
+            User.login(user.Username, password: user.Password).onContextSuccess { () -> () in
+                
+                var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
+                self.presentViewController(v, animated: true, completion: nil)
+                
+            }.onContextFailure { () -> () in
+                    
+                showAlert()
+            }
+        }
+        else {
+            
+            showAlert()
         }
     }
     
@@ -110,30 +150,5 @@ extension LoginViewController: UITableViewDelegate {
         cell.textField.textColor = UIColor.lightGrayColor()
         
         return cell
-    }
-    
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-        let numberOfRowsInSections:Int = tableView.numberOfRowsInSection(indexPath.section)
-        
-        cell.roundCorners(UIRectCorner.AllCorners, cornerRadiusSize: CGSize(width: 0, height: 0))
-        
-        if view.bounds.width > kTableViewMaxWidth {
-            
-            if indexPath.row == 0 {
-                
-                cell.roundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, cornerRadiusSize: CGSize(width: 10, height: 10))
-            }
-            
-            if indexPath.row == numberOfRowsInSections - 1 {
-                
-                cell.roundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, cornerRadiusSize: CGSize(width: 10, height: 10))
-            }
-            
-            if indexPath.row == 0 && indexPath.row == numberOfRowsInSections - 1 {
-                
-                cell.roundCorners(UIRectCorner.AllCorners, cornerRadiusSize: CGSize(width: 10, height: 10))
-            }
-        }
     }
 }

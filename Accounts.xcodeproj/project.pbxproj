@@ -34,6 +34,8 @@
 		E48BC65B1B21FC0700A5E58F /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC65A1B21FC0700A5E58F /* TransactionsViewController.swift */; };
 		E49569161B2DB50C00E07B00 /* AccountColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49569151B2DB50C00E07B00 /* AccountColor.swift */; };
 		E49569181B2DC87000E07B00 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = E49569171B2DC87000E07B00 /* Assets */; };
+		E4C378FC1B356ED600385D87 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C378FB1B356ED600385D87 /* RegisterViewController.swift */; };
+		E4C378FE1B35CC3B00385D87 /* FriendInvitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C378FD1B35CC3B00385D87 /* FriendInvitesViewController.swift */; };
 		E4DC32961B24682900FA16C3 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4DC32951B24682900FA16C3 /* Login.storyboard */; };
 		E4DC32981B24686100FA16C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4DC32971B24686100FA16C3 /* Main.storyboard */; };
 		E4DC329A1B2468AB00FA16C3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */; };
@@ -85,6 +87,8 @@
 		E48BC65A1B21FC0700A5E58F /* TransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
 		E49569151B2DB50C00E07B00 /* AccountColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountColor.swift; sourceTree = "<group>"; };
 		E49569171B2DC87000E07B00 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
+		E4C378FB1B356ED600385D87 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		E4C378FD1B35CC3B00385D87 /* FriendInvitesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendInvitesViewController.swift; sourceTree = "<group>"; };
 		E4DC32951B24682900FA16C3 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Login.storyboard; path = Storyboards/Login.storyboard; sourceTree = "<group>"; };
 		E4DC32971B24686100FA16C3 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
 		E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -247,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */,
+				E4C378FB1B356ED600385D87 /* RegisterViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -391,6 +396,7 @@
 			children = (
 				E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */,
 				E47B28E41B24D10300853EC2 /* SelectUsersViewController.swift */,
+				E4C378FD1B35CC3B00385D87 /* FriendInvitesViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -567,6 +573,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E48BC65B1B21FC0700A5E58F /* TransactionsViewController.swift in Sources */,
+				E4C378FE1B35CC3B00385D87 /* FriendInvitesViewController.swift in Sources */,
 				E46CCFAB1B285BFA000ACFE2 /* BaseViewController+Extension.swift in Sources */,
 				E48BC64E1B21EB7400A5E58F /* AppDelegate.swift in Sources */,
 				E48BC64F1B21EB7400A5E58F /* RelationStatus.swift in Sources */,
@@ -582,6 +589,7 @@
 				E49569161B2DB50C00E07B00 /* AccountColor.swift in Sources */,
 				E41A30491B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift in Sources */,
 				E4EAA99F1B2ED1C100C021C0 /* BoolSettingViewController.swift in Sources */,
+				E4C378FC1B356ED600385D87 /* RegisterViewController.swift in Sources */,
 				E48BC64D1B21EB7400A5E58F /* Purchase.swift in Sources */,
 				E47B28E51B24D10300853EC2 /* SelectUsersViewController.swift in Sources */,
 				E458F9741B3461C700FC4E20 /* UIView+Extension.swift in Sources */,

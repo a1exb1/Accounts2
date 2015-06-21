@@ -51,4 +51,27 @@ extension ACFormViewController: UITableViewDelegate {
         
         return kTableViewCellHeight
     }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        view.endEditing(true)
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let c = super.tableView(tableView, cellForRowAtIndexPath: indexPath)
+        
+        if let cell = c as? FormViewTextFieldCell {
+            
+            let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 40))
+            toolbar.items = [
+                UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil),
+                UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "done")
+            ]
+            
+            cell.textField.inputAccessoryView = toolbar
+        }
+        
+        return c
+    }
 }
