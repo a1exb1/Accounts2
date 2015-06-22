@@ -38,11 +38,25 @@ class ACFormViewController: FormViewController {
         navigationController?.navigationBar.addSubview(blurView)
     }
     
-//    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-//        super.didRotateFromInterfaceOrientation(fromInterfaceOrientation)
-//        
-//        setupNavigationBarAppearance()
-//    }
+    func done() {
+        
+        view.endEditing(true)
+    }
+    
+    override func setupTableViewConstraints(tableView: UITableView) {
+        
+        tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        tableView.addLeftConstraint(toView: view, attribute: NSLayoutAttribute.Left, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
+        tableView.addRightConstraint(toView: view, attribute: NSLayoutAttribute.Right, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
+        
+        tableView.addWidthConstraint(relation: NSLayoutRelation.LessThanOrEqual, constant: kTableViewMaxWidth)
+        
+        tableView.addTopConstraint(toView: view, relation: .Equal, constant: 0)
+        tableView.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
+        
+        tableView.addCenterXConstraint(toView: view)
+    }
 }
 
 extension ACFormViewController: UITableViewDelegate {
@@ -63,7 +77,7 @@ extension ACFormViewController: UITableViewDelegate {
         
         if let cell = c as? FormViewTextFieldCell {
             
-            let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 40))
+            let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
             toolbar.items = [
                 UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil),
                 UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "done")

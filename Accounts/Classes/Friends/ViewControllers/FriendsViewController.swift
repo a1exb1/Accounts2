@@ -55,13 +55,23 @@ class FriendsViewController: ACBaseViewController {
         toolbar.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
         toolbar.addHeightConstraint(relation: .Equal, constant: 40)
         
-        toolbar.items = [UIBarButtonItem(image: kFriendInvitesIcon, style: .Plain, target: self, action: "friendInvites")]
+        friendInvitesBarButtonItem = UIBarButtonItem(image: kFriendInvitesIcon, style: .Plain, target: self, action: "friendInvites")
+        
+        toolbar.items = [friendInvitesBarButtonItem!]
         toolbar.tintColor = kViewBackgroundGradientTop
     }
     
     func friendInvites() {
         
+        let view = FriendInvitesViewController()
+        let v = UINavigationController(rootViewController: view)
         
+        v.modalPresentationStyle = .Popover
+        v.preferredContentSize = kPopoverContentSize
+        v.popoverPresentationController?.barButtonItem = friendInvitesBarButtonItem
+        v.popoverPresentationController?.delegate = self
+        
+        presentViewController(v, animated: true, completion: nil)
     }
     
     func data() -> Array<Array<User>> {
@@ -136,21 +146,6 @@ class FriendsViewController: ACBaseViewController {
         
         presentViewController(v, animated: true, completion: nil)
     }
-    
-    override func setupTableViewConstraints(tableView: UITableView) {
-        
-        tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
-        
-        tableView.addLeftConstraint(toView: view, attribute: NSLayoutAttribute.Left, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
-        tableView.addRightConstraint(toView: view, attribute: NSLayoutAttribute.Right, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
-        
-        tableView.addWidthConstraint(relation: NSLayoutRelation.LessThanOrEqual, constant: kTableViewMaxWidth)
-        
-        tableView.addTopConstraint(toView: view, relation: .Equal, constant: 0)
-        tableView.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
-        
-        tableView.addCenterXConstraint(toView: view)
-    }
 }
 
 extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
@@ -182,8 +177,8 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         let readableText = friend.localeDifferenceBetweenActiveUser < 0 ? "You owe" : "Owes you"
         let tintColor = friend.localeDifferenceBetweenActiveUser < 0 ? AccountColor.negativeColor() : AccountColor.positiveColor()
         
-        cell.imageView?.image = friend.localeDifferenceBetweenActiveUser < 0 ? kMinusImage : kPlusImage
-        cell.imageView?.tintWithColor(tintColor)
+        //cell.imageView?.image = friend.localeDifferenceBetweenActiveUser < 0 ? kMinusImage : kPlusImage
+        //cell.imageView?.tintWithColor(tintColor)
         
         cell.detailTextLabel?.text = Formatter.formatCurrencyAsString(amount)
         cell.detailTextLabel?.textColor = tintColor

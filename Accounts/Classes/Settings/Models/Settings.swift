@@ -11,8 +11,6 @@ import SwiftyUserDefaults
 
 let kCurrencySettingKey = "Currency"
 
-let kCompresJSONSettingsKeys = (compresJSONEncryptKey: "compresJSONEncrypt", compresJSONCompressKey: "compresJSONCompress", acceptEncodingKey: "alamofireAcceptEncoding", httpsEnabledKey: "HTTPSEnabled")
-
 private let kCurrencySettingLocaleDictionary: Dictionary<String, String> = [
     "GBP": "en_GB",
     "DKK": "da_DK"
@@ -45,19 +43,5 @@ class Settings: NSObject {
             
             Defaults[key] = value
         }
-    }
-    
-    //MARK: - CompresJSON
-    
-    class func getCompresJSONSettings() -> (compresJSONEncrypt: Bool, compresJSONCompress: Bool, acceptEncoding: String, httpsEnabled: Bool) {
-        
-        let keys = kCompresJSONSettingsKeys
-        
-        setDefaultValueIfNotExistsForKey(keys.compresJSONEncryptKey, value: false)
-        setDefaultValueIfNotExistsForKey(keys.compresJSONCompressKey, value: false)
-        setDefaultValueIfNotExistsForKey(keys.acceptEncodingKey, value: "deflate")
-        setDefaultValueIfNotExistsForKey(keys.httpsEnabledKey, value: false)
-        
-        return (compresJSONEncrypt: Defaults[keys.compresJSONEncryptKey].bool!,  compresJSONCompress: Defaults[keys.compresJSONCompressKey].bool!, acceptEncoding: Defaults[keys.acceptEncodingKey].string!, httpsEnabled: Defaults[keys.httpsEnabledKey].bool!)
     }
 }

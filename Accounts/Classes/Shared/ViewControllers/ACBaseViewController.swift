@@ -37,6 +37,21 @@ class ACBaseViewController: BaseViewController {
         
         navigationController?.navigationBar.addSubview(blurView)
     }
+    
+    override func setupTableViewConstraints(tableView: UITableView) {
+        
+        tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        tableView.addLeftConstraint(toView: view, attribute: NSLayoutAttribute.Left, relation: NSLayoutRelation.GreaterThanOrEqual, constant: 0)
+        tableView.addRightConstraint(toView: view, attribute: NSLayoutAttribute.Right, relation: NSLayoutRelation.GreaterThanOrEqual, constant: 0)
+        
+        tableView.addWidthConstraint(relation: NSLayoutRelation.LessThanOrEqual, constant: kTableViewMaxWidth)
+        
+        tableView.addTopConstraint(toView: view, relation: .Equal, constant: 0)
+        tableView.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
+        
+        tableView.addCenterXConstraint(toView: view)
+    }
 }
 
 extension ACBaseViewController: UITableViewDelegate {

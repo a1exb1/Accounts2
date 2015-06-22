@@ -9,45 +9,12 @@
 import UIKit
 import ABToolKit
 
-//class LoginViewController: ACFormViewController {
-//    
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        
-//        setupTableView(tableView, delegate: self, dataSource: self)
-//    }
-//    
-//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        
-//        return UITableViewCell()
-//    }
-//    
-//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        return 1
-//    }
-//    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return 1
-//    }
-//    
-//    func scrollViewDidScroll(scrollView: UIScrollView) {
-//        
-//        println("hi")
-//    }
-//}
-
-
 class LoginViewController: ACFormViewController {
 
     var user = User()
     
     override func viewDidLoad() {
-        formViewDelegate = self
-        
         super.viewDidLoad()
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .Plain, target: self, action: "login")
-        navigationItem.rightBarButtonItem?.tintColor = kNavigationBarPositiveActionColor
         
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             
@@ -55,6 +22,8 @@ class LoginViewController: ACFormViewController {
         }
         
         title = "Login"
+        
+        showOrHideLoginButton()
     }
     
     override func setupView() {
@@ -88,19 +57,12 @@ class LoginViewController: ACFormViewController {
         }
     }
     
-    override func setupTableViewConstraints(tableView: UITableView) {
+    func showOrHideLoginButton() {
         
-        tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .Plain, target: self, action: "login")
+        navigationItem.rightBarButtonItem?.tintColor = kNavigationBarPositiveActionColor
         
-        tableView.addLeftConstraint(toView: view, attribute: NSLayoutAttribute.Left, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
-        tableView.addRightConstraint(toView: view, attribute: NSLayoutAttribute.Right, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
-        
-        tableView.addWidthConstraint(relation: NSLayoutRelation.LessThanOrEqual, constant: kTableViewMaxWidth)
-        
-        tableView.addTopConstraint(toView: view, relation: .Equal, constant: 0)
-        tableView.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
-        
-        tableView.addCenterXConstraint(toView: view)
+        navigationItem.rightBarButtonItem?.enabled = user.modelIsValidForLogin()
     }
 }
 
@@ -131,6 +93,11 @@ extension LoginViewController: FormViewDelegate {
             
         default: break;
         }
+    }
+    
+    func formViewElementDidChange(identifier: String, value: AnyObject?) {
+        
+        showOrHideLoginButton()
     }
 }
 

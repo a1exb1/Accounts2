@@ -35,7 +35,7 @@ let kNavigationBarStyle = UIBarStyle.Default
 
 let kFormDeleteButtonTextColor = AccountColor.negativeColor()
 
-let kTableViewMaxWidth:CGFloat = 500
+let kTableViewMaxWidth:CGFloat = 540
 let kTableViewCellIpadCornerRadiusSize = CGSize(width: 10, height: 10)
 
 @UIApplicationMain
@@ -58,8 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         JSONMappingDefaults.sharedInstance().webApiSendDateFormat = DateFormat.ISO8601.rawValue
         JSONMappingDefaults.sharedInstance().dateFormat = DateFormat.ISO8601.rawValue
         
-        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders =
-            [
+        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders = [
                 "Accept-Encoding1": "deflate",
                 "Accept-Encoding": "deflate"
         ]
@@ -111,12 +110,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setupAppearances() {
         
         UINavigationBar.appearance().tintColor = kNavigationBarTintColor
-        UINavigationBar.appearance().barTintColor = kNavigationBarBarTintColor
+        //UINavigationBar.appearance().barTintColor = kNavigationBarBarTintColor
         //UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(kNavigationBarBarTintColor, size: CGSize(width: 10, height: 10)), forBarMetrics: UIBarMetrics.Default)
         UINavigationBar.appearance().barStyle = kNavigationBarStyle
         
-        UITableViewCell.appearance().tintColor = kViewBackgroundGradientTop
+        UIToolbar.appearance().tintColor = kNavigationBarTintColor
+        
+        UITableViewCell.appearance().tintColor = kNavigationBarTintColor
     }
     
     private func setWindowToLogin() {

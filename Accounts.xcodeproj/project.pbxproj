@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		31D41566C543FDE2CACFBFC5 /* Pods_Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 229CCD75CA20DE50201D6067 /* Pods_Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E412DF151B370C9600619C70 /* FindFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E412DF141B370C9600619C70 /* FindFriendsViewController.swift */; };
 		E41A30491B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41A30481B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift */; };
 		E458F9741B3461C700FC4E20 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E458F9731B3461C700FC4E20 /* UIView+Extension.swift */; };
 		E46CCFA51B284F53000ACFE2 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46CCFA41B284F53000ACFE2 /* Formatter.swift */; };
@@ -57,6 +58,7 @@
 		229CCD75CA20DE50201D6067 /* Pods_Accounts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Accounts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D804DC3FB800178FC10E9A7 /* Pods-Accounts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accounts.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Accounts/Pods-Accounts.debug.xcconfig"; sourceTree = "<group>"; };
 		AC1D59DEE6922AAEB08C5128 /* Pods-Accounts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accounts.release.xcconfig"; path = "Pods/Target Support Files/Pods-Accounts/Pods-Accounts.release.xcconfig"; sourceTree = "<group>"; };
+		E412DF141B370C9600619C70 /* FindFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsViewController.swift; sourceTree = "<group>"; };
 		E41A30481B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPurchaseOrTransactionViewController.swift; sourceTree = "<group>"; };
 		E458F9731B3461C700FC4E20 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		E46CCFA41B284F53000ACFE2 /* Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 				E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */,
 				E47B28E41B24D10300853EC2 /* SelectUsersViewController.swift */,
 				E4C378FD1B35CC3B00385D87 /* FriendInvitesViewController.swift */,
+				E412DF141B370C9600619C70 /* FindFriendsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -586,6 +589,7 @@
 				E48BC6591B21EBA200A5E58F /* FriendsViewController.swift in Sources */,
 				E46CCFA71B285A61000ACFE2 /* ACFormViewController.swift in Sources */,
 				E47B28E11B249FFC00853EC2 /* Friend.swift in Sources */,
+				E412DF151B370C9600619C70 /* FindFriendsViewController.swift in Sources */,
 				E49569161B2DB50C00E07B00 /* AccountColor.swift in Sources */,
 				E41A30491B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift in Sources */,
 				E4EAA99F1B2ED1C100C021C0 /* BoolSettingViewController.swift in Sources */,

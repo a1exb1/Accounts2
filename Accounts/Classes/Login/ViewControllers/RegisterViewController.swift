@@ -23,6 +23,8 @@ class RegisterViewController: ACFormViewController {
             
             tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         }
+        
+        showOrHideRegisterButton()
     }
     
     override func setupView() {
@@ -31,19 +33,21 @@ class RegisterViewController: ACFormViewController {
         view.backgroundColor = UIColor.groupTableViewBackgroundColor()
     }
     
-    override func setupTableViewConstraints(tableView: UITableView) {
+    func showOrHideRegisterButton() {
         
-        tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .Plain, target: self, action: "register")
+        navigationItem.rightBarButtonItem?.tintColor = kNavigationBarPositiveActionColor
         
-        tableView.addLeftConstraint(toView: view, attribute: NSLayoutAttribute.Left, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
-        tableView.addRightConstraint(toView: view, attribute: NSLayoutAttribute.Right, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
+        navigationItem.rightBarButtonItem?.enabled = user.modelIsValid()
+    }
+    
+    func register() {
         
-        tableView.addWidthConstraint(relation: NSLayoutRelation.LessThanOrEqual, constant: kTableViewMaxWidth)
-        
-        tableView.addTopConstraint(toView: view, relation: .Equal, constant: 0)
-        tableView.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
-        
-        tableView.addCenterXConstraint(toView: view)
+        user.register()?.onContextSuccess({ () -> () in
+            
+            var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
+            self.presentViewController(v, animated: true, completion: nil)
+        })
     }
 }
 
@@ -59,6 +63,32 @@ extension RegisterViewController: FormViewDelegate {
         ])
         return sections
     }
+    
+    func formViewElementDidChange(identifier: String, value: AnyObject?) {
+
+        showOrHideRegisterButton()
+    }
+    
+    func formViewTextFieldEditingChanged(identifier: String, text: String) {
+        
+        switch identifier {
+            
+        case "Username":
+            user.Username = text
+            break
+            
+        case "Password":
+            user.Password = text
+            break;
+            
+        case "Email":
+            user.Email = text
+            break
+            
+            
+        default: break;
+        }
+    }
 }
 
 extension RegisterViewController: UITableViewDelegate {
@@ -67,7 +97,7 @@ extension RegisterViewController: UITableViewDelegate {
         
         let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FormViewTextFieldCell
         
-        if indexPath.row == 1 {
+        if indexPath.row == 2 {
             
             cell.textField.autocapitalizationType = UITextAutocapitalizationType.None
             cell.textField.secureTextEntry = true

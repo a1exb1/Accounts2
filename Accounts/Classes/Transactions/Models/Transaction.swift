@@ -11,7 +11,7 @@ import ABToolKit
 import SwiftyJSON
 import Alamofire
 
-class Transaction: CompresJSONObject {
+class Transaction: JSONObject {
    
     var TransactionID: Int = 0
     var user = User()
@@ -117,7 +117,7 @@ class Transaction: CompresJSONObject {
         return errors.count == 0
     }
     
-    func save() -> CompresJsonRequest? {
+    func save() -> JsonRequest? {
         
         if !modelIsValid() {
             
@@ -132,7 +132,7 @@ class Transaction: CompresJSONObject {
         params["UserID"] = user.UserID
         params["RelationUserID"] = friend.UserID
         
-        return CompresJsonRequest.create(url, parameters: params, method: httpMethod).onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
+        return JsonRequest.create(url, parameters: params, method: httpMethod).onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
             
             if httpUrlResponse?.statusCode == 200 || httpUrlResponse?.statusCode == 201 || httpUrlResponse?.statusCode == 204 {
                 
@@ -147,6 +147,6 @@ class Transaction: CompresJSONObject {
             
             alert.show()
             
-        }) as? CompresJsonRequest
+        })
     }
 }

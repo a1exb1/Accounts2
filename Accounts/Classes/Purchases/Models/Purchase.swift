@@ -11,7 +11,7 @@ import ABToolKit
 import Alamofire
 import SwiftyJSON
 
-class Purchase: CompresJSONObject {
+class Purchase: JSONObject {
    
     var PurchaseID: Int = 0
     var friends: [User] = []
@@ -82,7 +82,7 @@ class Purchase: CompresJSONObject {
         user = User.createObjectFromJson(json["User"])
     }
     
-    func save() -> CompresJsonRequest? {
+    func save() -> JsonRequest? {
         
         if !modelIsValid() {
             
@@ -116,7 +116,7 @@ class Purchase: CompresJSONObject {
         params["DateEntered"] = DateEntered.toString(JSONMappingDefaults.sharedInstance().webApiSendDateFormat)
         params["DatePurchased"] = DatePurchased.toString(JSONMappingDefaults.sharedInstance().webApiSendDateFormat)
         
-        return CompresJsonRequest.create(urlString, parameters: params, method: httpMethod).onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
+        return JsonRequest.create(urlString, parameters: params, method: httpMethod).onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
             println(httpUrlResponse!.statusCode)
             if httpUrlResponse?.statusCode == 200 || httpUrlResponse?.statusCode == 201 || httpUrlResponse?.statusCode == 204 {
                 
@@ -127,7 +127,7 @@ class Purchase: CompresJSONObject {
                 request.failContext()
             }
             
-        }) as? CompresJsonRequest
+        })
     }
     
     func splitTheBill() {

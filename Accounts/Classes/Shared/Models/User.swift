@@ -12,10 +12,11 @@ import SwiftyJSON
 
 private let kActiveUserDefaultsKey = "activeUser"
 
-class User: CompresJSONObject {
+class User: JSONObject {
     
     var UserID = 0
     var Username = ""
+    var Email = ""
     var Password = ""
     var friends: Array<User> = []
     
@@ -68,9 +69,9 @@ class User: CompresJSONObject {
     }
     
     
-    class func login(username: String, password: String) -> CompresJsonRequest {
+    class func login(username: String, password: String) -> JsonRequest {
         
-        return CompresJsonRequest.create("http://alex.bechmann.co.uk/iou/api/Users/Login/?Username=\(username)&Password=\(password)", parameters: nil, method: .POST).onDownloadSuccessWithRequestInfo { (json, request, httpRequest, httpResponse) -> () in
+        return JsonRequest.create("http://alex.bechmann.co.uk/iou/api/Users/Login/?Username=\(username)&Password=\(password)", parameters: nil, method: .POST).onDownloadSuccessWithRequestInfo { (json, request, httpRequest, httpResponse) -> () in
             
             if httpResponse?.statusCode == 200 {
                 
@@ -84,7 +85,45 @@ class User: CompresJSONObject {
                 
                 request.failContext()
             }
-        } as! CompresJsonRequest
+        }
+    }
+    
+    func register() -> JsonRequest? {
+        
+        return webApiInsert()?.onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
+            
+            let statusCode = httpUrlResponse?.statusCode
+            
+            if statusCode == 201 {
+                
+                var user: User = User.createObjectFromJson(json)
+                User.saveUserOnDevice(user as User?)
+                kActiveUser = user
+                
+                request.succeedContext()
+            }
+            else{
+                
+                let errors = json["ModelState"]["Error"].arrayValue
+                println(json["ModelState"])
+                println(json["ModelState"]["Error"])
+                
+                if errors.count > 0 {
+                    
+                    for error in errors {
+                        
+                        UIAlertView(title: "Error", message: error.stringValue, delegate: nil, cancelButtonTitle: "OK")
+                        println(error)
+                    }
+                }
+                
+                request.failContext()
+            }
+            
+            //println(json)
+        })
+        
+        
     }
     
     func logout() {
@@ -103,49 +142,65 @@ class User: CompresJSONObject {
 //        })
 //    }
     
-    func getFriends() -> CompresJsonRequest {
+    func getFriends() -> JsonRequest {
         
         let s: String = User.webApiUrls().getUrl(UserID)!
         
         let url = "\(s)/Friends"
 
-        return CompresJsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
+        return JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
             
             self.friends = User.convertJsonToMultipleObjects(User.self, json: json)
-        }) as! CompresJsonRequest
+        })
     }
     
-    func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> CompresJsonRequest {
+    func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
         
         let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate%20desc" // not doing it for purchases
         
-        let request = CompresJsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
+        let request = JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
             
             let transactions:Array<Transaction> = Transaction.convertJsonToMultipleObjects(Transaction.self, json: json)
             completion(transactions: transactions)
-        }) as! CompresJsonRequest
+        })
         
         return request
     }
     
     func getUnconfirmedInvites(completion:(invites:Array<User>) -> ()) -> JsonRequest {
         
-        var urlString = "\(User.webApiUrls().getUrl(UserID))/FriendInvites"
-    
-        return JsonRequest.create(urlString, parameters: nil, method: .POST).onDownloadSuccess { (json, request) -> () in
+        var urlString = "\(User.webApiUrls().getUrl(UserID)!)/FriendInvitations"
+
+        return JsonRequest.create(urlString, parameters: nil, method: .GET).onDownloadSuccess { (json, request) -> () in
+
+            var invites = Array<User>()
             
-            let invites: Array<User> = User.convertJsonToMultipleObjects(User.self, json: json["User"])
+            for (index: String, subJson: JSON) in json {
+                
+                let user:User = User.createObjectFromJson(subJson["User"])
+                invites.append(user)
+            }
+
             completion(invites: invites)
         }
     }
     
-    func addFriend(relationUserID:Int, completion: () -> ()) {
+    func addFriend(relationUserID:Int, completion: (success: Bool) -> ()) {
         
-        var urlString = "\(User.webApiUrls().getUrl(UserID))/AddFriend/\(relationUserID)"
+        let urlString = "\(User.webApiUrls().getUrl(UserID)!)/AddFriend/\(relationUserID)"
         
-        JsonRequest.create(urlString, parameters: nil, method: .POST).onDownloadSuccess { (json, request) -> () in
+        JsonRequest.create(urlString, parameters: nil, method: .POST).onDownloadSuccessWithRequestInfo { (json, request, httpUrlRequest, httpUrlResponse) -> () in
             
-            completion()
+            let success = httpUrlResponse?.statusCode == 200
+            
+            if success {
+                
+                completion(success: true)
+            }
+            else {
+                
+                completion(success: false)
+            }
         }
     }
     
@@ -232,10 +287,7 @@ class User: CompresJSONObject {
 //        return rc
 //    }
 
-    func register() -> JsonRequest? {
-        
-        return webApiInsert()
-    }
+    
     
     class func activeUsersContaining(string: String, completion:(users:Array<User>) -> ()) -> JsonRequest {
         
@@ -280,5 +332,15 @@ class User: CompresJSONObject {
         }
         
         return usersToChooseFrom
+    }
+    
+    override func modelIsValid() -> Bool {
+        
+        return Username.length() > 0 && Password.length() > 0 && Email.length() > 0
+    }
+    
+    func modelIsValidForLogin() -> Bool {
+        
+        return Username.length() > 0 && Password.length() > 0
     }
 }
