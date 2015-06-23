@@ -12,6 +12,7 @@ import ABToolKit
 class ACBaseViewController: BaseViewController {
 
     var blurView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.ExtraLight))
+    var gradient: CAGradientLayer = CAGradientLayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +52,12 @@ class ACBaseViewController: BaseViewController {
         tableView.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
         
         tableView.addCenterXConstraint(toView: view)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        gradient.frame = view.frame
     }
 }
 

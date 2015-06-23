@@ -42,10 +42,10 @@
             </objects>
             <point key="canvasLocation" x="1233" y="259"/>
         </scene>
-        <!--Register View Controller-->
+        <!--Save User View Controller-->
         <scene sceneID="dco-4S-qO8">
             <objects>
-                <viewController id="Nj3-pW-TP7" customClass="RegisterViewController" customModule="Accounts" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Nj3-pW-TP7" customClass="SaveUserViewController" customModule="Accounts" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wgT-OF-epW"/>
                         <viewControllerLayoutGuide type="bottom" id="DJy-Ib-iVE"/>

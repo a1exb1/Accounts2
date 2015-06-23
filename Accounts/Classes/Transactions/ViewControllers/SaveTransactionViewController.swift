@@ -116,7 +116,7 @@ extension SaveTransactionViewController: FormViewDelegate {
         sections.append([
             FormViewConfiguration.normalCell("User"),
             FormViewConfiguration.normalCell("Friend"),
-            FormViewConfiguration.textField("Transaction date", value: transaction.TransactionDate.toString(DateFormat.DateTime.rawValue), identifier: "TransactionDate")
+            FormViewConfiguration.datePicker("Transaction date", date: transaction.TransactionDate, identifier: "TransactionDate", format: nil)
         ])
         
         if transaction.TransactionID > 0 {
@@ -155,6 +155,15 @@ extension SaveTransactionViewController: FormViewDelegate {
         }
         
         return UITableViewCell()
+    }
+    
+    
+    func formViewDateChanged(identifier: String, date: NSDate) {
+        
+        if identifier == "TransactionDate" {
+            
+            transaction.TransactionDate = date
+        }
     }
     
     func formViewTextFieldEditingChanged(identifier: String, text: String) {
@@ -211,11 +220,6 @@ extension SaveTransactionViewController: FormViewDelegate {
     }
     
     override func formViewElementIsEditable(identifier: String) -> Bool {
-        
-        if identifier == "TransactionDate" {
-            
-            return false
-        }
         
         return allowEditing
     }

@@ -10,10 +10,19 @@
 import UIKit
 import ABToolKit
 
+private let kUnconfirmedInvitesSection = 0
+private let kUnconfirmedSentInvitesSection = 1
+
+protocol FriendInvitesDelegate {
+    
+    func friendsChanged()
+}
+
 class FriendInvitesViewController: ACBaseViewController {
 
-    var tableView = UITableView()
-    var invites:Array<Array<User>> = [[]]
+    var tableView = UITableView(frame: CGRectZero, style: .Grouped)
+    var invites:Array<Array<User>> = []
+    var delegate: FriendInvitesDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +35,20 @@ class FriendInvitesViewController: ACBaseViewController {
         tableView.setEditing(true, animated: false)
         
         addCloseButton()
+        view.showLoader()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "findFriends")
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if isInsidePopover() {
+            
+            navigationController?.view.backgroundColor = UIColor.clearColor()
+            view.backgroundColor = UIColor.clearColor()
+            tableView.backgroundColor = UIColor.clearColor()
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -36,22 +57,17 @@ class FriendInvitesViewController: ACBaseViewController {
         refresh(nil)
     }
 
-    override func setupTableView(tableView: UITableView, delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
-        super.setupTableView(tableView, delegate: delegate, dataSource: dataSource)
-        
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-    }
-    
     override func refresh(refreshControl: UIRefreshControl?) {
         
-        kActiveUser.getUnconfirmedInvites { (invites) -> () in
+        kActiveUser.getInvites { (invites) -> () in
             
-            self.invites[0] = invites
+            self.invites = invites
             
         }.onDownloadFinished { () -> () in
             
             self.tableView.reloadData()
             refreshControl?.endRefreshing()
+            self.view.hideLoader()
         }
     }
     
@@ -83,38 +99,60 @@ extension FriendInvitesViewController: UITableViewDelegate, UITableViewDataSourc
         let user = invites[indexPath.section][indexPath.row]
         
         cell.textLabel?.text = user.Username
-        cell.detailTextLabel?.text = "Accept invite"
+        
+        if indexPath.section == kUnconfirmedInvitesSection {
+            
+            cell.detailTextLabel?.text = "Accept invite"
+            cell.detailTextLabel?.textColor = AccountColor.greenColor()
+        }
+        
+        else {
+            
+            cell.detailTextLabel?.text = "Pending"
+            cell.detailTextLabel?.textColor = UIColor.lightGrayColor()
+        }
         
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        let user = invites[indexPath.section][indexPath.row]
-        
-        kActiveUser.addFriend(user.UserID, completion: { (success) -> () in
+        if indexPath.section == kUnconfirmedInvitesSection {
             
-            self.refresh(nil)
-        })
+            let user = invites[indexPath.section][indexPath.row]
+            
+            tableView.beginUpdates()
+            invites[indexPath.section].removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
+            tableView.endUpdates()
+            
+            kActiveUser.addFriend(user.UserID, completion: { (success) -> () in
+                
+                self.refresh(nil)
+                self.delegate?.friendsChanged()
+            })
+        }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-//        if section == 0 {
-//            
-//            return "Pending invites sent"
-//        }
-//        if section == 1 {
-//            
-//            return "Pending invites received"
-//        }
+        if section == 0 {
+            
+            return "Invites received"
+        }
+        if section == 1 {
+            
+            return "Invites sent"
+        }
         
         return ""
     }
     
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         
-        return UITableViewCellEditingStyle.Insert
+        return indexPath.section == kUnconfirmedInvitesSection ? UITableViewCellEditingStyle.Insert : .Delete
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -126,9 +164,23 @@ extension FriendInvitesViewController: UITableViewDelegate, UITableViewDataSourc
         
         let user = invites[indexPath.section][indexPath.row]
         
-        kActiveUser.addFriend(user.UserID, completion: { (success) -> () in
+        if indexPath.section == kUnconfirmedInvitesSection && editingStyle == .Insert {
             
-            self.refresh(nil)
-        })
+            kActiveUser.addFriend(user.UserID, completion: { (success) -> () in
+                
+                self.refresh(nil)
+                self.delegate?.friendsChanged()
+            })
+        }
+        
+        if indexPath.section == kUnconfirmedSentInvitesSection && editingStyle == .Delete {
+            
+            kActiveUser.removeFriend(user.UserID, completion: { (success) -> () in
+                
+                self.refresh(nil)
+            })
+        }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 }

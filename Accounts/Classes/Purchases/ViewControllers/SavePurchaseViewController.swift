@@ -109,7 +109,7 @@ extension SavePurchaseViewController: FormViewDelegate {
         sections.append([
             FormViewConfiguration.normalCell("User"),
             FormViewConfiguration.normalCell("Friends"),
-            FormViewConfiguration.textField("Date Purchased", value: purchase.DatePurchased.toString(DateFormat.DateTime.rawValue), identifier: "DatePurchased")
+            FormViewConfiguration.datePicker("Date Purchased", date: purchase.DatePurchased, identifier: "DatePurchased", format: nil)
         ])
         
         if purchase.PurchaseID > 0 {
@@ -177,7 +177,10 @@ extension SavePurchaseViewController: FormViewDelegate {
     
     func formViewDateChanged(identifier: String, date: NSDate) {
         
-        
+        if identifier == "DatePurchased" {
+            
+            purchase.DatePurchased = date
+        }
     }
     
     func formViewManuallySetCell(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, identifier: String) -> UITableViewCell {
@@ -220,11 +223,6 @@ extension SavePurchaseViewController: FormViewDelegate {
     }
     
     override func formViewElementIsEditable(identifier: String) -> Bool {
-        
-        if identifier == "DatePurchased" {
-            
-            return false
-        }
         
         return allowEditing
     }

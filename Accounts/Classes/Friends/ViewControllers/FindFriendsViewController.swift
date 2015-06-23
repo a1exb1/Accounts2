@@ -15,13 +15,12 @@ class FindFriendsViewController: BaseViewController {
     var tableView = UITableView()
     var matches = [User]()
     var searchController = UISearchController(searchResultsController: nil)
+    var request: JsonRequest?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         title = "Add friend"
-        
-        edgesForExtendedLayout = UIRectEdge.None;
         
         setupTableView(tableView, delegate: self, dataSource: self)
         tableView.allowsSelectionDuringEditing = true
@@ -37,34 +36,21 @@ class FindFriendsViewController: BaseViewController {
         
         searchController.delegate = self
         searchBar.delegate = self
-        
+
         tableView.tableHeaderView = searchBar
         searchBar.sizeToFit()
-        tableView.contentInset = UIEdgeInsets(top: searchBar.frame.height, left: 0, bottom: 0, right: 0)
-        
+
         searchController.dimsBackgroundDuringPresentation = false
-        
-        view.addSubview(searchController.searchBar)
     }
     
     func getMatches(searchText: String) {
     
-        JsonRequest.create("\(User.webApiUrls().getUrl(kActiveUser.UserID)!)/ActiveUsersMatching/\(searchText)", parameters: nil, method: .GET).onDownloadSuccess { (json, request) -> () in
+        request?.cancel()
+        request = JsonRequest.create("\(User.webApiUrls().getUrl(kActiveUser.UserID)!)/ActiveUsersMatching/\(searchText)", parameters: nil, method: .GET).onDownloadSuccess { (json, request) -> () in
             
             self.matches = User.convertJsonToMultipleObjects(User.self, json: json)
             self.tableView.reloadData()
         }
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        searchController.active = false
-        searchController.delegate = nil
-        searchController.searchBar.delegate = nil
-        
-        //searchController.searchBar.removeFromSuperview()
-        
     }
     
     func addFriend(match:User) {
@@ -75,15 +61,16 @@ class FindFriendsViewController: BaseViewController {
             
             if success {
                 
-                self.navigationController?.popViewControllerAnimated(true)
+                UIAlertView(title: "Invitation sent!", message: "Please wait for your invite to be accepted!", delegate: nil, cancelButtonTitle: "OK").show()
+                self.searchController.searchBar.text = ""
+                self.matches = []
+                self.tableView.reloadData()
             }
             else {
                 
                 UIAlertView(title: "Oops!", message: "Something went wrong!", delegate: self, cancelButtonTitle: "OK").show()
             }
         })
-        
-        
     }
 }
 
@@ -110,6 +97,7 @@ extension FindFriendsViewController: UITableViewDelegate, UITableViewDataSource 
         
         cell.textLabel?.text = match.Username
         cell.detailTextLabel?.text = "Add as friend"
+        cell.detailTextLabel?.textColor = AccountColor.greenColor()
         
         return cell
     }

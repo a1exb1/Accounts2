@@ -30,8 +30,11 @@ class FriendsViewController: ACBaseViewController {
         
         setupTableView(tableView, delegate: self, dataSource: self)
         
+        friendInvitesBarButtonItem = UIBarButtonItem(image: kFriendInvitesIcon, style: .Plain, target: self, action: "friendInvites")
+        
         navigationItem.leftBarButtonItems = [
-            UIBarButtonItem(image: kMenuIcon, style: .Plain, target: self, action: "openMenu")
+            UIBarButtonItem(image: kMenuIcon, style: .Plain, target: self, action: "openMenu"),
+            friendInvitesBarButtonItem!
         ]
         
         addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
@@ -39,31 +42,30 @@ class FriendsViewController: ACBaseViewController {
         
         title = "Friends"
         view.showLoader()
-        
-        setBackgroundGradient()
+        gradient = setBackgroundGradient()
         setTableViewAppearanceForBackgroundGradient(tableView)
-        setupToolbar()
     }
     
-    func setupToolbar() {
-        
-        toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
-        view.addSubview(toolbar)
-        
-        toolbar.addLeftConstraint(toView: view, relation: .Equal, constant: 0)
-        toolbar.addRightConstraint(toView: view, relation: .Equal, constant: 0)
-        toolbar.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
-        toolbar.addHeightConstraint(relation: .Equal, constant: 40)
-        
-        friendInvitesBarButtonItem = UIBarButtonItem(image: kFriendInvitesIcon, style: .Plain, target: self, action: "friendInvites")
-        
-        toolbar.items = [friendInvitesBarButtonItem!]
-        toolbar.tintColor = kViewBackgroundGradientTop
-    }
+//    func setupToolbar() {
+//        
+//        toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
+//        view.addSubview(toolbar)
+//        
+//        toolbar.addLeftConstraint(toView: view, relation: .Equal, constant: 0)
+//        toolbar.addRightConstraint(toView: view, relation: .Equal, constant: 0)
+//        toolbar.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
+//        toolbar.addHeightConstraint(relation: .Equal, constant: 40)
+//        
+//        friendInvitesBarButtonItem = UIBarButtonItem(image: kFriendInvitesIcon, style: .Plain, target: self, action: "friendInvites")
+//        
+//        toolbar.items = [friendInvitesBarButtonItem!]
+//        toolbar.tintColor = kViewBackgroundGradientTop
+//    }
     
     func friendInvites() {
         
         let view = FriendInvitesViewController()
+        view.delegate = self
         let v = UINavigationController(rootViewController: view)
         
         v.modalPresentationStyle = .Popover
@@ -114,16 +116,18 @@ class FriendsViewController: ACBaseViewController {
     }
     
     override func refresh(refreshControl: UIRefreshControl?) {
-
-        kActiveUser.getFriends().onDownloadFinished({ () -> () in
+        
+        refreshRequest?.cancel()
+        refreshRequest = kActiveUser.getFriends().onDownloadFinished({ () -> () in
             
             refreshControl?.endRefreshing()
             self.tableView.reloadData()
             self.view.hideLoader()
             
-        }).onDownloadFailure({ (error, alert) -> () in
-            
-            alert.show()
+            UIView.animateWithDuration(0.5, animations: { () -> Void in
+                
+                self.tableView.layer.opacity = 1
+            })
         })
     }
     
@@ -220,11 +224,51 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         
         header.textLabel.textColor = UIColor.whiteColor()
     }
+    
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        
+        return .Delete
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let friend = data()[indexPath.section][indexPath.row]
+        
+        UIAlertController.showAlertControllerWithButtonTitle("Delete", confirmBtnStyle: .Destructive, message: "Are you sure you want to remove \(friend.Username) as a friend?") { (response) -> () in
+            
+            if response == .Confirm {
+                
+                let index = find(kActiveUser.friends, friend)!
+                
+                tableView.beginUpdates()
+                kActiveUser.friends.removeAtIndex(index)
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
+                tableView.endUpdates()
+                
+                kActiveUser.removeFriend(friend.UserID, completion: { (success) -> () in
+
+                    self.refresh(nil)
+                })
+            }
+            else {
+                
+                self.tableView.reloadData()
+            }
+        }
+    }
 }
 
 extension FriendsViewController: UIPopoverPresentationControllerDelegate {
     
     func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
+        
+        refresh(nil)
+    }
+}
+
+extension FriendsViewController: FriendInvitesDelegate {
+    
+    func friendsChanged() {
         
         refresh(nil)
     }

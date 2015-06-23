@@ -156,7 +156,7 @@ class User: JSONObject {
     
     func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
         
-        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate%20desc" // not doing it for purchases
+        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate desc" // not doing it for purchases
         
         let request = JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
             
@@ -167,21 +167,42 @@ class User: JSONObject {
         return request
     }
     
-    func getUnconfirmedInvites(completion:(invites:Array<User>) -> ()) -> JsonRequest {
+    func getInvites(completion:(invites:Array<Array<User>>) -> ()) -> JsonRequest {
         
         var urlString = "\(User.webApiUrls().getUrl(UserID)!)/FriendInvitations"
 
         return JsonRequest.create(urlString, parameters: nil, method: .GET).onDownloadSuccess { (json, request) -> () in
 
-            var invites = Array<User>()
+            var allInvites = Array<Array<User>>()
             
-            for (index: String, subJson: JSON) in json {
+            // UNCONFIRMED INVITES
+            var unconfirmedInvites = Array<User>()
+            
+            let unconfirmedInvitesJSON = json["UnconfirmedInvitations"]
+            
+            for (index: String, subJson: JSON) in unconfirmedInvitesJSON {
                 
                 let user:User = User.createObjectFromJson(subJson["User"])
-                invites.append(user)
+                unconfirmedInvites.append(user)
             }
-
-            completion(invites: invites)
+            
+            // UNCONFIRMED SENT INVITES
+            
+            var unconfirmedSentInvites = Array<User>()
+            
+            let unconfirmedSentInvitesJSON = json["UnconfirmedSentInvitations"]
+            
+            for (index: String, subJson: JSON) in unconfirmedSentInvitesJSON {
+                
+                let user:User = User.createObjectFromJson(subJson["User"])
+                unconfirmedSentInvites.append(user)
+            }
+            
+            
+            allInvites.append(unconfirmedInvites)
+            allInvites.append(unconfirmedSentInvites)
+            
+            completion(invites: allInvites)
         }
     }
     
@@ -191,16 +212,17 @@ class User: JSONObject {
         
         JsonRequest.create(urlString, parameters: nil, method: .POST).onDownloadSuccessWithRequestInfo { (json, request, httpUrlRequest, httpUrlResponse) -> () in
             
-            let success = httpUrlResponse?.statusCode == 200
+            completion(success: httpUrlResponse?.statusCode == 200)
+        }
+    }
+    
+    func removeFriend(relationUserID:Int, completion: (success: Bool) -> ()) {
+        
+        let urlString = "\(User.webApiUrls().getUrl(UserID)!)/RemoveFriend/\(relationUserID)"
+        
+        JsonRequest.create(urlString, parameters: nil, method: .DELETE).onDownloadSuccessWithRequestInfo { (json, request, httpUrlRequest, httpUrlResponse) -> () in
             
-            if success {
-                
-                completion(success: true)
-            }
-            else {
-                
-                completion(success: false)
-            }
+            completion(success: httpUrlResponse?.statusCode == 204)
         }
     }
     
@@ -239,12 +261,14 @@ class User: JSONObject {
         
         self.UserID = decoder.decodeObjectForKey("UserID") as! Int
         self.Username = decoder.decodeObjectForKey("Username") as! String
+        self.Email = decoder.decodeObjectForKey("Email") as! String
     }
     
     func encodeWithCoder(coder: NSCoder) {
         
         coder.encodeObject(UserID, forKey: "UserID")
         coder.encodeObject(Username, forKey: "Username")
+        coder.encodeObject(Email, forKey: "Email")
     }
     
 //    func refreshFriendsList() -> JsonRequest {

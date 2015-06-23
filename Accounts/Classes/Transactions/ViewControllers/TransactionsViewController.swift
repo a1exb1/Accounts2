@@ -36,15 +36,12 @@ class TransactionsViewController: ACBaseViewController {
         addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
         navigationItem.rightBarButtonItem = addBarButtonItem
         
-        view.showLoader()
-        tableView.layer.opacity = 0
-        
-        setBackgroundGradient()
+        gradient = setBackgroundGradient()
         setTableViewAppearanceForBackgroundGradient(tableView)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         refresh(nil)
     }
@@ -82,9 +79,16 @@ class TransactionsViewController: ACBaseViewController {
     
     override func refresh(refreshControl: UIRefreshControl?) {
         
-        var startTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
+        view.showLoader()
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            
+            self.tableView.layer.opacity = 0
+        })
         
-        kActiveUser.getTransactionsBetweenFriend(friend, completion: { (transactions) -> () in
+        var startTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
+    
+        refreshRequest?.cancel()
+        refreshRequest = kActiveUser.getTransactionsBetweenFriend(friend, completion: { (transactions) -> () in
             
             self.transactions = transactions
             
@@ -92,12 +96,9 @@ class TransactionsViewController: ACBaseViewController {
             
             refreshControl?.endRefreshing()
             self.tableView.reloadData()
+            
             self.view.hideLoader()
             self.showOrHideNoDataView()
-            
-        }).onDownloadFailure({ (error, alert) -> () in
-            
-            alert.show()
             
         })
     }

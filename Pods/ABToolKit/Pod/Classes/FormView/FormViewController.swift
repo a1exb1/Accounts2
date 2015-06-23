@@ -41,6 +41,7 @@ public class FormViewController: BaseViewController {
         
         formViewDelegate = self
         
+        shouldAdjustTableViewInsetsForKeyboard = true
         setupTableView(tableView, delegate: self, dataSource: self)
         reloadForm()
     }
@@ -101,17 +102,26 @@ extension FormViewController: UITableViewDelegate, UITableViewDataSource {
     
         let config:FormViewConfiguration = data[indexPath.section][indexPath.row]
         
-        if config.formCellType == FormCellType.TextField || config.formCellType == FormCellType.TextFieldCurrency {
+        if config.formCellType == FormCellType.TextField || config.formCellType == FormCellType.TextFieldCurrency || config.formCellType == FormCellType.DatePicker {
             
             let cell = tableView.dequeueReusableCellWithIdentifier(kTextFieldCellIdenfitier) as! FormViewTextFieldCell
             
             cell.formViewDelegate = formViewDelegate
             cell.config = config
-            
             cell.label.text = config.labelText
-            cell.textField.text = config.value as! String
             
-            return cell
+            if config.formCellType == FormCellType.TextField || config.formCellType == FormCellType.TextFieldCurrency {
+
+                cell.textField.text = config.value as! String
+                
+                return cell
+            }
+            else if config.formCellType == FormCellType.DatePicker {
+            
+                cell.textField.text = (config.value as! NSDate).toString(config.format)
+                
+                return cell
+            }
         }
         else if config.formCellType == FormCellType.Button {
             

@@ -30,6 +30,9 @@ public class FormViewConfiguration {
     //button
     var buttonTextColor = UIColor.blueColor()
     
+    //datepicker
+    var format: String = DateFormat.DateTime.rawValue
+    
     private convenience init(labelText: String, formCellType: FormCellType, value: AnyObject?, identifier: String) {
         
         self.init()
@@ -39,9 +42,16 @@ public class FormViewConfiguration {
         self.identifier = identifier
     }
     
-    public class func date(labelText: String, date: NSDate?, identifier: String) -> FormViewConfiguration {
+    public class func datePicker(labelText: String, date: NSDate?, identifier: String, format: String?) -> FormViewConfiguration {
         
-        return FormViewConfiguration(labelText: labelText, formCellType: FormCellType.DatePicker, value: date, identifier: identifier)
+        let config = FormViewConfiguration(labelText: labelText, formCellType: FormCellType.DatePicker, value: date, identifier: identifier)
+        
+        if let f = format {
+            
+            config.format = f
+        }
+        
+        return config
     }
     
     public class func textField(labelText: String, value: String?, identifier: String) -> FormViewConfiguration {
@@ -78,4 +88,5 @@ public class FormViewConfiguration {
         
         return FormViewConfiguration(labelText: "", formCellType: FormCellType.None, value: nil, identifier: identifier)
     }
+
 }

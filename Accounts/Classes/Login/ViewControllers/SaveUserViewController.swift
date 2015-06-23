@@ -10,14 +10,21 @@
 import UIKit
 import ABToolKit
 
-class RegisterViewController: ACFormViewController {
+class SaveUserViewController: ACFormViewController {
     
-    let user = User()
+    var user = User()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Register"
+        if user.UserID == 0 {
+            
+            title = "Register"
+        }
+        else {
+            
+            title = "Edit profile"
+        }
         
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             
@@ -35,30 +42,51 @@ class RegisterViewController: ACFormViewController {
     
     func showOrHideRegisterButton() {
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register", style: .Plain, target: self, action: "register")
+        let saveButton = user.UserID == 0 ? UIBarButtonItem(title: "Register", style: .Plain, target: self, action: "save") : UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "save")
+        
+        navigationItem.rightBarButtonItem = saveButton
         navigationItem.rightBarButtonItem?.tintColor = kNavigationBarPositiveActionColor
         
         navigationItem.rightBarButtonItem?.enabled = user.modelIsValid()
     }
     
-    func register() {
+    func save() {
         
-        user.register()?.onContextSuccess({ () -> () in
+        if user.UserID == 0 {
             
-            var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
-            self.presentViewController(v, animated: true, completion: nil)
-        })
+            user.webApiUpdate()?.onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
+                
+                let success = httpUrlResponse!.statusCode == 204
+                
+                if success {
+                    
+                    self.navigationController?.popViewControllerAnimated(true)
+                }
+                else {
+                    
+                    UIAlertView(title: "Oops!", message: "Something went wrong!", delegate: nil, cancelButtonTitle: "OK")
+                }
+            })
+        }
+        else {
+            
+            user.register()?.onContextSuccess({ () -> () in
+                
+                var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
+                self.presentViewController(v, animated: true, completion: nil)
+            })
+        }
     }
 }
 
-extension RegisterViewController: FormViewDelegate {
+extension SaveUserViewController: FormViewDelegate {
     
     override func formViewElements() -> Array<Array<FormViewConfiguration>> {
         
         var sections = Array<Array<FormViewConfiguration>>()
         sections.append([
             FormViewConfiguration.textField("Username", value: user.Username, identifier: "Username"),
-            FormViewConfiguration.textField("Email", value: user.Username, identifier: "Email"),
+            FormViewConfiguration.textField("Email", value: user.Email, identifier: "Email"),
             FormViewConfiguration.textField("Password", value: user.Password, identifier: "Password")
         ])
         return sections
@@ -85,13 +113,12 @@ extension RegisterViewController: FormViewDelegate {
             user.Email = text
             break
             
-            
         default: break;
         }
     }
 }
 
-extension RegisterViewController: UITableViewDelegate {
+extension SaveUserViewController: UITableViewDelegate {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         

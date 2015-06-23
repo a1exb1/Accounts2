@@ -27,6 +27,6 @@
 // SwiftyUserDefaults
 #define COCOAPODS_POD_AVAILABLE_SwiftyUserDefaults
 #define COCOAPODS_VERSION_MAJOR_SwiftyUserDefaults 1
-#define COCOAPODS_VERSION_MINOR_SwiftyUserDefaults 1
+#define COCOAPODS_VERSION_MINOR_SwiftyUserDefaults 2
 #define COCOAPODS_VERSION_PATCH_SwiftyUserDefaults 0
 

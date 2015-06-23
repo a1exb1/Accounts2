@@ -10,9 +10,11 @@ import UIKit
 import ABToolKit
 import SwiftyUserDefaults
 
-private let kCurrencySection = 0
-private let kLogoutSection = 1
+private let kProfileSection = 0
+private let kCurrencySection = 1
+private let kLogoutSection = 2
 
+private let kProfileIndexPath = NSIndexPath(forRow: 0, inSection: kProfileSection)
 private let kCurrencyIndexPath = NSIndexPath(forRow: 0, inSection: kCurrencySection)
 private let kLogoutIndexPath = NSIndexPath(forRow: 0, inSection: kLogoutSection)
 
@@ -21,8 +23,8 @@ class MenuViewController: ACBaseViewController {
 
     var tableView = UITableView(frame: CGRectZero, style: .Grouped)
     let data = [
+        [kProfileIndexPath],
         [kCurrencyIndexPath],
-        //[kCompresJSONEncryptIndexPath, kCompresJSONCompressIndexPath, kAcceptEncodingIndexPath, kHTTPSEnabledIndexPath],
         [kLogoutIndexPath]
     ]
     
@@ -66,11 +68,14 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
             cell.detailTextLabel?.text = Defaults[kCurrencySettingKey].string
             cell.accessoryType = .DisclosureIndicator
         }
-        
         else if indexPath == kLogoutIndexPath {
             
             cell.textLabel?.text = "Logout"
             cell.detailTextLabel?.text = "Logged in as \(kActiveUser.Username)"
+        }
+        else if indexPath == kProfileIndexPath {
+            
+            cell.textLabel?.text = "Edit profile"
         }
         
         return cell
@@ -83,7 +88,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
             let v = SelectCurrencyViewController()
             navigationController?.pushViewController(v, animated: true)
         }
-        if indexPath == kLogoutIndexPath {
+        else if indexPath == kLogoutIndexPath {
             
             UIAlertController.showAlertControllerWithButtonTitle("Logout", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Are you sure you want to logout?", completion: { (response) -> () in
                 
@@ -95,6 +100,12 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
                     self.presentViewController(v, animated: true, completion: nil)
                 }
             })
+        }
+        else if indexPath == kProfileIndexPath {
+            
+            let v = SaveUserViewController()
+            v.user = kActiveUser
+            navigationController?.pushViewController(v, animated: true)
         }
     }
 }
