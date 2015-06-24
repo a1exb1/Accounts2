@@ -12,7 +12,7 @@ import ABToolKit
 private let kPlusImage = AppTools.iconAssetNamed("746-plus-circle-selected.png")
 private let kMinusImage = AppTools.iconAssetNamed("34-circle.minus.png")
 private let kMenuIcon = AppTools.iconAssetNamed("740-gear-toolbar-selected.png")
-private let kFriendInvitesIcon = AppTools.iconAssetNamed("779-users-selected.png")
+//private let kFriendInvitesIcon = AppTools.iconAssetNamed("779-users-selected.png")
 
 private let kPopoverContentSize = CGSize(width: 320, height: 360)
 
@@ -22,23 +22,17 @@ class FriendsViewController: ACBaseViewController {
     
     var addBarButtonItem: UIBarButtonItem?
     var friendInvitesBarButtonItem: UIBarButtonItem?
+    var openMenuBarButtonItem: UIBarButtonItem?
     
     var toolbar = UIToolbar()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupTableView(tableView, delegate: self, dataSource: self)
         
-        friendInvitesBarButtonItem = UIBarButtonItem(image: kFriendInvitesIcon, style: .Plain, target: self, action: "friendInvites")
-        
-        navigationItem.leftBarButtonItems = [
-            UIBarButtonItem(image: kMenuIcon, style: .Plain, target: self, action: "openMenu"),
-            friendInvitesBarButtonItem!
-        ]
-        
-        addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
-        navigationItem.rightBarButtonItem = addBarButtonItem
+        setBarButtonItems()
         
         title = "Friends"
         view.showLoader()
@@ -46,21 +40,28 @@ class FriendsViewController: ACBaseViewController {
         setTableViewAppearanceForBackgroundGradient(tableView)
     }
     
-//    func setupToolbar() {
-//        
-//        toolbar.setTranslatesAutoresizingMaskIntoConstraints(false)
-//        view.addSubview(toolbar)
-//        
-//        toolbar.addLeftConstraint(toView: view, relation: .Equal, constant: 0)
-//        toolbar.addRightConstraint(toView: view, relation: .Equal, constant: 0)
-//        toolbar.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
-//        toolbar.addHeightConstraint(relation: .Equal, constant: 40)
-//        
-//        friendInvitesBarButtonItem = UIBarButtonItem(image: kFriendInvitesIcon, style: .Plain, target: self, action: "friendInvites")
-//        
-//        toolbar.items = [friendInvitesBarButtonItem!]
-//        toolbar.tintColor = kViewBackgroundGradientTop
-//    }
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        tableView.setEditing(editing, animated: animated)
+    }
+    
+    func setBarButtonItems() {
+        
+        friendInvitesBarButtonItem = UIBarButtonItem(title: "Invites", style: .Plain, target: self, action: "friendInvites")
+        openMenuBarButtonItem = UIBarButtonItem(image: kMenuIcon, style: .Plain, target: self, action: "openMenu")
+        addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+        
+        navigationItem.leftBarButtonItems = [
+            openMenuBarButtonItem!,
+            editButtonItem()
+        ]
+        
+        navigationItem.rightBarButtonItems = [
+            addBarButtonItem!,
+            friendInvitesBarButtonItem!
+        ]
+    }
     
     func friendInvites() {
         
@@ -227,7 +228,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         
-        return .Delete
+        return tableView.editing ? .Delete : .None
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
