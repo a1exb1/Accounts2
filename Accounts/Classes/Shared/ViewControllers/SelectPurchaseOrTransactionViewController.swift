@@ -20,6 +20,9 @@ class SelectPurchaseOrTransactionViewController: ACBaseViewController {
         super.viewDidLoad()
         
         setupTableView(tableView, delegate: self, dataSource: self)
+        tableView.setEditing(true, animated: false)
+        tableView.allowsSelectionDuringEditing = true
+        
         addCloseButton()
     }
     
@@ -94,5 +97,15 @@ extension SelectPurchaseOrTransactionViewController: UITableViewDelegate, UITabl
             
             navigationController?.pushViewController(v, animated: true)
         }
+    }
+    
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        
+        return UITableViewCellEditingStyle.Insert
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        
+        return true
     }
 }

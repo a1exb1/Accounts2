@@ -61,6 +61,9 @@ extension BaseViewController: UITableViewDelegate {
     public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         
         let numberOfRowsInSections:Int = tableView.numberOfRowsInSection(indexPath.section)
+    
+        //reset rounded corners
+        cell.layer.mask = nil
         
         if view.bounds.width > kTableViewMaxWidth {
             

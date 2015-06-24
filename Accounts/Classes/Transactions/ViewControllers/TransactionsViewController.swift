@@ -83,6 +83,7 @@ class TransactionsViewController: ACBaseViewController {
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             
             self.tableView.layer.opacity = 0
+            self.noDataView?.layer.opacity = 0
         })
         
         var startTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
