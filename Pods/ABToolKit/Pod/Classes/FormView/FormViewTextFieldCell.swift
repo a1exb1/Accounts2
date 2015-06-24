@@ -14,6 +14,7 @@ public class FormViewTextFieldCell: FormViewCell {
 
     public var label = UILabel()
     public var textField = UITextField()
+    public var datePicker: UIDatePicker?
     
     override public func drawRect(rect: CGRect) {
         super.drawRect(rect)
@@ -32,10 +33,16 @@ public class FormViewTextFieldCell: FormViewCell {
             
             textField.addTarget(self, action: "textFieldChanged:", forControlEvents: UIControlEvents.EditingChanged)
         }
-        if config.formCellType == FormCellType.TextFieldCurrency {
+        else if config.formCellType == FormCellType.TextFieldCurrency {
             
             textField.keyboardType = UIKeyboardType.DecimalPad
             textField.delegate = self
+        }
+        else if config.formCellType == FormCellType.DatePicker {
+
+            setupDatePicker()
+            textField.inputView = datePicker!
+            textField.tintColor = UIColor.clearColor()
         }
         
         textField.userInteractionEnabled = editable
@@ -46,7 +53,23 @@ public class FormViewTextFieldCell: FormViewCell {
         formViewDelegate?.formViewTextFieldEditingChanged?(config.identifier, text: textField.text)
         formViewDelegate?.formViewElementDidChange?(config.identifier, value: textField.text)
     }
-
+    
+    func setupDatePicker() {
+        
+        datePicker = UIDatePicker()
+        datePicker?.date = config.value as! NSDate
+        datePicker?.addTarget(self, action: "datePickerValueDidChange:", forControlEvents: UIControlEvents.ValueChanged)
+        datePicker?.backgroundColor = UIColor(red: 246 / 255, green: 246 / 255, blue: 247 / 255, alpha: 1)
+        datePicker?.sizeToFit()
+    }
+    
+    func datePickerValueDidChange(datePicker: UIDatePicker) {
+        
+        textField.text = datePicker.date.toString(config.format)
+        formViewDelegate?.formViewDateChanged?(config.identifier, date: datePicker.date)
+        formViewDelegate?.formViewElementDidChange?(config.identifier, value: datePicker.date)
+    }
+    
     
     // MARK: - Constraints
     

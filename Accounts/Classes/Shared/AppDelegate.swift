@@ -9,21 +9,34 @@
 import UIKit
 import ABToolKit
 import SwiftyUserDefaults
+import Alamofire
 
 var kActiveUser = User()
 
-let kViewBackgroundColor = UIColor(hex: "222222")
-let kTableViewSeperatorColor = kTableViewCellBackgroundColor
+let kViewBackgroundColor = UIColor.whiteColor()
+let kViewBackgroundGradientTop =  AccountColor.blueColor()
+let kViewBackgroundGradientBottom =  AccountColor.greenColor()
 
-let kTableViewCellBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+let kTableViewBackgroundColor = UIColor.clearColor()
+
+let kTableViewCellBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.55)
 let kTableViewCellTextColor = UIColor.whiteColor()
-let kTableViewCellDetailTextColor = UIColor.lightGrayColor()
+let kTableViewCellDetailTextColor = UIColor.whiteColor()
+let kTableViewCellSeperatorStyle = UITableViewCellSeparatorStyle.SingleLine
+let kTableViewCellSeperatorColor = UIColor.clearColor()
+let kTableViewCellHeight: CGFloat = 50
+let kTableViewCellTintColor = UIColor.whiteColor()
 
-let kNavigationBarBackgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.85)
-let kNavigationBarPositiveActionColor = UIColor.yellowColor()
-let kNavigationBarTintColor = UIColor.greenColor()
+let kNavigationBarPositiveActionColor = kNavigationBarTintColor
+let kNavigationBarTintColor = UIColor(hex: "00AEE5")
+let kNavigationBarBarTintColor:UIColor = UIColor.whiteColor().colorWithAlphaComponent(0.9)
+let kNavigationBarTitleColor = UIColor.blackColor()
+let kNavigationBarStyle = UIBarStyle.Default
 
-let kCurrencySettingKey = "Currency"
+let kFormDeleteButtonTextColor = AccountColor.negativeColor()
+
+let kTableViewMaxWidth:CGFloat = 490
+let kTableViewCellIpadCornerRadiusSize = CGSize(width: 10, height: 10)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -33,9 +46,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+//        let settings = CompresJSON.sharedInstance().settings
+//        
+//        settings.encryptionKey = "7e4bac048ef766e83f0ec8c079e1f90c2eb690a9"
+//        settings.shouldCompress = false
+//        settings.shouldEncrypt = false
+        
         Session.sharedSession().domain = "http://alex.bechmann.co.uk/iou"
         WebApiDefaults.sharedInstance().baseUrl = "\(Session.sharedSession().domain)/api"
-        JSONMappingDefaults.sharedInstance().webApiSendDateFormat = DateFormat.DateTime.rawValue
+        
+        JSONMappingDefaults.sharedInstance().webApiSendDateFormat = DateFormat.ISO8601.rawValue
+        JSONMappingDefaults.sharedInstance().dateFormat = DateFormat.ISO8601.rawValue
+        
+        Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders = [
+                "Accept-Encoding1": "deflate",
+                "Accept-Encoding": "deflate"
+        ]
         
         setupAppearances()
         
@@ -48,28 +74,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             setWindowToLogin()
         }
         
-        if !Defaults.hasKey(kCurrencySettingKey) {
-            
-            Defaults[kCurrencySettingKey] = "GBP"
-        }
+        //registerForLocalNotifications()
         
         return true
     }
     
+    func registerForLocalNotifications() {
+        
+        var settings = UIUserNotificationSettings(forTypes: UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound, categories: ["NEW_PAYMENT"])
+        
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+    }
+    
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        
+        UIApplication.sharedApplication().registerForRemoteNotifications()
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        
+        Defaults["Device_Token"] = deviceToken
+        println(deviceToken.base64String())
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        
+        println(userInfo)
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        
+        println(error)
+    }
+    
     func setupAppearances() {
         
-        UITableView.appearance().backgroundColor = kViewBackgroundColor
-        UITableView.appearance().separatorColor = kTableViewSeperatorColor
-        
-        UITableViewCell.appearance().backgroundColor = kTableViewCellBackgroundColor
-        UITableViewCell.appearance().textLabel?.textColor = kTableViewCellTextColor
-        
         UINavigationBar.appearance().tintColor = kNavigationBarTintColor
-        UINavigationBar.appearance().shadowImage = UIImage()
-        UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(kNavigationBarBackgroundColor, size: CGSize(width: 10, height: 10)), forBarMetrics: UIBarMetrics.Default)
-        UINavigationBar.appearance().barStyle = UIBarStyle.Black
+        //UINavigationBar.appearance().barTintColor = kNavigationBarBarTintColor
+        //UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(kNavigationBarBarTintColor, size: CGSize(width: 10, height: 10)), forBarMetrics: UIBarMetrics.Default)
+        UINavigationBar.appearance().barStyle = kNavigationBarStyle
         
-        FormViewTextFieldCell.appearance().textLabel?.textColor = UIColor.whiteColor()
+        UIToolbar.appearance().tintColor = kNavigationBarTintColor
+        
+        UITableViewCell.appearance().tintColor = kNavigationBarTintColor
     }
     
     private func setWindowToLogin() {

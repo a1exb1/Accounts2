@@ -41,13 +41,27 @@ class SaveTransactionViewController: ACFormViewController {
         }
         
         showOrHideSaveButton()
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: "pop")
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if isInsidePopover() {
+            
+//            navigationController?.view.backgroundColor = UIColor.clearColor()
+//            view.backgroundColor = UIColor.clearColor()
+//            tableView.backgroundColor = UIColor.clearColor()
+        }
     }
     
     func save() {
 
         transaction.save()?.onContextSuccess({ () -> () in
 
-            self.dismissViewControllerFromCurrentContextAnimated(true)
+            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+            self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
 
         }).onContextFailure({ () -> () in
             
@@ -55,19 +69,24 @@ class SaveTransactionViewController: ACFormViewController {
         })
     }
     
-    override func close (){
+    func pop() {
         
         if transaction.TransactionID == 0 {
             
-            UIAlertController.showAlertControllerWithButtonTitle("Close", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Closing will not save this transaction") { (response) -> () in
+            UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back will delete this transaction! Are you sure?") { (response) -> () in
                 
-                super.close()
+                if response == AlertResponse.Confirm {
+                    
+                    self.dismissViewControllerFromCurrentContextAnimated(true)
+                }
             }
         }
         else {
             
-            super.close()
+            self.dismissViewControllerFromCurrentContextAnimated(true)
         }
+        
+        navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(navigationController!.popoverPresentationController!)
     }
     
     func showOrHideSaveButton() {
@@ -97,13 +116,13 @@ extension SaveTransactionViewController: FormViewDelegate {
         sections.append([
             FormViewConfiguration.normalCell("User"),
             FormViewConfiguration.normalCell("Friend"),
-            FormViewConfiguration.textField("Transaction date", value: transaction.TransactionDate.toString(DateFormat.DateTime.rawValue), identifier: "TransactionDate")
+            FormViewConfiguration.datePicker("Transaction date", date: transaction.TransactionDate, identifier: "TransactionDate", format: nil)
         ])
         
         if transaction.TransactionID > 0 {
             
             sections.append([
-                FormViewConfiguration.button("Delete", buttonTextColor: UIColor.redColor(), identifier: "Delete")
+                FormViewConfiguration.button("Delete", buttonTextColor: kFormDeleteButtonTextColor, identifier: "Delete")
             ])
         }
         
@@ -112,10 +131,12 @@ extension SaveTransactionViewController: FormViewDelegate {
     
     func formViewManuallySetCell(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, identifier: String) -> UITableViewCell {
         
-        if identifier == "Friend" {
+        let cell = tableView.dequeueOrCreateReusableCellWithIdentifier("Cell", requireNewCell: { (identifier) -> (UITableViewCell) in
             
-            let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-            let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
+            return UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
+        })
+        
+        if identifier == "Friend" {
             
             cell.textLabel?.text = "Transfer to"
             cell.detailTextLabel?.text = "\(transaction.friend.Username)"
@@ -126,9 +147,6 @@ extension SaveTransactionViewController: FormViewDelegate {
         
         if identifier == "User" {
             
-            let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-            let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
-            
             cell.textLabel?.text = "Transfer from"
             cell.detailTextLabel?.text = "\(transaction.user.Username)"
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
@@ -137,6 +155,15 @@ extension SaveTransactionViewController: FormViewDelegate {
         }
         
         return UITableViewCell()
+    }
+    
+    
+    func formViewDateChanged(identifier: String, date: NSDate) {
+        
+        if identifier == "TransactionDate" {
+            
+            transaction.TransactionDate = date
+        }
     }
     
     func formViewTextFieldEditingChanged(identifier: String, text: String) {
@@ -165,7 +192,8 @@ extension SaveTransactionViewController: FormViewDelegate {
                     
                     self.transaction.webApiDelete()?.onDownloadFinished({ () -> () in
                         
-                        navigationController?.popViewControllerAnimated(true)
+                        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                        self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
                     })
                 }
             })
@@ -193,11 +221,6 @@ extension SaveTransactionViewController: FormViewDelegate {
     
     override func formViewElementIsEditable(identifier: String) -> Bool {
         
-        if identifier == "TransactionDate" {
-            
-            return false
-        }
-        
         return allowEditing
     }
     
@@ -212,7 +235,12 @@ extension SaveTransactionViewController: UITableViewDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath)
-        setupTableViewCellAppearance(cell)
+        
+        if let c = cell as? FormViewTextFieldCell {
+            
+            c.label.textColor = UIColor.blackColor()
+            c.textField.textColor = UIColor.lightGrayColor()
+        }
         
         return cell
     }

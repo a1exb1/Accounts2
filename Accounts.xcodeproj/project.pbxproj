@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		31D41566C543FDE2CACFBFC5 /* Pods_Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 229CCD75CA20DE50201D6067 /* Pods_Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E412DF151B370C9600619C70 /* FindFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E412DF141B370C9600619C70 /* FindFriendsViewController.swift */; };
+		E41A30491B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41A30481B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift */; };
+		E458F9741B3461C700FC4E20 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E458F9731B3461C700FC4E20 /* UIView+Extension.swift */; };
 		E46CCFA51B284F53000ACFE2 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46CCFA41B284F53000ACFE2 /* Formatter.swift */; };
 		E46CCFA71B285A61000ACFE2 /* ACFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46CCFA61B285A61000ACFE2 /* ACFormViewController.swift */; };
 		E46CCFA91B285A7C000ACFE2 /* ACBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46CCFA81B285A7C000ACFE2 /* ACBaseViewController.swift */; };
 		E46CCFAB1B285BFA000ACFE2 /* BaseViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46CCFAA1B285BFA000ACFE2 /* BaseViewController+Extension.swift */; };
 		E46F1BDD1B28A8C0000571DF /* SelectCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46F1BDC1B28A8C0000571DF /* SelectCurrencyViewController.swift */; };
 		E46F1BE01B2986D8000571DF /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46F1BDF1B2986D8000571DF /* Settings.swift */; };
+		E46F1BE31B29BFAE000571DF /* encryptor_compressor.txt in Resources */ = {isa = PBXBuildFile; fileRef = E46F1BE21B29BFAE000571DF /* encryptor_compressor.txt */; };
 		E47B28DF1B2477B000853EC2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28DE1B2477B000853EC2 /* MenuViewController.swift */; };
 		E47B28E11B249FFC00853EC2 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28E01B249FFC00853EC2 /* Friend.swift */; };
 		E47B28E31B24AF1A00853EC2 /* SavePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47B28E21B24AF1A00853EC2 /* SavePurchaseViewController.swift */; };
@@ -29,9 +33,15 @@
 		E48BC6511B21EB7400A5E58F /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC64A1B21EB7400A5E58F /* Transaction.swift */; };
 		E48BC6591B21EBA200A5E58F /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */; };
 		E48BC65B1B21FC0700A5E58F /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC65A1B21FC0700A5E58F /* TransactionsViewController.swift */; };
+		E49569161B2DB50C00E07B00 /* AccountColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49569151B2DB50C00E07B00 /* AccountColor.swift */; };
+		E49569181B2DC87000E07B00 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = E49569171B2DC87000E07B00 /* Assets */; };
+		E4C378FC1B356ED600385D87 /* SaveUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C378FB1B356ED600385D87 /* SaveUserViewController.swift */; };
+		E4C378FE1B35CC3B00385D87 /* FriendInvitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C378FD1B35CC3B00385D87 /* FriendInvitesViewController.swift */; };
 		E4DC32961B24682900FA16C3 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4DC32951B24682900FA16C3 /* Login.storyboard */; };
 		E4DC32981B24686100FA16C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4DC32971B24686100FA16C3 /* Main.storyboard */; };
 		E4DC329A1B2468AB00FA16C3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */; };
+		E4EAA99D1B2DFED200C021C0 /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EAA99C1B2DFED200C021C0 /* AppTools.swift */; };
+		E4EAA99F1B2ED1C100C021C0 /* BoolSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EAA99E1B2ED1C100C021C0 /* BoolSettingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,12 +58,16 @@
 		229CCD75CA20DE50201D6067 /* Pods_Accounts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Accounts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D804DC3FB800178FC10E9A7 /* Pods-Accounts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accounts.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Accounts/Pods-Accounts.debug.xcconfig"; sourceTree = "<group>"; };
 		AC1D59DEE6922AAEB08C5128 /* Pods-Accounts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Accounts.release.xcconfig"; path = "Pods/Target Support Files/Pods-Accounts/Pods-Accounts.release.xcconfig"; sourceTree = "<group>"; };
+		E412DF141B370C9600619C70 /* FindFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindFriendsViewController.swift; sourceTree = "<group>"; };
+		E41A30481B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPurchaseOrTransactionViewController.swift; sourceTree = "<group>"; };
+		E458F9731B3461C700FC4E20 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		E46CCFA41B284F53000ACFE2 /* Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		E46CCFA61B285A61000ACFE2 /* ACFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACFormViewController.swift; sourceTree = "<group>"; };
 		E46CCFA81B285A7C000ACFE2 /* ACBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACBaseViewController.swift; sourceTree = "<group>"; };
 		E46CCFAA1B285BFA000ACFE2 /* BaseViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BaseViewController+Extension.swift"; sourceTree = "<group>"; };
 		E46F1BDC1B28A8C0000571DF /* SelectCurrencyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCurrencyViewController.swift; sourceTree = "<group>"; };
 		E46F1BDF1B2986D8000571DF /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		E46F1BE21B29BFAE000571DF /* encryptor_compressor.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = encryptor_compressor.txt; sourceTree = "<group>"; };
 		E47B28DE1B2477B000853EC2 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		E47B28E01B249FFC00853EC2 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		E47B28E21B24AF1A00853EC2 /* SavePurchaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavePurchaseViewController.swift; sourceTree = "<group>"; };
@@ -73,9 +87,15 @@
 		E48BC64A1B21EB7400A5E58F /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		E48BC65A1B21FC0700A5E58F /* TransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
+		E49569151B2DB50C00E07B00 /* AccountColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountColor.swift; sourceTree = "<group>"; };
+		E49569171B2DC87000E07B00 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
+		E4C378FB1B356ED600385D87 /* SaveUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveUserViewController.swift; sourceTree = "<group>"; };
+		E4C378FD1B35CC3B00385D87 /* FriendInvitesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendInvitesViewController.swift; sourceTree = "<group>"; };
 		E4DC32951B24682900FA16C3 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Login.storyboard; path = Storyboards/Login.storyboard; sourceTree = "<group>"; };
 		E4DC32971B24686100FA16C3 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
 		E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E4EAA99C1B2DFED200C021C0 /* AppTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
+		E4EAA99E1B2ED1C100C021C0 /* BoolSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoolSettingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +134,37 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E412DF161B39A87C00619C70 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				E412DF171B39A87C00619C70 /* Models */,
+				E412DF181B39A87C00619C70 /* ViewControllers */,
+				E412DF191B39A87C00619C70 /* Views */,
+			);
+			path = Users;
+			sourceTree = "<group>";
+		};
+		E412DF171B39A87C00619C70 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E412DF181B39A87C00619C70 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		E412DF191B39A87C00619C70 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		E46F1BDA1B28A8AF000571DF /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				E46F1BDC1B28A8C0000571DF /* SelectCurrencyViewController.swift */,
+				E4EAA99E1B2ED1C100C021C0 /* BoolSettingViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -142,6 +194,7 @@
 		E48BC6091B21EAB500A5E58F = {
 			isa = PBXGroup;
 			children = (
+				E49569171B2DC87000E07B00 /* Assets */,
 				E48BC6141B21EAB500A5E58F /* Accounts */,
 				E48BC62A1B21EAB500A5E58F /* AccountsTests */,
 				E48BC6131B21EAB500A5E58F /* Products */,
@@ -162,6 +215,7 @@
 		E48BC6141B21EAB500A5E58F /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				E46F1BE21B29BFAE000571DF /* encryptor_compressor.txt */,
 				E4DC32941B24680E00FA16C3 /* Storyboards */,
 				E48BC6371B21EB7400A5E58F /* Classes */,
 				E48BC61E1B21EAB500A5E58F /* Images.xcassets */,
@@ -199,6 +253,7 @@
 		E48BC6371B21EB7400A5E58F /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E412DF161B39A87C00619C70 /* Users */,
 				E46F1BDA1B28A8AF000571DF /* Settings */,
 				E48BC6521B21EB9300A5E58F /* Friends */,
 				E48BC6381B21EB7400A5E58F /* Login */,
@@ -230,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */,
+				E4C378FB1B356ED600385D87 /* SaveUserViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -282,6 +338,9 @@
 				E48BC6461B21EB7400A5E58F /* ViewControllers */,
 				E48BC6471B21EB7400A5E58F /* Views */,
 				E46CCFA41B284F53000ACFE2 /* Formatter.swift */,
+				E49569151B2DB50C00E07B00 /* AccountColor.swift */,
+				E4EAA99C1B2DFED200C021C0 /* AppTools.swift */,
+				E458F9731B3461C700FC4E20 /* UIView+Extension.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -303,6 +362,7 @@
 				E46CCFA61B285A61000ACFE2 /* ACFormViewController.swift */,
 				E46CCFA81B285A7C000ACFE2 /* ACBaseViewController.swift */,
 				E46CCFAA1B285BFA000ACFE2 /* BaseViewController+Extension.swift */,
+				E41A30481B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -370,6 +430,8 @@
 			children = (
 				E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */,
 				E47B28E41B24D10300853EC2 /* SelectUsersViewController.swift */,
+				E4C378FD1B35CC3B00385D87 /* FriendInvitesViewController.swift */,
+				E412DF141B370C9600619C70 /* FindFriendsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -475,6 +537,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4DC32961B24682900FA16C3 /* Login.storyboard in Resources */,
+				E49569181B2DC87000E07B00 /* Assets in Resources */,
+				E46F1BE31B29BFAE000571DF /* encryptor_compressor.txt in Resources */,
 				E48BC6221B21EAB500A5E58F /* LaunchScreen.xib in Resources */,
 				E48BC61F1B21EAB500A5E58F /* Images.xcassets in Resources */,
 				E4DC32981B24686100FA16C3 /* Main.storyboard in Resources */,
@@ -544,6 +608,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E48BC65B1B21FC0700A5E58F /* TransactionsViewController.swift in Sources */,
+				E4C378FE1B35CC3B00385D87 /* FriendInvitesViewController.swift in Sources */,
 				E46CCFAB1B285BFA000ACFE2 /* BaseViewController+Extension.swift in Sources */,
 				E48BC64E1B21EB7400A5E58F /* AppDelegate.swift in Sources */,
 				E48BC64F1B21EB7400A5E58F /* RelationStatus.swift in Sources */,
@@ -556,8 +621,15 @@
 				E48BC6591B21EBA200A5E58F /* FriendsViewController.swift in Sources */,
 				E46CCFA71B285A61000ACFE2 /* ACFormViewController.swift in Sources */,
 				E47B28E11B249FFC00853EC2 /* Friend.swift in Sources */,
+				E412DF151B370C9600619C70 /* FindFriendsViewController.swift in Sources */,
+				E49569161B2DB50C00E07B00 /* AccountColor.swift in Sources */,
+				E41A30491B34162B003265C3 /* SelectPurchaseOrTransactionViewController.swift in Sources */,
+				E4EAA99F1B2ED1C100C021C0 /* BoolSettingViewController.swift in Sources */,
+				E4C378FC1B356ED600385D87 /* SaveUserViewController.swift in Sources */,
 				E48BC64D1B21EB7400A5E58F /* Purchase.swift in Sources */,
 				E47B28E51B24D10300853EC2 /* SelectUsersViewController.swift in Sources */,
+				E458F9741B3461C700FC4E20 /* UIView+Extension.swift in Sources */,
+				E4EAA99D1B2DFED200C021C0 /* AppTools.swift in Sources */,
 				E46F1BDD1B28A8C0000571DF /* SelectCurrencyViewController.swift in Sources */,
 				E46CCFA51B284F53000ACFE2 /* Formatter.swift in Sources */,
 				E48BC6501B21EB7400A5E58F /* User.swift in Sources */,
@@ -684,10 +756,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Accounts/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "586a5097-1f12-472f-81a5-eca7c059743f";
 			};
 			name = Debug;
 		};
@@ -697,10 +771,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Accounts/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "586a5097-1f12-472f-81a5-eca7c059743f";
 			};
 			name = Release;
 		};

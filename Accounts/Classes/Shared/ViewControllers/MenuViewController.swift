@@ -10,13 +10,23 @@ import UIKit
 import ABToolKit
 import SwiftyUserDefaults
 
-private let kCurrencyIndexPath = NSIndexPath(forRow: 0, inSection: 0)
-private let kLogoutIndexPath = NSIndexPath(forRow: 0, inSection: 1)
+private let kProfileSection = 0
+private let kCurrencySection = 1
+private let kLogoutSection = 2
+
+private let kProfileIndexPath = NSIndexPath(forRow: 0, inSection: kProfileSection)
+private let kCurrencyIndexPath = NSIndexPath(forRow: 0, inSection: kCurrencySection)
+private let kLogoutIndexPath = NSIndexPath(forRow: 0, inSection: kLogoutSection)
 
 
-class MenuViewController: BaseViewController {
+class MenuViewController: ACBaseViewController {
 
-    var tableView = UITableView()
+    var tableView = UITableView(frame: CGRectZero, style: .Grouped)
+    let data = [
+        [kProfileIndexPath],
+        [kCurrencyIndexPath],
+        [kLogoutIndexPath]
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,26 +35,32 @@ class MenuViewController: BaseViewController {
         
         addCloseButton()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tableView.reloadData()
+    }
 }
 
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         
-        return 2
+        return data.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 1
+        return data[section].count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-        let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
-        
-        setupTableViewCellAppearance(cell)
+        let cell = tableView.dequeueOrCreateReusableCellWithIdentifier("Cell", requireNewCell: { (identifier) -> (UITableViewCell) in
+            
+            return UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
+        })
         
         if indexPath == kCurrencyIndexPath {
             
@@ -52,10 +68,14 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
             cell.detailTextLabel?.text = Defaults[kCurrencySettingKey].string
             cell.accessoryType = .DisclosureIndicator
         }
-        
         else if indexPath == kLogoutIndexPath {
             
-            cell.textLabel?.text = "Logout (Logged in as \(kActiveUser.Username))"
+            cell.textLabel?.text = "Logout"
+            cell.detailTextLabel?.text = "Logged in as \(kActiveUser.Username)"
+        }
+        else if indexPath == kProfileIndexPath {
+            
+            cell.textLabel?.text = "Edit profile"
         }
         
         return cell
@@ -68,12 +88,24 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
             let v = SelectCurrencyViewController()
             navigationController?.pushViewController(v, animated: true)
         }
-        if indexPath == kLogoutIndexPath {
+        else if indexPath == kLogoutIndexPath {
             
-            kActiveUser.logout()
+            UIAlertController.showAlertControllerWithButtonTitle("Logout", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Are you sure you want to logout?", completion: { (response) -> () in
+                
+                if response == AlertResponse.Confirm {
+                    
+                    kActiveUser.logout()
+                    
+                    let v = UIStoryboard.initialViewControllerFromStoryboardNamed("Login")
+                    self.presentViewController(v, animated: true, completion: nil)
+                }
+            })
+        }
+        else if indexPath == kProfileIndexPath {
             
-            let v = UIStoryboard.initialViewControllerFromStoryboardNamed("Login")
-            presentViewController(v, animated: true, completion: nil)
+            let v = SaveUserViewController()
+            v.user = kActiveUser
+            navigationController?.pushViewController(v, animated: true)
         }
     }
 }

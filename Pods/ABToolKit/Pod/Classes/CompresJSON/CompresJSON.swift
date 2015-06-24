@@ -19,37 +19,37 @@ public class CompresJSON: NSObject {
     
     public var settings: CompresJSONSettings = CompresJSONSettings()
     
-    public class func encryptAndCompressAsNecessary(str: String) -> String {
-        
-        CompresJSON.printErrorIfEncryptionKeyIsNotSet()
+    public class func encryptAndCompressAsNecessary(str: String, shouldEncrypt: Bool, shouldCompress: Bool) -> String {
         
         var rc = str
         
-        if CompresJSON.sharedInstance().settings.shouldCompress {
+        if shouldCompress {
             
             rc = rc.compress()
         }
         
-        if CompresJSON.sharedInstance().settings.shouldEncrypt {
+        if shouldEncrypt {
             
+            CompresJSON.printErrorIfEncryptionKeyIsNotSet()
             rc = Encryptor.encrypt(rc, key: CompresJSON.sharedInstance().settings.encryptionKey)
         }
         
         return rc
     }
 
-    public class func decryptAndDecompressAsNecessary(str: String) -> String {
+    public class func decryptAndDecompressAsNecessary(str: String, shouldEncrypt: Bool, shouldCompress: Bool)  -> String {
             
-        CompresJSON.printErrorIfEncryptionKeyIsNotSet()
+        
 
         var rc = str
         
-        if CompresJSON.sharedInstance().settings.shouldEncrypt {
+        if shouldEncrypt {
             
+            CompresJSON.printErrorIfEncryptionKeyIsNotSet()
             rc = Encryptor.decrypt(rc, key: CompresJSON.sharedInstance().settings.encryptionKey)
         }
         
-        if CompresJSON.sharedInstance().settings.shouldCompress {
+        if shouldCompress {
             
             rc = rc.decompress()
         }
