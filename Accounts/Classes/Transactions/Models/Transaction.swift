@@ -146,6 +146,7 @@ class Transaction: JSONObject {
         }).onDownloadFailure( { (error, alert) in
             
             alert.show()
+            
         })
     }
 }

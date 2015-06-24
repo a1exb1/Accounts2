@@ -9,6 +9,8 @@
 import UIKit
 import SwiftyUserDefaults
 
+let kCurrencySettingKey = "Currency"
+
 private let kCurrencySettingLocaleDictionary: Dictionary<String, String> = [
     "GBP": "en_GB",
     "DKK": "da_DK"
@@ -22,6 +24,7 @@ class Settings: NSObject {
             
             Defaults[kCurrencySettingKey] = "GBP"
         }
+        setDefaultValueIfNotExistsForKey(kCurrencySettingKey, value: "GBP")
         
         let currencyIdentifier: String = Defaults[kCurrencySettingKey].string!
         
@@ -32,5 +35,13 @@ class Settings: NSObject {
     class func setLocaleByIdentifier(identifier: String) {
         
         Defaults[kCurrencySettingKey] = identifier
+    }
+    
+    class func setDefaultValueIfNotExistsForKey(key: String, value: AnyObject) {
+        
+        if !Defaults.hasKey(key) {
+            
+            Defaults[key] = value
+        }
     }
 }

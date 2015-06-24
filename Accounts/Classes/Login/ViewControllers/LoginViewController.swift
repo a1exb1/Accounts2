@@ -14,25 +14,55 @@ class LoginViewController: ACFormViewController {
     var user = User()
     
     override func viewDidLoad() {
-        formViewDelegate = self
-        
         super.viewDidLoad()
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .Plain, target: self, action: "login")
-        navigationItem.rightBarButtonItem?.tintColor = kNavigationBarPositiveActionColor
+        
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            
+            tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        }
+        
+        title = "Login"
+        
+        showOrHideLoginButton()
+    }
+    
+    override func setupView() {
+        super.setupView()
+        
+        view.backgroundColor = UIColor.groupTableViewBackgroundColor()
     }
     
     func login() {
         
-        User.login(user.Username, password: user.Password).onContextSuccess { () -> () in
-            
-            var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
-            self.presentViewController(v, animated: true, completion: nil)
-            
-        }.onContextFailure { () -> () in
+        var showAlert: () -> () = {
             
             UIAlertView(title: "Login failed!", message: "Incorrect username or password!", delegate: nil, cancelButtonTitle: "OK").show()
         }
+        
+        if user.Username.length() > 0 && user.Password.length() > 0 {
+            
+            User.login(user.Username, password: user.Password).onContextSuccess { () -> () in
+                
+                var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
+                self.presentViewController(v, animated: true, completion: nil)
+                
+            }.onContextFailure { () -> () in
+                    
+                showAlert()
+            }
+        }
+        else {
+            
+            showAlert()
+        }
+    }
+    
+    func showOrHideLoginButton() {
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .Plain, target: self, action: "login")
+        navigationItem.rightBarButtonItem?.tintColor = kNavigationBarPositiveActionColor
+        
+        navigationItem.rightBarButtonItem?.enabled = user.modelIsValidForLogin()
     }
 }
 
@@ -64,6 +94,11 @@ extension LoginViewController: FormViewDelegate {
         default: break;
         }
     }
+    
+    func formViewElementDidChange(identifier: String, value: AnyObject?) {
+        
+        showOrHideLoginButton()
+    }
 }
 
 extension LoginViewController: UITableViewDelegate {
@@ -71,13 +106,15 @@ extension LoginViewController: UITableViewDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath) as! FormViewTextFieldCell
-        setupTableViewCellAppearance(cell)
         
         if indexPath.row == 1 {
             
             cell.textField.autocapitalizationType = UITextAutocapitalizationType.None
             cell.textField.secureTextEntry = true
         }
+        
+        cell.label.textColor = UIColor.blackColor()
+        cell.textField.textColor = UIColor.lightGrayColor()
         
         return cell
     }

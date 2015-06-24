@@ -111,14 +111,13 @@ class Purchase: JSONObject {
             c++
         }
     
-        var params = convertToDictionary(nil, includeNestedProperties: false)
+        var params = convertToDictionary(["Description", "Amount", "PurchaseID"], includeNestedProperties: false)
         params["UserID"] = user.UserID
-        
-        println(params)
-        
+        params["DateEntered"] = DateEntered.toString(JSONMappingDefaults.sharedInstance().webApiSendDateFormat)
+        params["DatePurchased"] = DatePurchased.toString(JSONMappingDefaults.sharedInstance().webApiSendDateFormat)
         
         return JsonRequest.create(urlString, parameters: params, method: httpMethod).onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
-
+            println(httpUrlResponse!.statusCode)
             if httpUrlResponse?.statusCode == 200 || httpUrlResponse?.statusCode == 201 || httpUrlResponse?.statusCode == 204 {
                 
                 request.succeedContext()
@@ -128,9 +127,6 @@ class Purchase: JSONObject {
                 request.failContext()
             }
             
-        }).onDownloadFailure( { (error, alert) in
-        
-            alert.show()
         })
     }
     

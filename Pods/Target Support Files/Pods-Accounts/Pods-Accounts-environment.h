@@ -16,7 +16,7 @@
 #define COCOAPODS_POD_AVAILABLE_Alamofire
 #define COCOAPODS_VERSION_MAJOR_Alamofire 1
 #define COCOAPODS_VERSION_MINOR_Alamofire 2
-#define COCOAPODS_VERSION_PATCH_Alamofire 2
+#define COCOAPODS_VERSION_PATCH_Alamofire 3
 
 // SwiftyJSON
 #define COCOAPODS_POD_AVAILABLE_SwiftyJSON
@@ -27,6 +27,6 @@
 // SwiftyUserDefaults
 #define COCOAPODS_POD_AVAILABLE_SwiftyUserDefaults
 #define COCOAPODS_VERSION_MAJOR_SwiftyUserDefaults 1
-#define COCOAPODS_VERSION_MINOR_SwiftyUserDefaults 1
+#define COCOAPODS_VERSION_MINOR_SwiftyUserDefaults 2
 #define COCOAPODS_VERSION_PATCH_SwiftyUserDefaults 0
 

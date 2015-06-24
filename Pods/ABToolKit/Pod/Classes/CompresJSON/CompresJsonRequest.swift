@@ -12,10 +12,31 @@ import SwiftyJSON
 
 public class CompresJsonRequest: JsonRequest {
    
+    var shouldEncrypt = CompresJSON.sharedInstance().settings.shouldEncrypt
+    var shouldCompress = CompresJSON.sharedInstance().settings.shouldCompress
+    var acceptEncoding = ""
+    
     override public class func create< T : JsonRequest >(urlString:String, parameters:Dictionary<String, AnyObject>?, method:Alamofire.Method) -> T {
         
         return CompresJsonRequest(urlString: urlString, parameters: parameters, method: method) as! T
     }
+    
+//    public class func create(urlString:String, parameters:Dictionary<String, AnyObject>?, method:Alamofire.Method, shouldEncrypt:Bool, acceptEncoding: String) -> CompresJsonRequest {
+//        
+//        return CompresJsonRequest(urlString: urlString, parameters: parameters, method: method, shouldEncrypt: shouldEncrypt, acceptEncoding: acceptEncoding)
+//    }
+    
+//    convenience init(urlString: String, parameters: Dictionary<String, AnyObject>?, method: Alamofire.Method, shouldEncrypt: Bool, acceptEncoding: String) {
+//        self.init()
+//        
+//        self.urlString = urlString
+//        self.parameters = parameters
+//        self.method = method
+//        self.shouldEncrypt = shouldEncrypt
+//        self.acceptEncoding = acceptEncoding
+//        
+//        exec()
+//    }
     
     internal override func exec() {
         
@@ -23,13 +44,16 @@ public class CompresJsonRequest: JsonRequest {
         
         if let params = self.parameters {
             
-            var err: NSError?
-            var json: String = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)!.toString()
-            
-            json = CompresJSON.encryptAndCompressAsNecessary(json)
-            
-            self.parameters = Dictionary<String, AnyObject>()
-            self.parameters!["data"] = json
+            if shouldEncrypt || shouldCompress{
+                
+                var err: NSError?
+                var json: String = NSJSONSerialization.dataWithJSONObject(params, options: nil, error: &err)!.toString()
+                
+                json = CompresJSON.encryptAndCompressAsNecessary(json, shouldEncrypt: shouldEncrypt, shouldCompress: shouldCompress)
+                
+                self.parameters = Dictionary<String, AnyObject>()
+                self.parameters!["data"] = json
+            }
         }
         
         self.alamofireRequest = request(self.method, self.urlString, parameters: self.parameters, encoding: ParameterEncoding.URL)
@@ -54,20 +78,27 @@ public class CompresJsonRequest: JsonRequest {
                 else{
                     let json = JSON(data: data! as! NSData)
                     
-                    let encryptedJson = json["data"].stringValue
-                    let unencryptedJson = CompresJSON.decryptAndDecompressAsNecessary(encryptedJson)
-                    
-                    if let dataFromString = unencryptedJson.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false){
+                    if self.shouldEncrypt || self.shouldCompress {
                         
-                        let unpackedJson = JSON(data: dataFromString)
+                        let encryptedJson = json["data"].stringValue
+                        let unencryptedJson = CompresJSON.decryptAndDecompressAsNecessary(encryptedJson, shouldEncrypt: self.shouldEncrypt, shouldCompress: self.shouldCompress)
                         
-                        self.succeedDownload(unpackedJson, httpUrlRequest: request, httpUrlResponse: response)
+                        if let dataFromString = unencryptedJson.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false){
+                            
+                            let unpackedJson = JSON(data: dataFromString)
+                            
+                            self.succeedDownload(unpackedJson, httpUrlRequest: request, httpUrlResponse: response)
+                        }
+                        else {
+                            
+                            println("got nil - retrying")
+                            self.cancel()
+                            self.exec()
+                        }
                     }
                     else {
                         
-                        println("got nil - retrying")
-                        self.cancel()
-                        self.exec()
+                        self.succeedDownload(json, httpUrlRequest: request, httpUrlResponse: response)
                     }
                 }
                 

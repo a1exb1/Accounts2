@@ -26,15 +26,61 @@ extension BaseViewController {
         dismissViewControllerFromCurrentContextAnimated(true)
     }
     
-    func setupTableViewCellAppearance(originalCell: UITableViewCell) {
+    func setBackgroundGradient() -> CAGradientLayer {
         
-        if let cell = originalCell as? FormViewTextFieldCell {
+        var gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = view.bounds
+        gradient.colors = [kViewBackgroundGradientTop.CGColor, kViewBackgroundGradientBottom.CGColor]
+        view.layer.insertSublayer(gradient, atIndex: 0)
+        
+        return gradient
+    }
+    
+    func setTableViewAppearanceForBackgroundGradient(tableView: UITableView) {
+        
+        tableView.separatorStyle = kTableViewCellSeperatorStyle
+        tableView.separatorColor = kTableViewCellSeperatorColor
+        tableView.backgroundColor = kTableViewBackgroundColor
+    }
+    
+    func setTableViewCellAppearanceForBackgroundGradient(cell:UITableViewCell) {
+    
+        cell.backgroundColor = kTableViewCellBackgroundColor
+        cell.textLabel?.textColor = kTableViewCellTextColor
+        cell.tintColor = kTableViewCellTintColor
+    }
+    
+    func isInsidePopover() -> Bool {
+
+        return view.frame != UIScreen.mainScreen().bounds
+    }
+}
+
+extension BaseViewController: UITableViewDelegate {
+    
+    public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let numberOfRowsInSections:Int = tableView.numberOfRowsInSection(indexPath.section)
+    
+        //reset rounded corners
+        cell.layer.mask = nil
+        
+        if view.bounds.width > kTableViewMaxWidth {
             
-            cell.label.textColor = kTableViewCellTextColor
-            cell.textField.textColor = kTableViewCellDetailTextColor
+            if indexPath.row == 0 {
+                
+                cell.roundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, cornerRadiusSize: kTableViewCellIpadCornerRadiusSize)
+            }
+            
+            if indexPath.row == numberOfRowsInSections - 1 {
+                
+                cell.roundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, cornerRadiusSize: kTableViewCellIpadCornerRadiusSize)
+            }
+            
+            if indexPath.row == 0 && indexPath.row == numberOfRowsInSections - 1 {
+                
+                cell.roundCorners(UIRectCorner.AllCorners, cornerRadiusSize: kTableViewCellIpadCornerRadiusSize)
+            }
         }
-        
-        originalCell.textLabel?.textColor = kTableViewCellTextColor
-        originalCell.detailTextLabel?.textColor = kTableViewCellDetailTextColor
     }
 }

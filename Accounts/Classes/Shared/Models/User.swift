@@ -16,6 +16,7 @@ class User: JSONObject {
     
     var UserID = 0
     var Username = ""
+    var Email = ""
     var Password = ""
     var friends: Array<User> = []
     
@@ -87,6 +88,44 @@ class User: JSONObject {
         }
     }
     
+    func register() -> JsonRequest? {
+        
+        return webApiInsert()?.onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
+            
+            let statusCode = httpUrlResponse?.statusCode
+            
+            if statusCode == 201 {
+                
+                var user: User = User.createObjectFromJson(json)
+                User.saveUserOnDevice(user as User?)
+                kActiveUser = user
+                
+                request.succeedContext()
+            }
+            else{
+                
+                let errors = json["ModelState"]["Error"].arrayValue
+                println(json["ModelState"])
+                println(json["ModelState"]["Error"])
+                
+                if errors.count > 0 {
+                    
+                    for error in errors {
+                        
+                        UIAlertView(title: "Error", message: error.stringValue, delegate: nil, cancelButtonTitle: "OK")
+                        println(error)
+                    }
+                }
+                
+                request.failContext()
+            }
+            
+            //println(json)
+        })
+        
+        
+    }
+    
     func logout() {
         
         User.saveUserOnDevice(nil)
@@ -117,46 +156,74 @@ class User: JSONObject {
     
     func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
         
-        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate%20desc" // not doing it for purchases
+        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate desc" // not doing it for purchases
         
-        return JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
+        let request = JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
             
             let transactions:Array<Transaction> = Transaction.convertJsonToMultipleObjects(Transaction.self, json: json)
             completion(transactions: transactions)
         })
+        
+        return request
     }
     
-//    func getUnconfirmedInvites(completion:(invites:Array<Relation>) -> ()) {
-//        
-//        var urlString = AppTools.WebMvcController(kMVCControllerName, action: "FriendInvitations")
-//        var data: Dictionary<String, AnyObject> = [
-//            "UserID" : self.UserID
-//        ]
-//    
-//        JsonRequest.create(urlString, parameters: data, method: .POST).onDownloadSuccess { (json, request) -> () in
-//            
-//            let invites: Array<Relation> = Relation.convertJsonToMultipleObjects(Relation.self, json: json)
-//            completion(invites: invites)
-//        }
-//        
-//        Relation.webApiGetMultipleObjects(Relation.self, query: nil) { (objects) -> () in
-//            
-//            completion(invites: objects)
-//        }
-//    }
-    
-    func addFriend(relationUserID:Int, completion: () -> ()) {
+    func getInvites(completion:(invites:Array<Array<User>>) -> ()) -> JsonRequest {
         
-//        var urlString = AppTools.WebMvcController(kMVCControllerName, action: "AddFriend")
-//        var data = [
-//            "UserID": self.UserID,
-//            "relationUserID" : relationUserID
-//        ]
-//        
-//        JsonRequest.create(urlString, parameters: data, method: Method.POST).onDownloadSuccess { (json, request) -> () in
-//            
-//            completion()
-//        }
+        var urlString = "\(User.webApiUrls().getUrl(UserID)!)/FriendInvitations"
+
+        return JsonRequest.create(urlString, parameters: nil, method: .GET).onDownloadSuccess { (json, request) -> () in
+
+            var allInvites = Array<Array<User>>()
+            
+            // UNCONFIRMED INVITES
+            var unconfirmedInvites = Array<User>()
+            
+            let unconfirmedInvitesJSON = json["UnconfirmedInvitations"]
+            
+            for (index: String, subJson: JSON) in unconfirmedInvitesJSON {
+                
+                let user:User = User.createObjectFromJson(subJson["User"])
+                unconfirmedInvites.append(user)
+            }
+            
+            // UNCONFIRMED SENT INVITES
+            
+            var unconfirmedSentInvites = Array<User>()
+            
+            let unconfirmedSentInvitesJSON = json["UnconfirmedSentInvitations"]
+            
+            for (index: String, subJson: JSON) in unconfirmedSentInvitesJSON {
+                
+                let user:User = User.createObjectFromJson(subJson["User"])
+                unconfirmedSentInvites.append(user)
+            }
+            
+            
+            allInvites.append(unconfirmedInvites)
+            allInvites.append(unconfirmedSentInvites)
+            
+            completion(invites: allInvites)
+        }
+    }
+    
+    func addFriend(relationUserID:Int, completion: (success: Bool) -> ()) {
+        
+        let urlString = "\(User.webApiUrls().getUrl(UserID)!)/AddFriend/\(relationUserID)"
+        
+        JsonRequest.create(urlString, parameters: nil, method: .POST).onDownloadSuccessWithRequestInfo { (json, request, httpUrlRequest, httpUrlResponse) -> () in
+            
+            completion(success: httpUrlResponse?.statusCode == 200)
+        }
+    }
+    
+    func removeFriend(relationUserID:Int, completion: (success: Bool) -> ()) {
+        
+        let urlString = "\(User.webApiUrls().getUrl(UserID)!)/RemoveFriend/\(relationUserID)"
+        
+        JsonRequest.create(urlString, parameters: nil, method: .DELETE).onDownloadSuccessWithRequestInfo { (json, request, httpUrlRequest, httpUrlResponse) -> () in
+            
+            completion(success: httpUrlResponse?.statusCode == 204)
+        }
     }
     
     func saveUserOnDevice() {
@@ -194,12 +261,14 @@ class User: JSONObject {
         
         self.UserID = decoder.decodeObjectForKey("UserID") as! Int
         self.Username = decoder.decodeObjectForKey("Username") as! String
+        self.Email = decoder.decodeObjectForKey("Email") as! String
     }
     
     func encodeWithCoder(coder: NSCoder) {
         
         coder.encodeObject(UserID, forKey: "UserID")
         coder.encodeObject(Username, forKey: "Username")
+        coder.encodeObject(Email, forKey: "Email")
     }
     
 //    func refreshFriendsList() -> JsonRequest {
@@ -243,21 +312,16 @@ class User: JSONObject {
 //    }
 
     
-    class func activeUsersContaining(string: String, completion:(users:Array<User>) -> ()) {
+    
+    class func activeUsersContaining(string: String, completion:(users:Array<User>) -> ()) -> JsonRequest {
         
-//        var urlString = AppTools.WebMvcController(kMVCControllerName, action: "ActiveUsersMatching")
-//        var data:Dictionary<String, AnyObject> = [
-//            "searchText" : string,
-//            "UserID" : kActiveUser.UserID
-//        ]
-//        
-//        
-//        
-//        JsonRequest.create(urlString, parameters: data, method: .POST).onDownloadSuccess { (json, request) -> () in
-//            
-//            let matches: Array<User> = User.convertJsonToMultipleObjects(json)
-//            completion(users: matches)
-//        }
+        var urlString = "\(User.webApiUrls().getUrl(kActiveUser.UserID))/ActiveUsersMatching/\(string)"
+
+        return JsonRequest.create(urlString, parameters: nil, method: .POST).onDownloadSuccess { (json, request) -> () in
+            
+            let matches: Array<User> = User.convertJsonToMultipleObjects(User.self, json: json)
+            completion(users: matches)
+        }
     }
     
     override func webApiRestObjectID() -> Int? {
@@ -292,5 +356,15 @@ class User: JSONObject {
         }
         
         return usersToChooseFrom
+    }
+    
+    override func modelIsValid() -> Bool {
+        
+        return Username.length() > 0 && Password.length() > 0 && Email.length() > 0
+    }
+    
+    func modelIsValidForLogin() -> Bool {
+        
+        return Username.length() > 0 && Password.length() > 0
     }
 }

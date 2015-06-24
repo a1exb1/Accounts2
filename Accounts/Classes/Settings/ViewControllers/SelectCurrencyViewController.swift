@@ -42,7 +42,6 @@ extension SelectCurrencyViewController: UITableViewDelegate, UITableViewDataSour
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell") as! UITableViewCell
-        setupTableViewCellAppearance(cell)
         
         let currency = data[indexPath.row]
         

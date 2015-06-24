@@ -8,20 +8,36 @@
 
 import UIKit
 import ABToolKit
+import SwiftyJSON
+
+private let kPurchaseImage = AppTools.iconAssetNamed("1007-price-tag-toolbar.png")
+private let kTransactionImage = AppTools.iconAssetNamed("922-suitcase-toolbar.png")
+private let kPopoverContentSize = CGSize(width: 390, height: 440)
 
 class TransactionsViewController: ACBaseViewController {
 
-    var tableView = UITableView()
+    var tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Plain)
     var friend = User()
     var transactions:Array<Transaction> = []
+    var noDataView: UILabel?
+    var addBarButtonItem: UIBarButtonItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            
+            tableView = UITableView(frame: CGRectZero, style: .Grouped)
+        }
+        
         setupTableView(tableView, delegate: self, dataSource: self)
         title = "Transactions with \(friend.Username)"
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+        addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+        navigationItem.rightBarButtonItem = addBarButtonItem
+        
+        gradient = setBackgroundGradient()
+        setTableViewAppearanceForBackgroundGradient(tableView)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -30,9 +46,50 @@ class TransactionsViewController: ACBaseViewController {
         refresh(nil)
     }
     
+    override func setupTableView(tableView: UITableView, delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
+        super.setupTableView(tableView, delegate: delegate, dataSource: dataSource)
+        
+        setupTableViewRefreshControl(tableView)
+    }
+    
+    func showOrHideNoDataView() {
+        
+        if noDataView == nil {
+            
+            noDataView = UILabel()
+            noDataView!.text = "Nothing to see here!"
+            noDataView?.font = UIFont.systemFontOfSize(40)
+            noDataView?.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+            noDataView?.lineBreakMode = NSLineBreakMode.ByWordWrapping
+            noDataView?.numberOfLines = 0
+            noDataView?.textAlignment = NSTextAlignment.Center
+            
+            noDataView?.setTranslatesAutoresizingMaskIntoConstraints(false)
+            view.addSubview(noDataView!)
+            noDataView?.fillSuperView(UIEdgeInsets(top: 40, left: 40, bottom: -40, right: -40))
+            noDataView?.layer.opacity = 0
+        }
+        
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            
+            self.noDataView?.layer.opacity = self.transactions.count > 0 ? 0 : 1
+            self.tableView.layer.opacity = self.transactions.count > 0 ? 1 : 0
+        })
+    }
+    
     override func refresh(refreshControl: UIRefreshControl?) {
         
-        kActiveUser.getTransactionsBetweenFriend(friend, completion: { (transactions) -> () in
+        view.showLoader()
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            
+            self.tableView.layer.opacity = 0
+            self.noDataView?.layer.opacity = 0
+        })
+        
+        var startTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
+    
+        refreshRequest?.cancel()
+        refreshRequest = kActiveUser.getTransactionsBetweenFriend(friend, completion: { (transactions) -> () in
             
             self.transactions = transactions
             
@@ -41,41 +98,39 @@ class TransactionsViewController: ACBaseViewController {
             refreshControl?.endRefreshing()
             self.tableView.reloadData()
             
-        }).onDownloadFailure({ (error, alert) -> () in
+            self.view.hideLoader()
+            self.showOrHideNoDataView()
             
-            alert.show()
         })
     }
     
     func add() {
         
-        var alert = UIAlertController(title: "Add new", message: "", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let view = SelectPurchaseOrTransactionViewController()
+        view.contextualFriend = friend
+        let v = UINavigationController(rootViewController: view)
         
-        let purchaseAction = UIAlertAction(title: "Purchase", style: UIAlertActionStyle.Default) { (action) -> Void in
-            
-            let v = SavePurchaseViewController()
-            v.addCloseButton()
-            v.purchase.friends.append(self.friend)
-            self.presentViewController(UINavigationController(rootViewController: v), animated: true, completion: nil)
-        }
+        v.modalPresentationStyle = .Popover
+        v.preferredContentSize = kPopoverContentSize
+        v.popoverPresentationController?.barButtonItem = addBarButtonItem
+        v.popoverPresentationController?.delegate = self
         
-        let transactionAction = UIAlertAction(title: "Transaction", style: UIAlertActionStyle.Default) { (action) -> Void in
-            
-            let v = SaveTransactionViewController()
-            v.addCloseButton()
-            v.transaction.friend = self.friend
-            self.presentViewController(UINavigationController(rootViewController: v), animated: true, completion: nil)
-        }
+        presentViewController(v, animated: true, completion: nil)
+    }
+    
+    override func setupTableViewConstraints(tableView: UITableView) {
         
-        let closeAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive) { (action) -> Void in
-            
-            alert.dismissViewControllerAnimated(true, completion: nil)
-        }
+        tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
         
-        alert.addAction(purchaseAction)
-        alert.addAction(transactionAction)
-        alert.addAction(closeAction)
-        alert.show()
+        tableView.addLeftConstraint(toView: view, attribute: NSLayoutAttribute.Left, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
+        tableView.addRightConstraint(toView: view, attribute: NSLayoutAttribute.Right, relation: NSLayoutRelation.GreaterThanOrEqual, constant: -0)
+        
+        tableView.addWidthConstraint(relation: NSLayoutRelation.LessThanOrEqual, constant: kTableViewMaxWidth)
+        
+        tableView.addTopConstraint(toView: view, relation: .Equal, constant: 0)
+        tableView.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
+        
+        tableView.addCenterXConstraint(toView: view)
     }
 }
 
@@ -93,53 +148,61 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let dequeuedCell = tableView.dequeueReusableCellWithIdentifier("Cell") as? UITableViewCell
-        let cell = dequeuedCell != nil ? dequeuedCell! : UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "Cell")
-        let transaction = transactions[indexPath.row]
+        let cell = tableView.dequeueOrCreateReusableCellWithIdentifier("Cell", requireNewCell: { (identifier) -> (UITableViewCell) in
+            
+            return UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: identifier)
+        })
         
-        setupTableViewCellAppearance(cell)
+        setTableViewCellAppearanceForBackgroundGradient(cell)
+        
+        let transaction = transactions[indexPath.row]
         
         var amount = transaction.localeAmount
         
         if transaction.purchase.PurchaseID > 0 {
 
+            amount = transaction.purchase.localeAmount
+            
             let dateString:String = transaction.purchase.DatePurchased.toString(DateFormat.Date.rawValue)
-            cell.textLabel?.text = "Purchase: \(transaction.purchase.Description)"
+            cell.textLabel?.text = "\(transaction.purchase.Description)"
             
             if transaction.purchase.user.UserID == kActiveUser.UserID {
                 
                 //moneyIsOwedToActiveUser
                 amount = -amount
-                cell.detailTextLabel?.textColor = UIColor(hex: "B0321E")
+                cell.detailTextLabel?.textColor = AccountColor.negativeColor()
             }
             else {
                 
                 //activeUserOwes
-                cell.detailTextLabel?.textColor = UIColor(hex: "53B01E")
+                cell.detailTextLabel?.textColor = AccountColor.positiveColor()
             }
-            
-            amount = transaction.purchase.localeAmount
+        
+            cell.imageView?.image = kPurchaseImage
         }
         else {
             
             let dateString:String = transaction.TransactionDate.toString(DateFormat.Date.rawValue)
-            cell.textLabel?.text = "Transaction: \(transaction.Description)"
+            cell.textLabel?.text = "\(transaction.Description)"
             
             if transaction.user.UserID == kActiveUser.UserID {
                 
                 //moneyIsOwedToActiveUser
                 amount = -amount
-                cell.detailTextLabel?.textColor = UIColor(hex: "B0321E")
+                cell.detailTextLabel?.textColor = AccountColor.negativeColor()
             }
             else {
                 
                 //activeUserOwes
-                cell.detailTextLabel?.textColor = UIColor(hex: "53B01E")
+                cell.detailTextLabel?.textColor = AccountColor.positiveColor()
             }
+            
+            cell.imageView?.image = kTransactionImage
         }
         
         cell.detailTextLabel?.text = Formatter.formatCurrencyAsString(amount)
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        cell.imageView?.tintWithColor(UIColor.whiteColor())
         
         return cell
     }
@@ -147,20 +210,36 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         let transaction = transactions[indexPath.row]
+        let cell = tableView.cellForRowAtIndexPath(indexPath)!
         
         if transaction.purchase.PurchaseID > 0 {
             
             let v = SavePurchaseViewController()
             v.purchase = transaction.purchase
-            navigationController?.pushViewController(v, animated: true)
+            
+            openView(v, sourceView: cell.contentView)
         }
         
         else {
             
             let v = SaveTransactionViewController()
             v.transaction = transaction
-            navigationController?.pushViewController(v, animated: true)
+            
+            openView(v, sourceView: cell.contentView)
         }
+    }
+    
+    func openView(view: UIViewController, sourceView: UIView?) {
+        
+        let v = UINavigationController(rootViewController: view)
+        
+        v.modalPresentationStyle = .Popover
+        v.preferredContentSize = kPopoverContentSize
+        v.popoverPresentationController?.sourceRect = sourceView!.bounds
+        v.popoverPresentationController?.sourceView = sourceView
+        v.popoverPresentationController?.delegate = self
+        
+        presentViewController(v, animated: true, completion: nil)
     }
     
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
@@ -201,5 +280,14 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         }
         
         return false
+    }
+}
+
+extension TransactionsViewController: UIPopoverPresentationControllerDelegate {
+    
+    func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
+        
+        deselectSelectedCell(tableView)
+        refresh(nil)
     }
 }
