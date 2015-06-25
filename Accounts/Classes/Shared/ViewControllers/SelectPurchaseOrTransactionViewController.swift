@@ -13,7 +13,7 @@ import ABToolKit
 class SelectPurchaseOrTransactionViewController: ACBaseViewController {
 
     var tableView = UITableView(frame: CGRectZero, style: .Grouped)
-    var data = [(identifier: "Purchase", textLabelText: "Add purchase"), (identifier: "Transaction", textLabelText: "Add transaction")]
+    var data = [(identifier: "Purchase", textLabelText: "Add purchase"), (identifier: "Transaction", textLabelText: "Add transfer")]
     var contextualFriend: User?
     
     override func viewDidLoad() {
@@ -82,6 +82,7 @@ extension SelectPurchaseOrTransactionViewController: UITableViewDelegate, UITabl
             if let friend = contextualFriend {
                 
                 v.purchase.friends.append(friend)
+                v.purchase.billSplitDictionary[friend] = 0
             }
             
             navigationController?.pushViewController(v, animated: true)

@@ -19,19 +19,19 @@ public enum FormCellType {
 
 public class FormViewConfiguration {
     
-    var labelText: String = ""
-    var formCellType = FormCellType.TextField
-    var value: AnyObject?
-    var identifier: String = ""
+    public var labelText: String = ""
+    public var formCellType = FormCellType.TextField
+    public var value: AnyObject?
+    public var identifier: String = ""
     
     //currency
-    var currencyLocale = NSLocale(localeIdentifier: "en_GB")
+    public var currencyLocale = NSLocale(localeIdentifier: "en_GB")
     
     //button
-    var buttonTextColor = UIColor.blueColor()
+    public var buttonTextColor = UIColor.blueColor()
     
     //datepicker
-    var format: String = DateFormat.DateTime.rawValue
+    public var format: String = DateFormat.DateTime.rawValue
     
     private convenience init(labelText: String, formCellType: FormCellType, value: AnyObject?, identifier: String) {
         

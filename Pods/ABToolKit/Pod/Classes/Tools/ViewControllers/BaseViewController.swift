@@ -39,12 +39,12 @@ public class BaseViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.whiteColor()
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidChangeFrame:", name: UIKeyboardWillChangeFrameNotification, object: nil)
     }
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidChangeFrame:", name: UIKeyboardWillChangeFrameNotification, object: nil)
         
         if shouldDeselectCellOnViewWillAppear {
             

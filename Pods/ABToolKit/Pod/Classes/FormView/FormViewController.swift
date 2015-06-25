@@ -32,7 +32,7 @@ private let kButtonCellIdentifier = "ButtonCell"
 public class FormViewController: BaseViewController {
     
     public var tableView = UITableView(frame: CGRectZero, style: .Grouped)
-    var data: Array<Array<FormViewConfiguration>> = []
+    public var data: Array<Array<FormViewConfiguration>> = []
     var selectedIndexPath: NSIndexPath?
     public var formViewDelegate: FormViewDelegate?
     
@@ -104,7 +104,7 @@ extension FormViewController: UITableViewDelegate, UITableViewDataSource {
         
         if config.formCellType == FormCellType.TextField || config.formCellType == FormCellType.TextFieldCurrency || config.formCellType == FormCellType.DatePicker {
             
-            let cell = tableView.dequeueReusableCellWithIdentifier(kTextFieldCellIdenfitier) as! FormViewTextFieldCell
+            let cell = FormViewTextFieldCell()
             
             cell.formViewDelegate = formViewDelegate
             cell.config = config
@@ -125,7 +125,7 @@ extension FormViewController: UITableViewDelegate, UITableViewDataSource {
         }
         else if config.formCellType == FormCellType.Button {
             
-            let cell = tableView.dequeueReusableCellWithIdentifier(kButtonCellIdentifier) as! FormViewButtonCell
+            let cell = FormViewButtonCell()
             
             cell.formViewDelegate = formViewDelegate
             cell.config = config
@@ -162,6 +162,30 @@ extension FormViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         tableView.beginUpdates()
         tableView.endUpdates()
+    }
+    
+    public func indexPathForFormViewCellIdentifier(identifier: String) -> NSIndexPath? {
+        
+        var sectionIndex = 0
+        
+        for section in data {
+            
+            var configIndex = 0
+            
+            for config in section {
+                
+                if config.identifier == identifier {
+                    
+                    return NSIndexPath(forRow: configIndex, inSection: sectionIndex)
+                }
+                
+                configIndex++
+            }
+            
+            sectionIndex++
+        }
+        
+        return nil
     }
 }
 

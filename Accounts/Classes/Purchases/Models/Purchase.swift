@@ -68,18 +68,25 @@ class Purchase: JSONObject {
         
         user.UserID = json["UserID"].intValue
         
-        friends = User.convertJsonToMultipleObjects(User.self, json: json["RelationUsers"])
+        //friends = User.convertJsonToMultipleObjects(User.self, json: json["RelationUsers"])
         
-        for friend in friends {
+        user = User.createObjectFromJson(json["User"])
+        
+        for (key: String, subJson: JSON) in json["RelationUserAmounts"] {
+            
+            let amount = subJson["Amount"].doubleValue
+            let friend:User = User.createObjectFromJson(subJson["User"])
             
             if friend.UserID == user.UserID {
                 
-                let index = find(friends, friend)!
-                friends.removeAtIndex(index)
+                billSplitDictionary[user] = amount
+            }
+            else {
+                
+                friends.append(friend)
+                billSplitDictionary[friend] = amount
             }
         }
-        
-        user = User.createObjectFromJson(json["User"])
     }
     
     func save() -> JsonRequest? {
@@ -101,13 +108,17 @@ class Purchase: JSONObject {
             urlString = Purchase.webApiUrls().insertUrl()!
         }
         
-        splitTheBill()
-        
         var c = 0
-        for friend in self.friends {
+        
+        var friendsToInclude = friends
+        friendsToInclude.append(user)
+        
+        for user in friendsToInclude {
+            
+            let amount = billSplitDictionary[user]!
             
             let prefix = c == 0 ? "?" : "&"
-            urlString = urlString + "\(prefix)RelationUserIDs=\(friend.UserID)&RelationUserAmounts=\(self.billSplitDictionary[friend]!)"
+            urlString = urlString + "\(prefix)RelationUserIDs=\(user.UserID)&RelationUserAmounts=\(amount)"
             c++
         }
     
@@ -115,9 +126,9 @@ class Purchase: JSONObject {
         params["UserID"] = user.UserID
         params["DateEntered"] = DateEntered.toString(JSONMappingDefaults.sharedInstance().webApiSendDateFormat)
         params["DatePurchased"] = DatePurchased.toString(JSONMappingDefaults.sharedInstance().webApiSendDateFormat)
-        
+
         return JsonRequest.create(urlString, parameters: params, method: httpMethod).onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
-            println(httpUrlResponse!.statusCode)
+
             if httpUrlResponse?.statusCode == 200 || httpUrlResponse?.statusCode == 201 || httpUrlResponse?.statusCode == 204 {
                 
                 request.succeedContext()
@@ -137,8 +148,10 @@ class Purchase: JSONObject {
         
         for friend in self.friends {
             
-            self.billSplitDictionary[friend] = amount
+            billSplitDictionary[friend] = amount
         }
+        
+        billSplitDictionary[user] = amount
     }
     
     override func webApiRestObjectID() -> Int? {
@@ -165,6 +178,29 @@ class Purchase: JSONObject {
             errors.append("Description is empty")
         }
         
+        for friend in friends {
+            
+            if billSplitDictionary[friend] == nil || billSplitDictionary[friend] == 0 {
+                
+                errors.append("\(friend.Username) hasn't got an amount associated")
+            }
+        }
+        
+        var friendTotals:Double = 0
+        
+        for friend in friends {
+            
+            if let amount = billSplitDictionary[friend] {
+                
+                friendTotals += amount
+            }
+        }
+        
+        if friendTotals > Amount {
+            
+            errors.append("The amounts for the users don't add up to the total")
+        }
+        
         var c = 1
         var errorMessageString = ""
         
@@ -182,4 +218,30 @@ class Purchase: JSONObject {
         
         return errors.count > 0 ? false : true
     }
+    
+    func calculateTotalFromBillSplitDictionary() {
+        
+        var total:Double = 0
+        
+        for friend in friends {
+            
+            if let amount = billSplitDictionary[friend] {
+                
+                total += amount
+            }
+        }
+        
+        if let userTotal = billSplitDictionary[user] {
+            
+            total += userTotal
+        }
+
+        Amount = total
+    }
+    
+//    func amountPaidByUser() -> Double {
+//        
+//        return purchase.Amount - calculateTotalFromBillSplitDictionary()
+//    }
+    
 }

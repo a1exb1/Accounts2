@@ -66,6 +66,7 @@ class SaveUserViewController: ACFormViewController {
                     
                     UIAlertView(title: "Oops!", message: "Something went wrong!", delegate: nil, cancelButtonTitle: "OK")
                 }
+                println(json)
             })
         }
         else {
