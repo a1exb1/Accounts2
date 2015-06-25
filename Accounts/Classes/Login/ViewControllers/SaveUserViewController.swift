@@ -52,7 +52,7 @@ class SaveUserViewController: ACFormViewController {
     
     func save() {
         
-        if user.UserID == 0 {
+        if user.UserID != 0 {
             
             user.webApiUpdate()?.onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
                 
@@ -61,12 +61,13 @@ class SaveUserViewController: ACFormViewController {
                 if success {
                     
                     self.navigationController?.popViewControllerAnimated(true)
+                    kActiveUser = self.user
+                    kActiveUser.saveUserOnDevice()
                 }
                 else {
                     
                     UIAlertView(title: "Oops!", message: "Something went wrong!", delegate: nil, cancelButtonTitle: "OK")
                 }
-                println(json)
             })
         }
         else {
