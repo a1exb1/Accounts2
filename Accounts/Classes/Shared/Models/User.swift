@@ -154,10 +154,10 @@ class User: JSONObject {
         })
     }
     
-    func getTransactionsBetweenFriend(friend: User, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
-        
-        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$orderby=TransactionDate desc" // not doing it for purchases
-        
+    func getTransactionsBetweenFriend(friend: User, skip: Int, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
+ 
+        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$skip=\(skip)&$top=16&$orderby=TransactionDate desc" 
+
         let request = JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
             
             let transactions:Array<Transaction> = Transaction.convertJsonToMultipleObjects(Transaction.self, json: json)

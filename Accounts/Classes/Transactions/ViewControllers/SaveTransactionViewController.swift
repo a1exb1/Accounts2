@@ -45,17 +45,6 @@ class SaveTransactionViewController: ACFormViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: "pop")
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if isInsidePopover() {
-            
-//            navigationController?.view.backgroundColor = UIColor.clearColor()
-//            view.backgroundColor = UIColor.clearColor()
-//            tableView.backgroundColor = UIColor.clearColor()
-        }
-    }
-    
     func save() {
 
         transaction.save()?.onContextSuccess({ () -> () in

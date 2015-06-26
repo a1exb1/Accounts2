@@ -60,6 +60,7 @@ class SelectUsersViewController: ACBaseViewController {
         super.viewDidLoad()
 
         setupTableView(tableView, delegate: self, dataSource: self)
+        setupTableViewRefreshControl(tableView)
         
         if allowMultipleSelection {
 

@@ -4,6 +4,7 @@
 target 'Accounts' do
 
 pod "ABToolKit", :git => '/Users/alexbechmann/Documents/iOS/cocoapods/ABToolKit'
+pod "SwiftyUserDefaults", :path => '/Users/alexbechmann/Downloads/SwiftyUserDefaults-master'
 use_frameworks!
 
 end

@@ -24,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-Accounts-SwiftyUserDefaults.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Accounts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,27 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>09FFE736F47FF119BD01EB9E</key>
+		<key>22F33FDBDF3FD918F6C6BF46</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1E95C07107269B2DD2DFE35E</key>
+		<key>2D4CFCB5C39A7500C0759015</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2CD6E858D7676AE9A3863A52</key>
+		<key>315EE9FBA3F9E027839AABA6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>78CC18891882F7878523FCE6</key>
+		<key>684BE85C37338CCB62C98BAA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B0DBAFF954F95D19071B8E6F</key>
+		<key>721BB302AD250E78BB78F982</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FEF24B8FA57C7E31E815F52C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

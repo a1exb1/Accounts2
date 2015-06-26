@@ -22,6 +22,13 @@ class TransactionsViewController: ACBaseViewController {
     var noDataView: UILabel?
     var addBarButtonItem: UIBarButtonItem?
     
+    var loadMoreView = UIView()
+    var loadMoreViewHeightConstraint: NSLayoutConstraint?
+    var hasLoadedFirstTime = false
+    var loadMoreRequest: JsonRequest?
+    var isLoadingMore = false
+    var canLoadMore = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -38,6 +45,8 @@ class TransactionsViewController: ACBaseViewController {
         
         gradient = setBackgroundGradient()
         setTableViewAppearanceForBackgroundGradient(tableView)
+        
+        setupLoadMoreView()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -57,7 +66,7 @@ class TransactionsViewController: ACBaseViewController {
         if noDataView == nil {
             
             noDataView = UILabel()
-            noDataView!.text = "Nothing to see here!"
+            noDataView?.text = "Nothing to see here!"
             noDataView?.font = UIFont.systemFontOfSize(40)
             noDataView?.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
             noDataView?.lineBreakMode = NSLineBreakMode.ByWordWrapping
@@ -80,18 +89,18 @@ class TransactionsViewController: ACBaseViewController {
     override func refresh(refreshControl: UIRefreshControl?) {
         
         view.showLoader()
+        
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             
             self.tableView.layer.opacity = 0
             self.noDataView?.layer.opacity = 0
         })
         
-        var startTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
-    
         refreshRequest?.cancel()
-        refreshRequest = kActiveUser.getTransactionsBetweenFriend(friend, completion: { (transactions) -> () in
+        refreshRequest = kActiveUser.getTransactionsBetweenFriend(friend, skip: 0, completion: { (transactions) -> () in
             
             self.transactions = transactions
+            self.hasLoadedFirstTime = true
             
         }).onDownloadFinished({ () -> () in
             
@@ -101,7 +110,56 @@ class TransactionsViewController: ACBaseViewController {
             self.view.hideLoader()
             self.showOrHideNoDataView()
             
+            //just in case
+            self.loadMoreView.hideLoader()
         })
+    }
+    
+    func animateTableFooterViewHeight(height: Int, completion: (() -> ())?) {
+        
+        UIView.animateWithDuration(0.4, animations: { () -> Void in
+            
+            self.loadMoreView.frame = CGRect(x: 0, y: 0, width: 0, height: height)
+            self.tableView.tableFooterView = self.loadMoreView
+            
+        }) { (sucess) -> Void in
+            
+            
+            completion?()
+        }
+    }
+    
+    func loadMore() {
+        
+        if !isLoadingMore && canLoadMore {
+            
+            isLoadingMore = true
+            canLoadMore = false
+            
+            animateTableFooterViewHeight(50, completion: nil)
+            
+            loadMoreView.showLoader()
+            
+            loadMoreRequest = kActiveUser.getTransactionsBetweenFriend(friend, skip: transactions.count, completion: { (transactions) -> () in
+                
+                for transaction in transactions {
+                    
+                    self.transactions.append(transaction)
+                }
+                
+            }).onDownloadFinished({ () -> () in
+                
+                self.tableView.reloadData()
+                self.isLoadingMore = false
+                self.loadMoreView.hideLoader()
+                
+                NSTimer.schedule(delay: 0.2, handler: { timer in
+                    
+                    self.animateTableFooterViewHeight(0, completion: { () -> () in
+                    })
+                })
+            })
+        }
     }
     
     func add() {
@@ -131,6 +189,18 @@ class TransactionsViewController: ACBaseViewController {
         tableView.addBottomConstraint(toView: view, relation: .Equal, constant: 0)
         
         tableView.addCenterXConstraint(toView: view)
+    }
+    
+    func setupLoadMoreView() {
+        
+        loadMoreView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        tableView.tableFooterView = loadMoreView
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        loadMoreRequest?.cancel()
     }
 }
 
@@ -219,7 +289,6 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
             
             openView(v, sourceView: cell.contentView)
         }
-        
         else {
             
             let v = SaveTransactionViewController()
@@ -289,5 +358,34 @@ extension TransactionsViewController: UIPopoverPresentationControllerDelegate {
         
         deselectSelectedCell(tableView)
         refresh(nil)
+    }
+}
+
+extension TransactionsViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        // UITableView only moves in one direction, y axis
+        let currentOffset = scrollView.contentOffset.y;
+        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height;
+        
+        //NSInteger result = maximumOffset - currentOffset;
+        
+        //if not at top
+        let isAboveTop = scrollView.contentOffset.y + 64 <= 0
+        println(scrollView.contentOffset.y + 64)
+        println(isAboveTop)
+        //
+        
+        // Change 10.0 to adjust the distance from bottom
+        if (maximumOffset - currentOffset <= 00.0 && !isAboveTop) {
+            
+            if hasLoadedFirstTime { loadMore() }
+        }
+    }
+
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        
+        self.canLoadMore = true // necessary?
     }
 }

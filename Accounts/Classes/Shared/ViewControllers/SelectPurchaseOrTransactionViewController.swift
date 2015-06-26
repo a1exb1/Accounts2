@@ -109,4 +109,9 @@ extension SelectPurchaseOrTransactionViewController: UITableViewDelegate, UITabl
         
         return true
     }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        tableView.delegate?.tableView?(tableView, didSelectRowAtIndexPath: indexPath)
+    }
 }

@@ -32,6 +32,9 @@ class FriendsViewController: ACBaseViewController {
         
         setupTableView(tableView, delegate: self, dataSource: self)
         
+        addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
+        addBarButtonItem?.width = 44
+        
         setBarButtonItems()
         
         title = "Friends"
@@ -50,7 +53,7 @@ class FriendsViewController: ACBaseViewController {
         
         friendInvitesBarButtonItem = UIBarButtonItem(title: "Invites", style: .Plain, target: self, action: "friendInvites")
         openMenuBarButtonItem = UIBarButtonItem(image: kMenuIcon, style: .Plain, target: self, action: "openMenu")
-        addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+        
         
         navigationItem.leftBarButtonItems = [
             openMenuBarButtonItem!,
@@ -83,6 +86,7 @@ class FriendsViewController: ACBaseViewController {
         
         var friendsWhoOweMoney = Array<User>()
         var friendsWhoYouOweMoney = Array<User>()
+        var friendsWhoAreEven = Array<User>()
         
         //owes you money
         for friend in kActiveUser.friends {
@@ -95,13 +99,21 @@ class FriendsViewController: ACBaseViewController {
         
         for friend in kActiveUser.friends {
             
-            if friend.localeDifferenceBetweenActiveUser >= 0 {
+            if friend.localeDifferenceBetweenActiveUser > 0 {
                 
                 friendsWhoYouOweMoney.append(friend)
             }
         }
         
-        return [friendsWhoOweMoney, friendsWhoYouOweMoney]
+        for friend in kActiveUser.friends {
+            
+            if friend.localeDifferenceBetweenActiveUser == 0 {
+                
+                friendsWhoAreEven.append(friend)
+            }
+        }
+        
+        return [friendsWhoOweMoney, friendsWhoYouOweMoney, friendsWhoAreEven]
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -129,6 +141,9 @@ class FriendsViewController: ACBaseViewController {
                 
                 self.tableView.layer.opacity = 1
             })
+            
+            self.addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
+            self.setBarButtonItems()
         })
     }
     
@@ -179,8 +194,16 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.text = friend.Username
         let amount = abs(friend.localeDifferenceBetweenActiveUser)
         
-        let readableText = friend.localeDifferenceBetweenActiveUser < 0 ? "You owe" : "Owes you"
-        let tintColor = friend.localeDifferenceBetweenActiveUser < 0 ? AccountColor.negativeColor() : AccountColor.positiveColor()
+        var tintColor = UIColor.lightGrayColor()
+        
+        if friend.localeDifferenceBetweenActiveUser < 0 {
+            
+            tintColor = AccountColor.negativeColor()
+        }
+        else if friend.localeDifferenceBetweenActiveUser > 0 {
+            
+            tintColor = AccountColor.positiveColor()
+        }
         
         //cell.imageView?.image = friend.localeDifferenceBetweenActiveUser < 0 ? kMinusImage : kPlusImage
         //cell.imageView?.tintWithColor(tintColor)
@@ -208,11 +231,15 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
             
             if section == 0 {
                 
-                return "People you owe"
+                return "People I owe money"
             }
-            if section == 1 {
+            else if section == 1 {
                 
-                return "People who owe you"
+                return "People who owe me money"
+            }
+            else if section == 2 {
+                
+                return "People I'm even with"
             }
         }
         

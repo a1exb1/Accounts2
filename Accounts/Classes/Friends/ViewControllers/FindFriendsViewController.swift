@@ -29,7 +29,6 @@ class FindFriendsViewController: BaseViewController {
         setupSearchController()
     }
     
-    
     func setupSearchController() {
         
         let searchBar = searchController.searchBar
