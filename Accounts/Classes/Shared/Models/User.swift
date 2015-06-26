@@ -104,26 +104,23 @@ class User: JSONObject {
             }
             else{
                 
-                let errors = json["ModelState"]["Error"].arrayValue
-                println(json["ModelState"])
-                println(json["ModelState"]["Error"])
-                
-                if errors.count > 0 {
+                let errorsJson = json["ModelState"]["Error"]
+
+                let errors = NSMutableArray()
+
+                for (index: String, errorJson: JSON) in errorsJson {
                     
-                    for error in errors {
-                        
-                        UIAlertView(title: "Error", message: error.stringValue, delegate: nil, cancelButtonTitle: "OK")
-                        println(error)
-                    }
+                    errors.addObject(errorJson.stringValue)
+                    println(errorJson)
                 }
+                
+                let errorMsg = errors.componentsJoinedByString(",\n")
+                
+                UIAlertView(title: "Error", message: errorMsg, delegate: nil, cancelButtonTitle: "OK").show()
                 
                 request.failContext()
             }
-            
-            //println(json)
         })
-        
-        
     }
     
     func logout() {

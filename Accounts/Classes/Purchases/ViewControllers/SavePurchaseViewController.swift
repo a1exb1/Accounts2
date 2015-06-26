@@ -295,11 +295,6 @@ extension SavePurchaseViewController: FormViewDelegate {
     
     override func formViewElementIsEditable(identifier: String) -> Bool {
         
-//        if identifier == "userAmount" {
-//            
-//            return false
-//        }
-        
         return allowEditing
     }
     
@@ -399,6 +394,8 @@ extension SavePurchaseViewController: UITableViewDelegate {
                 }
             }
         }
+        
+        showOrHideSaveButton()
     }
 }
 

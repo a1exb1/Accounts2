@@ -131,7 +131,7 @@ class TransactionsViewController: ACBaseViewController {
     
     func loadMore() {
         
-        if !isLoadingMore && canLoadMore {
+        if !isLoadingMore && canLoadMore && hasLoadedFirstTime {
             
             isLoadingMore = true
             canLoadMore = false
@@ -373,19 +373,16 @@ extension TransactionsViewController: UIScrollViewDelegate {
         
         //if not at top
         let isAboveTop = scrollView.contentOffset.y + 64 <= 0
-        println(scrollView.contentOffset.y + 64)
-        println(isAboveTop)
-        //
         
         // Change 10.0 to adjust the distance from bottom
         if (maximumOffset - currentOffset <= 00.0 && !isAboveTop) {
             
-            if hasLoadedFirstTime { loadMore() }
+            loadMore()
         }
     }
 
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         
-        self.canLoadMore = true // necessary?
+        self.canLoadMore = true
     }
 }
