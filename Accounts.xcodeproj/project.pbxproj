@@ -34,12 +34,12 @@
 		E48BC6591B21EBA200A5E58F /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */; };
 		E48BC65B1B21FC0700A5E58F /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48BC65A1B21FC0700A5E58F /* TransactionsViewController.swift */; };
 		E49569161B2DB50C00E07B00 /* AccountColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49569151B2DB50C00E07B00 /* AccountColor.swift */; };
-		E49569181B2DC87000E07B00 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = E49569171B2DC87000E07B00 /* Assets */; };
 		E4C378FC1B356ED600385D87 /* SaveUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C378FB1B356ED600385D87 /* SaveUserViewController.swift */; };
 		E4C378FE1B35CC3B00385D87 /* FriendInvitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C378FD1B35CC3B00385D87 /* FriendInvitesViewController.swift */; };
 		E4DC32961B24682900FA16C3 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4DC32951B24682900FA16C3 /* Login.storyboard */; };
 		E4DC32981B24686100FA16C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4DC32971B24686100FA16C3 /* Main.storyboard */; };
 		E4DC329A1B2468AB00FA16C3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */; };
+		E4E005E71B3EC235003470BE /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = E4E005E61B3EC235003470BE /* Assets */; };
 		E4EAA99D1B2DFED200C021C0 /* AppTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EAA99C1B2DFED200C021C0 /* AppTools.swift */; };
 		E4EAA99F1B2ED1C100C021C0 /* BoolSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EAA99E1B2ED1C100C021C0 /* BoolSettingViewController.swift */; };
 /* End PBXBuildFile section */
@@ -88,12 +88,12 @@
 		E48BC6581B21EBA200A5E58F /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		E48BC65A1B21FC0700A5E58F /* TransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
 		E49569151B2DB50C00E07B00 /* AccountColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountColor.swift; sourceTree = "<group>"; };
-		E49569171B2DC87000E07B00 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		E4C378FB1B356ED600385D87 /* SaveUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveUserViewController.swift; sourceTree = "<group>"; };
 		E4C378FD1B35CC3B00385D87 /* FriendInvitesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendInvitesViewController.swift; sourceTree = "<group>"; };
 		E4DC32951B24682900FA16C3 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Login.storyboard; path = Storyboards/Login.storyboard; sourceTree = "<group>"; };
 		E4DC32971B24686100FA16C3 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
 		E4DC32991B2468AB00FA16C3 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E4E005E61B3EC235003470BE /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = SOURCE_ROOT; };
 		E4EAA99C1B2DFED200C021C0 /* AppTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTools.swift; sourceTree = "<group>"; };
 		E4EAA99E1B2ED1C100C021C0 /* BoolSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoolSettingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -194,7 +194,6 @@
 		E48BC6091B21EAB500A5E58F = {
 			isa = PBXGroup;
 			children = (
-				E49569171B2DC87000E07B00 /* Assets */,
 				E48BC6141B21EAB500A5E58F /* Accounts */,
 				E48BC62A1B21EAB500A5E58F /* AccountsTests */,
 				E48BC6131B21EAB500A5E58F /* Products */,
@@ -215,6 +214,7 @@
 		E48BC6141B21EAB500A5E58F /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				E4E005E61B3EC235003470BE /* Assets */,
 				E46F1BE21B29BFAE000571DF /* encryptor_compressor.txt */,
 				E4DC32941B24680E00FA16C3 /* Storyboards */,
 				E48BC6371B21EB7400A5E58F /* Classes */,
@@ -537,7 +537,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4DC32961B24682900FA16C3 /* Login.storyboard in Resources */,
-				E49569181B2DC87000E07B00 /* Assets in Resources */,
+				E4E005E71B3EC235003470BE /* Assets in Resources */,
 				E46F1BE31B29BFAE000571DF /* encryptor_compressor.txt in Resources */,
 				E48BC6221B21EAB500A5E58F /* LaunchScreen.xib in Resources */,
 				E48BC61F1B21EAB500A5E58F /* Images.xcassets in Resources */,

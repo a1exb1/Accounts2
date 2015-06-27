@@ -27,7 +27,7 @@
         <scene sceneID="Fyo-c6-7lL">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sHb-m2-yi5" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Login" id="Q5l-1H-WTj"/>
+                    <tabBarItem key="tabBarItem" title="Login" image="Assets/Icons/769-male-selected.png" id="Q5l-1H-WTj"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5h2-1c-26r">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -84,7 +84,7 @@
         <scene sceneID="ER9-Xp-OXL">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="8v5-5Y-u0X" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Register" id="fQD-ok-Mky"/>
+                    <tabBarItem key="tabBarItem" title="Register" image="Assets/Icons/746-plus-circle-selected.png" id="fQD-ok-Mky"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="cIA-Dx-aTv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -100,4 +100,8 @@
             <point key="canvasLocation" x="1233" y="967"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Assets/Icons/746-plus-circle-selected.png" width="16" height="16"/>
+        <image name="Assets/Icons/769-male-selected.png" width="16" height="16"/>
+    </resources>
 </document>
