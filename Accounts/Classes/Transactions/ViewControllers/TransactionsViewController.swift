@@ -181,27 +181,39 @@ class TransactionsViewController: ACBaseViewController {
             }
             else if selectedPurchaseID == 0 && selectedTransactionID == 0 {
                 
-                rowToDeselect = NSIndexPath(forRow: 0, inSection: 0)
+                rowToDeselect = nil // NSIndexPath(forRow: 0, inSection: 0)
             }
             else if let indexPath = selectedRow {
                 
                 rowToDeselect = indexPath
             }
             
-            if let indexPath = rowToDeselect{
+            if let indexPath = rowToDeselect {
                 
                 tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
                 
                 NSTimer.schedule(delay: kAnimationDuration, handler: { timer in
-                    
-                    self.deselectSelectedCell(self.tableView)
-                    
+
                     var cellRect = self.tableView.rectForRowAtIndexPath(indexPath)
                     var completelyVisible = CGRectContainsRect(self.tableView.bounds, cellRect)
                     
                     if !completelyVisible {
                         
+                        CATransaction.begin()
+                        CATransaction.setCompletionBlock({ () -> Void in
+                            
+                            self.deselectSelectedCell(self.tableView)
+                        })
+                        
+                        self.tableView.beginUpdates()
                         self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+                        self.tableView.endUpdates()
+                        
+                        CATransaction.commit()
+                    }
+                    else {
+                        
+                        self.deselectSelectedCell(self.tableView)
                     }
                 })
             }
@@ -424,33 +436,33 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         presentViewController(v, animated: true, completion: nil)
     }
     
-    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        
-        let transaction = transactions[indexPath.row]
-        
-        if canDeleteTransactionAtIndexPath(indexPath) {
-         
-            return UITableViewCellEditingStyle.Delete
-        }
-        
-        return UITableViewCellEditingStyle.None
-    }
+//    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+//        
+//        let transaction = transactions[indexPath.row]
+//        
+//        if canDeleteTransactionAtIndexPath(indexPath) {
+//         
+//            return UITableViewCellEditingStyle.Delete
+//        }
+//        
+//        return UITableViewCellEditingStyle.None
+//    }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-        let transaction = transactions[indexPath.row]
-        
-        if editingStyle == .Delete {
-            
-            if canDeleteTransactionAtIndexPath(indexPath) {
-                
-                transaction.webApiDelete()?.onDownloadFinished({ () -> () in
-                    
-                    self.refresh(nil)
-                })
-            }
-        }
-    }
+//    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+//        
+//        let transaction = transactions[indexPath.row]
+//        
+//        if editingStyle == .Delete {
+//            
+//            if canDeleteTransactionAtIndexPath(indexPath) {
+//                
+//                transaction.webApiDelete()?.onDownloadFinished({ () -> () in
+//                    
+//                    self.refresh(nil)
+//                })
+//            }
+//        }
+//    }
     
     func canDeleteTransactionAtIndexPath(indexPath:NSIndexPath) -> Bool {
         

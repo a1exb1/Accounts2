@@ -77,10 +77,9 @@ extension BaseViewController: UITableViewDelegate {
         
         let numberOfRowsInSections:Int = tableView.numberOfRowsInSection(indexPath.section)
     
-        //reset rounded corners
         cell.layer.mask = nil
         
-        if view.bounds.width > kTableViewMaxWidth {
+        if view.bounds.width > kTableViewMaxWidth && !tableView.editing {
             
             if indexPath.row == 0 {
                 

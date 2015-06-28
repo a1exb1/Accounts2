@@ -37,7 +37,7 @@ let kNavigationBarStyle = UIBarStyle.Default
 let kFormDeleteButtonTextColor = AccountColor.negativeColor()
 
 let kTableViewMaxWidth:CGFloat = 570
-let kTableViewCellIpadCornerRadiusSize = CGSize(width: 10, height: 10)
+let kTableViewCellIpadCornerRadiusSize = CGSize(width: 5, height: 5)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

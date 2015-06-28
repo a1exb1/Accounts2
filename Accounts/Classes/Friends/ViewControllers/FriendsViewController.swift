@@ -38,7 +38,7 @@ class FriendsViewController: ACBaseViewController {
         
         title = "Friends"
         view.showLoader()
-        gradient = setBackgroundGradient()
+        //gradient = setBackgroundGradient()
         //setTableViewAppearanceForBackgroundGradient(tableView)
         
         if kDevice == .Pad {
@@ -49,10 +49,21 @@ class FriendsViewController: ACBaseViewController {
         setupNoDataLabel(noDataView, text: "To get started, click invites to add some friends!")
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setEditing(false, animated: false)
+    }
+    
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         
         tableView.setEditing(editing, animated: animated)
+        
+        if view.bounds.width >= kTableViewMaxWidth {
+            
+            tableView.reloadData()
+        }
     }
     
     func setBarButtonItems() {
@@ -65,12 +76,10 @@ class FriendsViewController: ACBaseViewController {
         friendInvitesBarButtonItem = UIBarButtonItem(title: "Invites", style: .Plain, target: self, action: "friendInvites")
         openMenuBarButtonItem = UIBarButtonItem(image: kMenuIcon, style: .Plain, target: self, action: "openMenu")
         
-        
         navigationItem.leftBarButtonItems = [
             openMenuBarButtonItem!,
             editButtonItem()
         ]
-        
         navigationItem.rightBarButtonItems = [
             addBarButtonItem!,
             friendInvitesBarButtonItem!
@@ -207,7 +216,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: identifier)
         })
         
-        setTableViewCellAppearanceForBackgroundGradient(cell)
+        //setTableViewCellAppearanceForBackgroundGradient(cell)
         
         let friend = data()[indexPath.section][indexPath.row]
         
@@ -230,7 +239,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.detailTextLabel?.text = Formatter.formatCurrencyAsString(amount)
         cell.detailTextLabel?.textColor = tintColor
-        //cell.editingAccessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
+        cell.editingAccessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell
@@ -266,16 +275,14 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         return ""
     }
     
-    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        
-        //let header = view as! UITableViewHeaderFooterView
-        
-        //header.textLabel.textColor = UIColor.whiteColor()
-    }
-    
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         
         return tableView.editing ? .Delete : .None
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        
+        return indexPath.section == 2
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -313,6 +320,38 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 
         return data()[section].count > 0 ? UITableViewAutomaticDimension : CGFloat.min
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let numberOfRowsInSections:Int = tableView.numberOfRowsInSection(indexPath.section)
+        
+        cell.layer.mask = nil
+        
+        var shouldRoundCorners = view.bounds.width > kTableViewMaxWidth
+        
+        if tableView.editing && shouldRoundCorners {
+            
+            shouldRoundCorners = indexPath.section != 2
+        }
+        
+        if shouldRoundCorners {
+            
+            if indexPath.row == 0 {
+                
+                cell.roundCorners(UIRectCorner.TopLeft | UIRectCorner.TopRight, cornerRadiusSize: kTableViewCellIpadCornerRadiusSize)
+            }
+            
+            if indexPath.row == numberOfRowsInSections - 1 {
+                
+                cell.roundCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, cornerRadiusSize: kTableViewCellIpadCornerRadiusSize)
+            }
+            
+            if indexPath.row == 0 && indexPath.row == numberOfRowsInSections - 1 {
+                
+                cell.roundCorners(UIRectCorner.AllCorners, cornerRadiusSize: kTableViewCellIpadCornerRadiusSize)
+            }
+        }
     }
 }
 

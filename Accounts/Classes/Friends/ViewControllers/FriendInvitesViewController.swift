@@ -210,4 +210,9 @@ extension FriendInvitesViewController: UITableViewDelegate, UITableViewDataSourc
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        return invites[section].count > 0 ? UITableViewAutomaticDimension : CGFloat.min
+    }
 }
