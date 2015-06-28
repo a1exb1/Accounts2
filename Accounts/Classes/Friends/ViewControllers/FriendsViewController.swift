@@ -46,7 +46,7 @@ class FriendsViewController: ACBaseViewController {
             tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         }
         
-        setupNoDataView()
+        setupNoDataLabel(noDataView, text: "To get started, click invites to add some friends!")
     }
     
     override func setEditing(editing: Bool, animated: Bool) {
@@ -176,22 +176,6 @@ class FriendsViewController: ACBaseViewController {
         v.popoverPresentationController?.delegate = self
         
         presentViewController(v, animated: true, completion: nil)
-    }
-    
-    func setupNoDataView() {
-        
-        noDataView = UILabel()
-        noDataView.text = "To get started, click invites to add some friends!"
-        noDataView.font = UIFont(name: "HelveticaNeue-Light", size: 30)
-        noDataView.textColor = UIColor.lightGrayColor()
-        noDataView.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        noDataView.numberOfLines = 0
-        noDataView.textAlignment = NSTextAlignment.Center
-        
-        noDataView.setTranslatesAutoresizingMaskIntoConstraints(false)
-        view.addSubview(noDataView)
-        noDataView.fillSuperView(UIEdgeInsets(top: 40, left: 40, bottom: -40, right: -40))
-        noDataView.layer.opacity = 0
     }
     
     func showOrHideTableOrNoDataView() {
@@ -324,6 +308,11 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         return 60
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+
+        return data()[section].count > 0 ? UITableViewAutomaticDimension : CGFloat.min
     }
 }
 

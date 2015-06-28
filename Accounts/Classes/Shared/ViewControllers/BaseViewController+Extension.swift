@@ -54,6 +54,21 @@ extension BaseViewController {
 
         return view.frame != UIScreen.mainScreen().bounds
     }
+    
+    func setupNoDataLabel(noDataView:UILabel, text: String) {
+        
+        noDataView.text = text
+        noDataView.font = UIFont(name: "HelveticaNeue-Light", size: 30)
+        noDataView.textColor = UIColor.lightGrayColor()
+        noDataView.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        noDataView.numberOfLines = 0
+        noDataView.textAlignment = NSTextAlignment.Center
+        
+        noDataView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        view.addSubview(noDataView)
+        noDataView.fillSuperView(UIEdgeInsets(top: 40, left: 40, bottom: -40, right: -40))
+        noDataView.layer.opacity = 0
+    }
 }
 
 extension BaseViewController: UITableViewDelegate {

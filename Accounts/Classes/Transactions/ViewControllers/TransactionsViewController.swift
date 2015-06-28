@@ -29,7 +29,7 @@ class TransactionsViewController: ACBaseViewController {
     var tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Grouped)
     var friend = User()
     var transactions:Array<Transaction> = []
-    var noDataView: UILabel?
+    var noDataView = UILabel()
     var addBarButtonItem: UIBarButtonItem?
     
     var loadMoreView = UIView()
@@ -60,6 +60,7 @@ class TransactionsViewController: ACBaseViewController {
         navigationItem.rightBarButtonItem = addBarButtonItem
 
         setupLoadMoreView()
+        setupNoDataLabel(noDataView, text: "Tap plus to add a purchase or transfer")
         
         executeActualRefreshByHiding(true, refreshControl: nil, take: nil, completion: nil)
     }
@@ -104,25 +105,9 @@ class TransactionsViewController: ACBaseViewController {
     
     func showOrHideTableOrNoDataView() {
         
-        if noDataView == nil {
-            
-            noDataView = UILabel()
-            noDataView?.text = "Nothing to see here!"
-            noDataView?.font = UIFont(name: "HelveticaNeue-Light", size: 30)
-            noDataView?.textColor = UIColor.lightGrayColor()
-            noDataView?.lineBreakMode = NSLineBreakMode.ByWordWrapping
-            noDataView?.numberOfLines = 0
-            noDataView?.textAlignment = NSTextAlignment.Center
-            
-            noDataView?.setTranslatesAutoresizingMaskIntoConstraints(false)
-            view.addSubview(noDataView!)
-            noDataView?.fillSuperView(UIEdgeInsets(top: 40, left: 40, bottom: -40, right: -40))
-            noDataView?.layer.opacity = 0
-        }
-        
         UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
             
-            self.noDataView?.layer.opacity = self.transactions.count > 0 ? 0 : 1
+            self.noDataView.layer.opacity = self.transactions.count > 0 ? 0 : 1
             self.tableView.layer.opacity = self.transactions.count > 0 ? 1 : 1
         })
     }
@@ -133,7 +118,7 @@ class TransactionsViewController: ACBaseViewController {
             
             view.showLoader()
             tableView.layer.opacity = 0
-            noDataView?.layer.opacity = 0
+            noDataView.layer.opacity = 0
         }
         
         refreshRequest?.cancel()

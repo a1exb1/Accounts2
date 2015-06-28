@@ -12,6 +12,7 @@ import ABToolKit
 
 private let kUnconfirmedInvitesSection = 0
 private let kUnconfirmedSentInvitesSection = 1
+private let kAnimationDuration:NSTimeInterval = 0.5
 
 protocol FriendInvitesDelegate {
     
@@ -23,6 +24,7 @@ class FriendInvitesViewController: ACBaseViewController {
     var tableView = UITableView(frame: CGRectZero, style: .Grouped)
     var invites:Array<Array<User>> = []
     var delegate: FriendInvitesDelegate?
+    var noDataView = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +40,27 @@ class FriendInvitesViewController: ACBaseViewController {
         view.showLoader()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "findFriends")
+        
+        setupNoDataLabel(noDataView, text: "Tap plus to send someone a friend invitation")
+    }
+    
+    func showOrHideTableOrNoDataView() {
+        
+        UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
+            
+            var count = 0
+            
+            for arr in self.invites {
+                
+                for invite in arr {
+                    
+                    count++
+                }
+            }
+            
+            self.noDataView.layer.opacity = count > 0 ? 0 : 1
+            self.tableView.layer.opacity = count > 0 ? 1 : 1
+        })
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -68,6 +91,7 @@ class FriendInvitesViewController: ACBaseViewController {
             self.tableView.reloadData()
             refreshControl?.endRefreshing()
             self.view.hideLoader()
+            self.showOrHideTableOrNoDataView()
         }
     }
     
