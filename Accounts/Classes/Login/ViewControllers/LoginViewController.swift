@@ -12,6 +12,7 @@ import ABToolKit
 class LoginViewController: ACFormViewController {
 
     var user = User()
+    var isLoading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,8 @@ class LoginViewController: ACFormViewController {
     
     func login() {
         
+        isLoading = true
+        
         var showAlert: () -> () = {
             
             UIAlertView(title: "Login failed!", message: "Incorrect username or password!", delegate: nil, cancelButtonTitle: "OK").show()
@@ -49,7 +52,12 @@ class LoginViewController: ACFormViewController {
             }.onContextFailure { () -> () in
                     
                 showAlert()
-            }
+                
+            }.onDownloadFinished({ () -> () in
+                
+                self.isLoading = false
+                self.showOrHideLoginButton()
+            })
         }
         else {
             
@@ -62,7 +70,7 @@ class LoginViewController: ACFormViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: .Plain, target: self, action: "login")
         navigationItem.rightBarButtonItem?.tintColor = kNavigationBarPositiveActionColor
         
-        navigationItem.rightBarButtonItem?.enabled = user.modelIsValidForLogin()
+        navigationItem.rightBarButtonItem?.enabled = user.modelIsValidForLogin() && !isLoading
     }
 }
 

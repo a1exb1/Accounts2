@@ -44,6 +44,7 @@ class TransactionsViewController: ACBaseViewController {
     
     var selectedPurchaseID: Int?
     var selectedTransactionID: Int?
+    var didJustDelete: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +71,7 @@ class TransactionsViewController: ACBaseViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if selectedPurchaseID == nil && selectedTransactionID == nil {
+        if selectedPurchaseID == nil && selectedTransactionID == nil && !didJustDelete {
             
             findAndScrollToCalculatedSelectedCellAtIndexPath()
         }
@@ -142,66 +143,70 @@ class TransactionsViewController: ACBaseViewController {
     
     func findAndScrollToCalculatedSelectedCellAtIndexPath() {
         
-        var calculatedIndexPath: NSIndexPath?
-        
-        for transaction in transactions {
+        if !didJustDelete {
             
-            let row = find(transactions, transaction)!
+            var calculatedIndexPath: NSIndexPath?
             
-            if let purchaseID = selectedPurchaseID {
+            for transaction in transactions {
                 
-                if transaction.purchase.PurchaseID == purchaseID && purchaseID > 0 {
+                let row = find(transactions, transaction)!
+                
+                if let purchaseID = selectedPurchaseID {
                     
-                    calculatedIndexPath = NSIndexPath(forRow: row, inSection: 0)
-                    break
+                    if transaction.purchase.PurchaseID == purchaseID && purchaseID > 0 {
+                        
+                        calculatedIndexPath = NSIndexPath(forRow: row, inSection: 0)
+                        break
+                    }
+                }
+                else if let transactionID = selectedTransactionID {
+                    
+                    if transaction.TransactionID == transactionID && transactionID > 0 {
+                        
+                        calculatedIndexPath = NSIndexPath(forRow: row, inSection: 0)
+                        break
+                    }
                 }
             }
-            else if let transactionID = selectedTransactionID {
+            
+            var rowToDeselect: NSIndexPath?
+            
+            if let indexPath = calculatedIndexPath {
                 
-                if transaction.TransactionID == transactionID && transactionID > 0 {
-                    
-                    calculatedIndexPath = NSIndexPath(forRow: row, inSection: 0)
-                    break
-                }
+                rowToDeselect = indexPath
             }
-        }
-        
-        var rowToDeselect: NSIndexPath?
-        
-        if let indexPath = calculatedIndexPath {
-            
-            rowToDeselect = indexPath
-        }
-        else if selectedPurchaseID == 0 && selectedTransactionID == 0 {
-            
-            rowToDeselect = NSIndexPath(forRow: 0, inSection: 0)
-        }
-        else if let indexPath = selectedRow {
-            
-            rowToDeselect = indexPath
-        }
-        
-        if let indexPath = rowToDeselect {
-            
-            tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
-            
-            NSTimer.schedule(delay: kAnimationDuration, handler: { timer in
+            else if selectedPurchaseID == 0 && selectedTransactionID == 0 {
                 
-                self.deselectSelectedCell(self.tableView)
+                rowToDeselect = NSIndexPath(forRow: 0, inSection: 0)
+            }
+            else if let indexPath = selectedRow {
                 
-                var cellRect = self.tableView.rectForRowAtIndexPath(indexPath)
-                var completelyVisible = CGRectContainsRect(self.tableView.bounds, cellRect)
+                rowToDeselect = indexPath
+            }
+            
+            if let indexPath = rowToDeselect{
                 
-                if !completelyVisible {
+                tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
+                
+                NSTimer.schedule(delay: kAnimationDuration, handler: { timer in
                     
-                    self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
-                }
-            })
+                    self.deselectSelectedCell(self.tableView)
+                    
+                    var cellRect = self.tableView.rectForRowAtIndexPath(indexPath)
+                    var completelyVisible = CGRectContainsRect(self.tableView.bounds, cellRect)
+                    
+                    if !completelyVisible {
+                        
+                        self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+                    }
+                })
+            }
         }
         
         selectedTransactionID = nil
         selectedPurchaseID = nil
         selectedRow = nil
+        didJustDelete = false
     }
     
     override func refresh(refreshControl: UIRefreshControl?) {
@@ -525,6 +530,7 @@ extension TransactionsViewController: SaveItemDelegate {
 //
 //        //tableView.reloadData()
         
+        didJustDelete = true
         itemDidChange()
     }
     

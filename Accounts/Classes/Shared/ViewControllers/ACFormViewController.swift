@@ -86,11 +86,18 @@ extension ACFormViewController: UITableViewDelegate {
         if let cell = c as? FormViewTextFieldCell {
             
             let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
-            toolbar.items = [
-                UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "done")
-            ]
             
+            var items = [UIBarButtonItem]()
+            
+            if cell.config.formCellType == .DatePicker {
+                
+                items.append(UIBarButtonItem(title: "Today", style: .Plain, target: cell, action: "setDateToToday"))
+            }
+            
+            items.append(UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil))
+            items.append(UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "done"))
+            
+            toolbar.items = items
             cell.textField.inputAccessoryView = toolbar
         }
         

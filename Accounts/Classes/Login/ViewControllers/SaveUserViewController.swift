@@ -13,6 +13,7 @@ import ABToolKit
 class SaveUserViewController: ACFormViewController {
     
     var user = User()
+    var isLoading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,12 +48,14 @@ class SaveUserViewController: ACFormViewController {
         navigationItem.rightBarButtonItem = saveButton
         navigationItem.rightBarButtonItem?.tintColor = kNavigationBarPositiveActionColor
         
-        navigationItem.rightBarButtonItem?.enabled = user.modelIsValid()
+        navigationItem.rightBarButtonItem?.enabled = user.modelIsValid() && !isLoading
     }
     
     func save() {
         
         if user.UserID != 0 {
+            
+            isLoading = true
             
             user.webApiUpdate()?.onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
                 
@@ -68,14 +71,26 @@ class SaveUserViewController: ACFormViewController {
                     
                     UIAlertView(title: "Oops!", message: "Something went wrong!", delegate: nil, cancelButtonTitle: "OK")
                 }
+                
+            }).onDownloadFinished({ () -> () in
+                
+                self.isLoading = false
+                self.showOrHideRegisterButton()
             })
         }
         else {
+            
+            isLoading = true
             
             user.register()?.onContextSuccess({ () -> () in
                 
                 var v = UIStoryboard.initialViewControllerFromStoryboardNamed("Main")
                 self.presentViewController(v, animated: true, completion: nil)
+                
+            }).onDownloadFinished({ () -> () in
+                
+                self.isLoading = false
+                self.showOrHideRegisterButton()
             })
         }
     }

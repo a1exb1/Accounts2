@@ -70,6 +70,12 @@ public class FormViewTextFieldCell: FormViewCell {
         formViewDelegate?.formViewElementDidChange?(config.identifier, value: datePicker.date)
     }
     
+    func setDateToToday() {
+        
+        datePicker?.setDate(NSDate(), animated: true)
+        datePickerValueDidChange(datePicker!)
+    }
+    
     
     // MARK: - Constraints
     

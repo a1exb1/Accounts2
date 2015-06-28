@@ -227,6 +227,7 @@ extension SavePurchaseViewController: FormViewDelegate {
                         
                         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                         self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
+                        
                         self.delegate?.itemDidGetDeleted()
                     })
                 }
