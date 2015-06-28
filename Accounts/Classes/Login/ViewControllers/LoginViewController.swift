@@ -36,6 +36,7 @@ class LoginViewController: ACFormViewController {
     func login() {
         
         isLoading = true
+        self.showOrHideLoginButton()
         
         var showAlert: () -> () = {
             

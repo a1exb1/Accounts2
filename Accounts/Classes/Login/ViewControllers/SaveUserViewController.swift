@@ -56,6 +56,7 @@ class SaveUserViewController: ACFormViewController {
         if user.UserID != 0 {
             
             isLoading = true
+            showOrHideRegisterButton()
             
             user.webApiUpdate()?.onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
                 
@@ -81,6 +82,7 @@ class SaveUserViewController: ACFormViewController {
         else {
             
             isLoading = true
+            showOrHideRegisterButton()
             
             user.register()?.onContextSuccess({ () -> () in
                 
