@@ -108,8 +108,8 @@ class TransactionsViewController: ACBaseViewController {
             
             noDataView = UILabel()
             noDataView?.text = "Nothing to see here!"
-            noDataView?.font = UIFont.systemFontOfSize(40)
-            noDataView?.textColor = UIColor.whiteColor().colorWithAlphaComponent(0.5)
+            noDataView?.font = UIFont(name: "HelveticaNeue-Light", size: 30)
+            noDataView?.textColor = UIColor.lightGrayColor()
             noDataView?.lineBreakMode = NSLineBreakMode.ByWordWrapping
             noDataView?.numberOfLines = 0
             noDataView?.textAlignment = NSTextAlignment.Center
@@ -483,11 +483,11 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         
         if friend.DifferenceBetweenActiveUser > 0 {
             
-            return "\(friend.Username) owes you: \(Formatter.formatCurrencyAsString(friend.DifferenceBetweenActiveUser))"
+            return "\(friend.Username) owes you: \(Formatter.formatCurrencyAsString(abs(friend.DifferenceBetweenActiveUser)))"
         }
         else if friend.DifferenceBetweenActiveUser < 0 {
             
-            return "You owe \(friend.Username): \(Formatter.formatCurrencyAsString(friend.DifferenceBetweenActiveUser))"
+            return "You owe \(friend.Username): \(Formatter.formatCurrencyAsString(abs(friend.DifferenceBetweenActiveUser)))"
         }
         else {
             

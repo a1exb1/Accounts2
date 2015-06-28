@@ -391,7 +391,8 @@ extension SavePurchaseViewController: UITableViewDelegate {
                     let index = find(purchase.friends, friend)!
                     purchase.friends.removeAtIndex(index)
                     
-                    purchase.calculateTotalFromBillSplitDictionary()
+                    purchase.splitTheBill()
+                    //purchase.calculateTotalFromBillSplitDictionary()
                     setFriendAmountTextFields()
                     
                     data[indexPath.section].removeAtIndex(indexPath.row)

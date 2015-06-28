@@ -138,13 +138,16 @@ extension FriendInvitesViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        if section == 0 {
+        if invites[section].count > 0 {
             
-            return "Invites received"
-        }
-        if section == 1 {
-            
-            return "Invites sent"
+            if section == 0 {
+                
+                return "Invites received"
+            }
+            if section == 1 {
+                
+                return "Invites sent"
+            }
         }
         
         return ""

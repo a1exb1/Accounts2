@@ -12,20 +12,22 @@ import SwiftyUserDefaults
 
 private let kProfileSection = 0
 private let kCurrencySection = 1
-private let kLogoutSection = 2
+//private let kLogoutSection = 2
 
 private let kProfileIndexPath = NSIndexPath(forRow: 0, inSection: kProfileSection)
+private let kLogoutIndexPath = NSIndexPath(forRow: 1, inSection: kProfileSection)
+
 private let kCurrencyIndexPath = NSIndexPath(forRow: 0, inSection: kCurrencySection)
-private let kLogoutIndexPath = NSIndexPath(forRow: 0, inSection: kLogoutSection)
+
 
 
 class MenuViewController: ACBaseViewController {
 
     var tableView = UITableView(frame: CGRectZero, style: .Grouped)
     let data = [
-        [kProfileIndexPath],
-        [kCurrencyIndexPath],
-        [kLogoutIndexPath]
+        //[kProfileIndexPath],
+        //[kCurrencyIndexPath],
+        [kProfileIndexPath, kLogoutIndexPath]
     ]
     
     override func viewDidLoad() {
@@ -71,7 +73,6 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         else if indexPath == kLogoutIndexPath {
             
             cell.textLabel?.text = "Logout"
-            cell.detailTextLabel?.text = "Logged in as \(kActiveUser.Username)"
         }
         else if indexPath == kProfileIndexPath {
             
@@ -107,5 +108,15 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
             v.user = kActiveUser
             navigationController?.pushViewController(v, animated: true)
         }
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        if section == kProfileSection {
+            
+            return "Logged in as \(kActiveUser.Username)"
+        }
+        
+        return ""
     }
 }

@@ -32,9 +32,6 @@ class FriendsViewController: ACBaseViewController {
         
         setupTableView(tableView, delegate: self, dataSource: self)
         
-        addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
-        addBarButtonItem?.width = 44
-        
         setBarButtonItems()
         
         title = "Friends"
@@ -55,6 +52,11 @@ class FriendsViewController: ACBaseViewController {
     }
     
     func setBarButtonItems() {
+        
+        var emptyBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
+        emptyBarButtonItem.width = 44
+        
+        addBarButtonItem = kActiveUser.friends.count > 0 ? UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add") : emptyBarButtonItem
         
         friendInvitesBarButtonItem = UIBarButtonItem(title: "Invites", style: .Plain, target: self, action: "friendInvites")
         openMenuBarButtonItem = UIBarButtonItem(image: kMenuIcon, style: .Plain, target: self, action: "openMenu")
@@ -147,7 +149,6 @@ class FriendsViewController: ACBaseViewController {
                 self.tableView.layer.opacity = 1
             })
             
-            self.addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
             self.setBarButtonItems()
         })
     }
@@ -215,7 +216,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.detailTextLabel?.text = Formatter.formatCurrencyAsString(amount)
         cell.detailTextLabel?.textColor = tintColor
-        cell.editingAccessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
+        //cell.editingAccessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell

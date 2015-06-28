@@ -145,8 +145,12 @@ extension SaveUserViewController: UITableViewDelegate {
         
         if indexPath.row == 2 {
             
-            cell.textField.autocapitalizationType = UITextAutocapitalizationType.None
             cell.textField.secureTextEntry = true
+        }
+        
+        if indexPath.row == 1 || indexPath.row == 2 {
+            
+            cell.textField.autocapitalizationType = UITextAutocapitalizationType.None
         }
         
         return cell
