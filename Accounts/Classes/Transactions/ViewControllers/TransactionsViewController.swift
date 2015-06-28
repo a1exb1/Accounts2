@@ -123,7 +123,7 @@ class TransactionsViewController: ACBaseViewController {
         UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
             
             self.noDataView?.layer.opacity = self.transactions.count > 0 ? 0 : 1
-            self.tableView.layer.opacity = self.transactions.count > 0 ? 1 : 0
+            self.tableView.layer.opacity = self.transactions.count > 0 ? 1 : 1
         })
     }
     
@@ -489,10 +489,8 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
             
             return "You owe \(friend.Username): \(Formatter.formatCurrencyAsString(abs(friend.DifferenceBetweenActiveUser)))"
         }
-        else {
-            
-            return "You are even"
-        }
+        
+        return ""
     }
     
 //    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

@@ -13,6 +13,7 @@ private let kPlusImage = AppTools.iconAssetNamed("746-plus-circle-selected.png")
 private let kMinusImage = AppTools.iconAssetNamed("34-circle.minus.png")
 private let kMenuIcon = AppTools.iconAssetNamed("740-gear-toolbar-selected.png")
 //private let kFriendInvitesIcon = AppTools.iconAssetNamed("779-users-selected.png")
+private let kAnimationDuration:NSTimeInterval = 0.5
 
 private let kPopoverContentSize = CGSize(width: 320, height: 360)
 
@@ -23,6 +24,7 @@ class FriendsViewController: ACBaseViewController {
     var addBarButtonItem: UIBarButtonItem?
     var friendInvitesBarButtonItem: UIBarButtonItem?
     var openMenuBarButtonItem: UIBarButtonItem?
+    var noDataView = UILabel()
     
     var toolbar = UIToolbar()
     
@@ -43,6 +45,8 @@ class FriendsViewController: ACBaseViewController {
             
             tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         }
+        
+        setupNoDataView()
     }
     
     override func setEditing(editing: Bool, animated: Bool) {
@@ -54,7 +58,7 @@ class FriendsViewController: ACBaseViewController {
     func setBarButtonItems() {
         
         var emptyBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
-        emptyBarButtonItem.width = 44
+        emptyBarButtonItem.width = 0
         
         addBarButtonItem = kActiveUser.friends.count > 0 ? UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add") : emptyBarButtonItem
         
@@ -150,6 +154,7 @@ class FriendsViewController: ACBaseViewController {
             })
             
             self.setBarButtonItems()
+            self.showOrHideTableOrNoDataView()
         })
     }
     
@@ -171,6 +176,31 @@ class FriendsViewController: ACBaseViewController {
         v.popoverPresentationController?.delegate = self
         
         presentViewController(v, animated: true, completion: nil)
+    }
+    
+    func setupNoDataView() {
+        
+        noDataView = UILabel()
+        noDataView.text = "To get started, click invites to add some friends!"
+        noDataView.font = UIFont(name: "HelveticaNeue-Light", size: 30)
+        noDataView.textColor = UIColor.lightGrayColor()
+        noDataView.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        noDataView.numberOfLines = 0
+        noDataView.textAlignment = NSTextAlignment.Center
+        
+        noDataView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        view.addSubview(noDataView)
+        noDataView.fillSuperView(UIEdgeInsets(top: 40, left: 40, bottom: -40, right: -40))
+        noDataView.layer.opacity = 0
+    }
+    
+    func showOrHideTableOrNoDataView() {
+        
+        UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
+            
+            self.noDataView.layer.opacity = kActiveUser.friends.count > 0 ? 0 : 1
+            self.tableView.layer.opacity = kActiveUser.friends.count > 0 ? 1 : 1
+        })
     }
 }
 
