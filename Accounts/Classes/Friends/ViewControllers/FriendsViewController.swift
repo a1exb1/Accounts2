@@ -40,7 +40,12 @@ class FriendsViewController: ACBaseViewController {
         title = "Friends"
         view.showLoader()
         gradient = setBackgroundGradient()
-        setTableViewAppearanceForBackgroundGradient(tableView)
+        //setTableViewAppearanceForBackgroundGradient(tableView)
+        
+        if kDevice == .Pad {
+            
+            tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        }
     }
     
     override func setEditing(editing: Bool, animated: Bool) {

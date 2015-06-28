@@ -38,7 +38,6 @@ class TransactionsViewController: ACBaseViewController {
     var loadMoreRequest: JsonRequest?
     var isLoadingMore = false
     var canLoadMore = true
-    let device = UIDevice.currentDevice().userInterfaceIdiom
     
     var selectedRow: NSIndexPath?
     
@@ -49,9 +48,9 @@ class TransactionsViewController: ACBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if kDevice == .Pad {
         
-            setTableViewAppearanceForBackgroundGradient(tableView)
+            tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         }
         
         setupTableView(tableView, delegate: self, dataSource: self)
@@ -59,12 +58,9 @@ class TransactionsViewController: ACBaseViewController {
         
         addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
         navigationItem.rightBarButtonItem = addBarButtonItem
-        
-        //gradient = setBackgroundGradient()
-        
+
         setupLoadMoreView()
         
-        //view.showLoader()
         executeActualRefreshByHiding(true, refreshControl: nil, take: nil, completion: nil)
     }
     
@@ -75,6 +71,29 @@ class TransactionsViewController: ACBaseViewController {
             
             findAndScrollToCalculatedSelectedCellAtIndexPath()
         }
+        
+        getDifference(nil)
+    }
+    
+    func getDifference(refreshControl: UIRefreshControl?) {
+        
+        kActiveUser.getDifferenceBetweenFriend(friend, completion: { (difference, count) -> () in
+         
+            let previousDifference = self.friend.DifferenceBetweenActiveUser
+            self.friend.DifferenceBetweenActiveUser = difference
+            
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+            
+            if previousDifference != difference {
+                
+                self.executeActualRefreshByHiding(true, refreshControl: nil, take: nil, completion: nil)
+            }
+            else {
+                
+                refreshControl?.endRefreshing()
+            }
+        })
     }
     
     override func setupTableView(tableView: UITableView, delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
@@ -211,7 +230,14 @@ class TransactionsViewController: ACBaseViewController {
     
     override func refresh(refreshControl: UIRefreshControl?) {
         
-        executeActualRefreshByHiding(false, refreshControl: refreshControl, take: nil, completion: nil)
+        selectedTransactionID = nil
+        selectedPurchaseID = nil
+        selectedRow = nil
+        didJustDelete = false
+        
+        getDifference(refreshControl)
+        
+        //executeActualRefreshByHiding(false, refreshControl: refreshControl, take: nil, completion: nil)
     }
     
     func animateTableFooterViewHeight(height: Int, completion: (() -> ())?) {
@@ -408,6 +434,7 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         v.popoverPresentationController?.sourceRect = sourceView!.bounds
         v.popoverPresentationController?.sourceView = sourceView
         v.popoverPresentationController?.delegate = self
+        v.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Left
         
         presentViewController(v, animated: true, completion: nil)
     }
@@ -454,7 +481,18 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return "Balance: \(Formatter.formatCurrencyAsString(friend.DifferenceBetweenActiveUser))"
+        if friend.DifferenceBetweenActiveUser > 0 {
+            
+            return "\(friend.Username) owes you: \(Formatter.formatCurrencyAsString(friend.DifferenceBetweenActiveUser))"
+        }
+        else if friend.DifferenceBetweenActiveUser < 0 {
+            
+            return "You owe \(friend.Username): \(Formatter.formatCurrencyAsString(friend.DifferenceBetweenActiveUser))"
+        }
+        else {
+            
+            return "You are even"
+        }
     }
     
 //    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -464,7 +502,7 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         
-        return CGFloat.min + (device == .Pad ? 40 : 0)
+        return CGFloat.min + (kDevice == .Pad ? 40 : 0)
     }
 }
 
@@ -473,7 +511,7 @@ extension TransactionsViewController: UIPopoverPresentationControllerDelegate {
     func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
         
         deselectSelectedCell(tableView)
-        //refresh(nil)
+        getDifference(nil)
     }
 }
 
@@ -509,26 +547,24 @@ extension TransactionsViewController: SaveItemDelegate {
         
 //        if let indexPath = selectedRow {
 //            
-////            let numberOfRows = tableView.numberOfRowsInSection(indexPath.section)
-////            
-////            let wasLastRow = indexPath.row + 1 == numberOfRows
+//            let numberOfRows = tableView.numberOfRowsInSection(indexPath.section)
 //            
-////            tableView.beginUpdates()
-////            transactions.removeAtIndex(indexPath.row)
-////            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
-////            tableView.endUpdates()
-////            
-////            executeActualRefreshByHiding(<#hiding: Bool#>, refreshControl: <#UIRefreshControl?#>, take: <#Int?#>, completion: <#(() -> ())?##() -> ()#>)
+//            let wasLastRow = indexPath.row + 1 == numberOfRows
 //            
-////            if wasLastRow {
-////                
-////                //new last row 
-////                let newLastRowIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: 0)
-////                tableView.reloadRowsAtIndexPaths([newLastRowIndexPath], withRowAnimation: UITableViewRowAnimation.None)
-////            }
-//        }
+//            tableView.beginUpdates()
+//            transactions.removeAtIndex(indexPath.row)
+//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
+//            tableView.endUpdates()
 //
-//        //tableView.reloadData()
+//            getDifference(nil)
+//            
+//            if wasLastRow {
+//                
+//                //new last row 
+//                let newLastRowIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: 0)
+//                tableView.reloadRowsAtIndexPaths([newLastRowIndexPath], withRowAnimation: UITableViewRowAnimation.None)
+//            }
+//        }
         
         didJustDelete = true
         itemDidChange()

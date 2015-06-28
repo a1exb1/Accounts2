@@ -171,6 +171,19 @@ class User: JSONObject {
         return request
     }
     
+    func getDifferenceBetweenFriend(friend: User, completion: (difference: Double, transactionsCount: Int) -> ()) -> JsonRequest {
+        
+        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/DifferenceBetween/\(UserID)/and/\(friend.UserID)"
+
+        return JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess { (json, request) -> () in
+            
+            let difference = json["Difference"].doubleValue
+            let transactionsCount = json["TransactionsCount"].intValue
+            
+            completion(difference: difference, transactionsCount: transactionsCount)
+        }
+    }
+    
     func getInvites(completion:(invites:Array<Array<User>>) -> ()) -> JsonRequest {
         
         var urlString = "\(User.webApiUrls().getUrl(UserID)!)/FriendInvitations"

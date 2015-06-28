@@ -12,6 +12,7 @@ import SwiftyUserDefaults
 import Alamofire
 
 var kActiveUser = User()
+let kDevice = UIDevice.currentDevice().userInterfaceIdiom
 
 let kViewBackgroundColor = UIColor.groupTableViewBackgroundColor()
 let kViewBackgroundGradientTop =  AccountColor.blueColor()
