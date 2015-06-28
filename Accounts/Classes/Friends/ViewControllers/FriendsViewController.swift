@@ -192,7 +192,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         let friend = data()[indexPath.section][indexPath.row]
         
         cell.textLabel?.text = friend.Username
-        let amount = abs(friend.localeDifferenceBetweenActiveUser)
+        let amount = friend.localeDifferenceBetweenActiveUser //abs()
         
         var tintColor = UIColor.lightGrayColor()
         
@@ -210,7 +210,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.detailTextLabel?.text = Formatter.formatCurrencyAsString(amount)
         cell.detailTextLabel?.textColor = tintColor
-        
+        cell.editingAccessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell
@@ -248,9 +248,9 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
-        let header = view as! UITableViewHeaderFooterView
+        //let header = view as! UITableViewHeaderFooterView
         
-        header.textLabel.textColor = UIColor.whiteColor()
+        //header.textLabel.textColor = UIColor.whiteColor()
     }
     
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
@@ -283,6 +283,11 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
                 self.tableView.reloadData()
             }
         }
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        return 60
     }
 }
 

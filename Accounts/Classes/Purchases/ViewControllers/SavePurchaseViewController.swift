@@ -18,6 +18,8 @@ class SavePurchaseViewController: ACFormViewController {
     var billSplitCells = Dictionary<User, FormViewTextFieldCell>()
     var formViewCells = Dictionary<String, FormViewTextFieldCell>()
     
+    var delegate: SaveItemDelegate?
+    
     override func viewDidLoad() {
         
         allowEditing = true //purchase.user.UserID == kActiveUser.UserID || purchase.PurchaseID == 0
@@ -50,6 +52,9 @@ class SavePurchaseViewController: ACFormViewController {
 
             self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
             self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
+            
+            self.delegate?.purchaseDidChange(self.purchase)
+            self.delegate?.itemDidChange()
 
         }).onContextFailure({ () -> () in
 
@@ -222,6 +227,7 @@ extension SavePurchaseViewController: FormViewDelegate {
                         
                         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                         self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
+                        self.delegate?.itemDidGetDeleted()
                     })
                 }
             })

@@ -151,12 +151,19 @@ class User: JSONObject {
         })
     }
     
-    func getTransactionsBetweenFriend(friend: User, skip: Int, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
+    func getTransactionsBetweenFriend(friend: User, skip: Int, take: Int?, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
  
-        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$skip=\(skip)&$top=16&$orderby=TransactionDate desc" 
+        var itemsToTake = 16
+        
+        if let take = take {
+            
+            itemsToTake = take
+        }
+        
+        let url = "\(WebApiDefaults.sharedInstance().baseUrl!)/Users/TransactionsBetween/\(UserID)/and/\(friend.UserID)?$skip=\(skip)&$top=\(itemsToTake)&$orderby=TransactionDate desc"
 
         let request = JsonRequest.create(url, parameters: nil, method: .GET).onDownloadSuccess({ (json, request) -> () in
-            
+
             let transactions:Array<Transaction> = Transaction.convertJsonToMultipleObjects(Transaction.self, json: json)
             completion(transactions: transactions)
         })
@@ -256,9 +263,20 @@ class User: JSONObject {
     required convenience init(coder decoder: NSCoder) {
         self.init()
         
-        self.UserID = decoder.decodeObjectForKey("UserID") as! Int
-        self.Username = decoder.decodeObjectForKey("Username") as! String
-        self.Email = decoder.decodeObjectForKey("Email") as! String
+        if let userID = decoder.decodeObjectForKey("UserID") as? Int {
+            
+            self.UserID = userID
+        }
+        
+        if let username = decoder.decodeObjectForKey("Username") as? String {
+            
+            self.Username = username
+        }
+        
+        if let email = decoder.decodeObjectForKey("Email") as? String {
+            
+            self.Email = email
+        }
     }
     
     func encodeWithCoder(coder: NSCoder) {

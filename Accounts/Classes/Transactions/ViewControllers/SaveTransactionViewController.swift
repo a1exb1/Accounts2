@@ -15,6 +15,7 @@ class SaveTransactionViewController: ACFormViewController {
 
     var transaction = Transaction()
     var allowEditing = false
+    var delegate: SaveItemDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,16 +29,16 @@ class SaveTransactionViewController: ACFormViewController {
         
         if allowEditing && transaction.TransactionID == 0 {
             
-            title = "New transaction"
+            title = "New transfer"
             transaction.user = kActiveUser
         }
         else if allowEditing && transaction.TransactionID > 0 {
             
-            title = "Edit transaction"
+            title = "Edit transfer"
         }
         else {
             
-            title = "Transaction"
+            title = "Transfer"
         }
         
         showOrHideSaveButton()
@@ -51,6 +52,9 @@ class SaveTransactionViewController: ACFormViewController {
 
             self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
             self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
+            
+            self.delegate?.transactionDidChange(self.transaction)
+            self.delegate?.itemDidChange()
 
         }).onContextFailure({ () -> () in
             
@@ -67,6 +71,7 @@ class SaveTransactionViewController: ACFormViewController {
                 if response == AlertResponse.Confirm {
                     
                     self.dismissViewControllerFromCurrentContextAnimated(true)
+                    self.delegate?.itemDidGetDeleted()
                 }
             }
         }

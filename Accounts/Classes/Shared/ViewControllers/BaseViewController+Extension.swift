@@ -31,23 +31,23 @@ extension BaseViewController {
         var gradient: CAGradientLayer = CAGradientLayer()
         gradient.frame = view.bounds
         gradient.colors = [kViewBackgroundGradientTop.CGColor, kViewBackgroundGradientBottom.CGColor]
-        view.layer.insertSublayer(gradient, atIndex: 0)
+        //view.layer.insertSublayer(gradient, atIndex: 0)
         
         return gradient
     }
     
     func setTableViewAppearanceForBackgroundGradient(tableView: UITableView) {
         
-        tableView.separatorStyle = kTableViewCellSeperatorStyle
-        tableView.separatorColor = kTableViewCellSeperatorColor
-        tableView.backgroundColor = kTableViewBackgroundColor
+        //tableView.separatorStyle = kTableViewCellSeperatorStyle
+        //tableView.separatorColor = kTableViewCellSeperatorColor
+//        tableView.backgroundColor = kTableViewBackgroundColor
     }
     
     func setTableViewCellAppearanceForBackgroundGradient(cell:UITableViewCell) {
     
-        cell.backgroundColor = kTableViewCellBackgroundColor
-        cell.textLabel?.textColor = kTableViewCellTextColor
-        cell.tintColor = kTableViewCellTintColor
+//        cell.backgroundColor = kTableViewCellBackgroundColor
+//        cell.textLabel?.textColor = kTableViewCellTextColor
+//        cell.tintColor = kTableViewCellTintColor
     }
     
     func isInsidePopover() -> Bool {

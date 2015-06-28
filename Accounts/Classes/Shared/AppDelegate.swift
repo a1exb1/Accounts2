@@ -13,7 +13,7 @@ import Alamofire
 
 var kActiveUser = User()
 
-let kViewBackgroundColor = UIColor.whiteColor()
+let kViewBackgroundColor = UIColor.groupTableViewBackgroundColor()
 let kViewBackgroundGradientTop =  AccountColor.blueColor()
 let kViewBackgroundGradientBottom =  AccountColor.greenColor()
 
@@ -29,7 +29,7 @@ let kTableViewCellTintColor = UIColor.whiteColor()
 
 let kNavigationBarPositiveActionColor = kNavigationBarTintColor
 let kNavigationBarTintColor = UIColor(hex: "00AEE5")
-let kNavigationBarBarTintColor:UIColor = UIColor.whiteColor().colorWithAlphaComponent(0.9)
+let kNavigationBarBarTintColor:UIColor = UIColor.whiteColor().colorWithAlphaComponent(0.95)
 let kNavigationBarTitleColor = UIColor.blackColor()
 let kNavigationBarStyle = UIBarStyle.Default
 
@@ -118,6 +118,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIToolbar.appearance().tintColor = kNavigationBarTintColor
         
         UITableViewCell.appearance().tintColor = kNavigationBarTintColor
+        
+        UITabBar.appearance().tintColor = kNavigationBarTintColor
     }
     
     private func setWindowToLogin() {

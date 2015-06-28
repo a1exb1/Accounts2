@@ -13,10 +13,20 @@ import SwiftyJSON
 private let kPurchaseImage = AppTools.iconAssetNamed("1007-price-tag-toolbar.png")
 private let kTransactionImage = AppTools.iconAssetNamed("922-suitcase-toolbar.png")
 private let kPopoverContentSize = CGSize(width: 390, height: 440)
+private let kLoaderTableFooterViewHeight = 70
+private let kAnimationDuration:NSTimeInterval = 0.5
+
+protocol SaveItemDelegate {
+    
+    func itemDidGetDeleted()
+    func itemDidChange()
+    func purchaseDidChange(purchase: Purchase)
+    func transactionDidChange(transaction: Transaction)
+}
 
 class TransactionsViewController: ACBaseViewController {
 
-    var tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Plain)
+    var tableView = UITableView(frame: CGRectZero, style: UITableViewStyle.Grouped)
     var friend = User()
     var transactions:Array<Transaction> = []
     var noDataView: UILabel?
@@ -28,13 +38,19 @@ class TransactionsViewController: ACBaseViewController {
     var loadMoreRequest: JsonRequest?
     var isLoadingMore = false
     var canLoadMore = true
+    let device = UIDevice.currentDevice().userInterfaceIdiom
+    
+    var selectedRow: NSIndexPath?
+    
+    var selectedPurchaseID: Int?
+    var selectedTransactionID: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            
-            tableView = UITableView(frame: CGRectZero, style: .Grouped)
+        
+            setTableViewAppearanceForBackgroundGradient(tableView)
         }
         
         setupTableView(tableView, delegate: self, dataSource: self)
@@ -43,16 +59,21 @@ class TransactionsViewController: ACBaseViewController {
         addBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "add")
         navigationItem.rightBarButtonItem = addBarButtonItem
         
-        gradient = setBackgroundGradient()
-        setTableViewAppearanceForBackgroundGradient(tableView)
+        //gradient = setBackgroundGradient()
         
         setupLoadMoreView()
+        
+        //view.showLoader()
+        executeActualRefreshByHiding(true, refreshControl: nil, take: nil, completion: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        refresh(nil)
+        if selectedPurchaseID == nil && selectedTransactionID == nil {
+            
+            findAndScrollToCalculatedSelectedCellAtIndexPath()
+        }
     }
     
     override func setupTableView(tableView: UITableView, delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
@@ -61,7 +82,7 @@ class TransactionsViewController: ACBaseViewController {
         setupTableViewRefreshControl(tableView)
     }
     
-    func showOrHideNoDataView() {
+    func showOrHideTableOrNoDataView() {
         
         if noDataView == nil {
             
@@ -79,25 +100,24 @@ class TransactionsViewController: ACBaseViewController {
             noDataView?.layer.opacity = 0
         }
         
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
+        UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
             
             self.noDataView?.layer.opacity = self.transactions.count > 0 ? 0 : 1
             self.tableView.layer.opacity = self.transactions.count > 0 ? 1 : 0
         })
     }
     
-    override func refresh(refreshControl: UIRefreshControl?) {
+    func executeActualRefreshByHiding(hiding: Bool, refreshControl: UIRefreshControl?, take:Int?, completion: ( ()-> ())?) {
         
-        view.showLoader()
-        
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
+        if hiding {
             
-            self.tableView.layer.opacity = 0
-            self.noDataView?.layer.opacity = 0
-        })
+            view.showLoader()
+            tableView.layer.opacity = 0
+            noDataView?.layer.opacity = 0
+        }
         
         refreshRequest?.cancel()
-        refreshRequest = kActiveUser.getTransactionsBetweenFriend(friend, skip: 0, completion: { (transactions) -> () in
+        refreshRequest = kActiveUser.getTransactionsBetweenFriend(friend, skip: 0, take: take, completion: { (transactions) -> () in
             
             self.transactions = transactions
             self.hasLoadedFirstTime = true
@@ -108,11 +128,85 @@ class TransactionsViewController: ACBaseViewController {
             self.tableView.reloadData()
             
             self.view.hideLoader()
-            self.showOrHideNoDataView()
+            self.showOrHideTableOrNoDataView()
             
             //just in case
             self.loadMoreView.hideLoader()
+            
+            self.findAndScrollToCalculatedSelectedCellAtIndexPath()
+            
+            completion?()
         })
+
+    }
+    
+    func findAndScrollToCalculatedSelectedCellAtIndexPath() {
+        
+        var calculatedIndexPath: NSIndexPath?
+        
+        for transaction in transactions {
+            
+            let row = find(transactions, transaction)!
+            
+            if let purchaseID = selectedPurchaseID {
+                
+                if transaction.purchase.PurchaseID == purchaseID && purchaseID > 0 {
+                    
+                    calculatedIndexPath = NSIndexPath(forRow: row, inSection: 0)
+                    break
+                }
+            }
+            else if let transactionID = selectedTransactionID {
+                
+                if transaction.TransactionID == transactionID && transactionID > 0 {
+                    
+                    calculatedIndexPath = NSIndexPath(forRow: row, inSection: 0)
+                    break
+                }
+            }
+        }
+        
+        var rowToDeselect: NSIndexPath?
+        
+        if let indexPath = calculatedIndexPath {
+            
+            rowToDeselect = indexPath
+        }
+        else if selectedPurchaseID == 0 && selectedTransactionID == 0 {
+            
+            rowToDeselect = NSIndexPath(forRow: 0, inSection: 0)
+        }
+        else if let indexPath = selectedRow {
+            
+            rowToDeselect = indexPath
+        }
+        
+        if let indexPath = rowToDeselect {
+            
+            tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
+            
+            NSTimer.schedule(delay: kAnimationDuration, handler: { timer in
+                
+                self.deselectSelectedCell(self.tableView)
+                
+                var cellRect = self.tableView.rectForRowAtIndexPath(indexPath)
+                var completelyVisible = CGRectContainsRect(self.tableView.bounds, cellRect)
+                
+                if !completelyVisible {
+                    
+                    self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Middle, animated: true)
+                }
+            })
+        }
+        
+        selectedTransactionID = nil
+        selectedPurchaseID = nil
+        selectedRow = nil
+    }
+    
+    override func refresh(refreshControl: UIRefreshControl?) {
+        
+        executeActualRefreshByHiding(false, refreshControl: refreshControl, take: nil, completion: nil)
     }
     
     func animateTableFooterViewHeight(height: Int, completion: (() -> ())?) {
@@ -123,7 +217,6 @@ class TransactionsViewController: ACBaseViewController {
             self.tableView.tableFooterView = self.loadMoreView
             
         }) { (sucess) -> Void in
-            
             
             completion?()
         }
@@ -136,11 +229,11 @@ class TransactionsViewController: ACBaseViewController {
             isLoadingMore = true
             canLoadMore = false
             
-            animateTableFooterViewHeight(50, completion: nil)
+            animateTableFooterViewHeight(kLoaderTableFooterViewHeight, completion: nil)
             
             loadMoreView.showLoader()
             
-            loadMoreRequest = kActiveUser.getTransactionsBetweenFriend(friend, skip: transactions.count, completion: { (transactions) -> () in
+            loadMoreRequest = kActiveUser.getTransactionsBetweenFriend(friend, skip: transactions.count, take: nil, completion: { (transactions) -> () in
                 
                 for transaction in transactions {
                     
@@ -166,6 +259,7 @@ class TransactionsViewController: ACBaseViewController {
         
         let view = SelectPurchaseOrTransactionViewController()
         view.contextualFriend = friend
+        view.saveItemDelegate = self
         let v = UINavigationController(rootViewController: view)
         
         v.modalPresentationStyle = .Popover
@@ -193,7 +287,7 @@ class TransactionsViewController: ACBaseViewController {
     
     func setupLoadMoreView() {
         
-        loadMoreView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        loadMoreView.frame = CGRect(x: 0, y: 0, width: 50, height: kLoaderTableFooterViewHeight)
         tableView.tableFooterView = loadMoreView
     }
     
@@ -272,7 +366,7 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         
         cell.detailTextLabel?.text = Formatter.formatCurrencyAsString(amount)
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-        cell.imageView?.tintWithColor(UIColor.whiteColor())
+        cell.imageView?.tintWithColor(AccountColor.blueColor())
         
         return cell
     }
@@ -286,16 +380,18 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
             
             let v = SavePurchaseViewController()
             v.purchase = transaction.purchase
-            
+            v.delegate = self
             openView(v, sourceView: cell.contentView)
         }
         else {
             
             let v = SaveTransactionViewController()
             v.transaction = transaction
-            
+            v.delegate = self
             openView(v, sourceView: cell.contentView)
         }
+        
+        selectedRow = indexPath
     }
     
     func openView(view: UIViewController, sourceView: UIView?) {
@@ -350,6 +446,21 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         
         return false
     }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        return "Balance: \(Formatter.formatCurrencyAsString(friend.DifferenceBetweenActiveUser))"
+    }
+    
+//    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        
+//        return CGFloat.min
+//    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        
+        return CGFloat.min + (device == .Pad ? 40 : 0)
+    }
 }
 
 extension TransactionsViewController: UIPopoverPresentationControllerDelegate {
@@ -357,7 +468,7 @@ extension TransactionsViewController: UIPopoverPresentationControllerDelegate {
     func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
         
         deselectSelectedCell(tableView)
-        refresh(nil)
+        //refresh(nil)
     }
 }
 
@@ -384,5 +495,53 @@ extension TransactionsViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         
         self.canLoadMore = true
+    }
+}
+
+extension TransactionsViewController: SaveItemDelegate {
+    
+    func itemDidGetDeleted() {
+        
+//        if let indexPath = selectedRow {
+//            
+////            let numberOfRows = tableView.numberOfRowsInSection(indexPath.section)
+////            
+////            let wasLastRow = indexPath.row + 1 == numberOfRows
+//            
+////            tableView.beginUpdates()
+////            transactions.removeAtIndex(indexPath.row)
+////            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
+////            tableView.endUpdates()
+////            
+////            executeActualRefreshByHiding(<#hiding: Bool#>, refreshControl: <#UIRefreshControl?#>, take: <#Int?#>, completion: <#(() -> ())?##() -> ()#>)
+//            
+////            if wasLastRow {
+////                
+////                //new last row 
+////                let newLastRowIndexPath = NSIndexPath(forRow: indexPath.row - 1, inSection: 0)
+////                tableView.reloadRowsAtIndexPaths([newLastRowIndexPath], withRowAnimation: UITableViewRowAnimation.None)
+////            }
+//        }
+//
+//        //tableView.reloadData()
+        
+        itemDidChange()
+    }
+    
+    func itemDidChange() {
+        
+        executeActualRefreshByHiding(true, refreshControl: nil, take: transactions.count, completion: nil)
+    }
+    
+    func transactionDidChange(transaction: Transaction) {
+        
+        selectedPurchaseID = 0
+        selectedTransactionID = transaction.TransactionID
+    }
+    
+    func purchaseDidChange(purchase: Purchase) {
+        
+        selectedTransactionID = 0
+        selectedPurchaseID = purchase.PurchaseID
     }
 }

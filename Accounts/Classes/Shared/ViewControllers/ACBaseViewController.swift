@@ -14,11 +14,6 @@ class ACBaseViewController: BaseViewController {
     var blurView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffectStyle.ExtraLight))
     var gradient: CAGradientLayer = CAGradientLayer()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         

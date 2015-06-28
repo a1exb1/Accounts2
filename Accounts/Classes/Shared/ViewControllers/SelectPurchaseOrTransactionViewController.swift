@@ -15,6 +15,7 @@ class SelectPurchaseOrTransactionViewController: ACBaseViewController {
     var tableView = UITableView(frame: CGRectZero, style: .Grouped)
     var data = [(identifier: "Purchase", textLabelText: "Add purchase"), (identifier: "Transaction", textLabelText: "Add transfer")]
     var contextualFriend: User?
+    var saveItemDelegate: SaveItemDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,6 +86,8 @@ extension SelectPurchaseOrTransactionViewController: UITableViewDelegate, UITabl
                 v.purchase.billSplitDictionary[friend] = 0
             }
             
+            v.delegate = saveItemDelegate
+            
             navigationController?.pushViewController(v, animated: true)
         }
         else if identifier == "Transaction" {
@@ -95,6 +98,8 @@ extension SelectPurchaseOrTransactionViewController: UITableViewDelegate, UITabl
                 
                 v.transaction.friend = friend
             }
+            
+            v.delegate = saveItemDelegate
             
             navigationController?.pushViewController(v, animated: true)
         }
