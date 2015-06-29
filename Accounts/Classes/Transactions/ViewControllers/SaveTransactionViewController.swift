@@ -48,17 +48,22 @@ class SaveTransactionViewController: ACFormViewController {
     
     func save() {
 
-        transaction.save()?.onContextSuccess({ () -> () in
-
-            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-            self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
+        transaction.save()?.onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
             
-            self.delegate?.transactionDidChange(self.transaction)
-            self.delegate?.itemDidChange()
-
-        }).onContextFailure({ () -> () in
-            
-            UIAlertView(title: "Error", message: "Transaction not saved!", delegate: nil, cancelButtonTitle: "OK").show()
+            if httpUrlResponse?.statusCode == 200 || httpUrlResponse?.statusCode == 201 || httpUrlResponse?.statusCode == 204 {
+                
+                self.transaction.TransactionID = json["TransactionID"].intValue
+                self.delegate?.transactionDidChange(self.transaction)
+                
+                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
+                
+                self.delegate?.itemDidChange()
+            }
+            else {
+                
+                UIAlertView(title: "Error", message: "Transaction not saved!", delegate: nil, cancelButtonTitle: "OK").show()
+            }
         })
     }
     

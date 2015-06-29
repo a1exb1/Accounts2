@@ -118,9 +118,10 @@ extension LoginViewController: UITableViewDelegate {
         
         if indexPath.row == 1 {
             
-            cell.textField.autocapitalizationType = UITextAutocapitalizationType.None
             cell.textField.secureTextEntry = true
         }
+        
+        cell.textField.autocapitalizationType = UITextAutocapitalizationType.None
         
         cell.label.textColor = UIColor.blackColor()
         cell.textField.textColor = UIColor.lightGrayColor()

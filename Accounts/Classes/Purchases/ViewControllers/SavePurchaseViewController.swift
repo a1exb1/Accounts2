@@ -48,17 +48,22 @@ class SavePurchaseViewController: ACFormViewController {
     
     func save() {
 
-        purchase.save()?.onContextSuccess({ () -> () in
-
-            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-            self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
+        purchase.save()?.onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
             
-            self.delegate?.purchaseDidChange(self.purchase)
-            self.delegate?.itemDidChange()
-
-        }).onContextFailure({ () -> () in
-
-            UIAlertView(title: "Error", message: "Purchase not saved!", delegate: nil, cancelButtonTitle: "OK").show()
+            if httpUrlResponse?.statusCode == 200 || httpUrlResponse?.statusCode == 201 || httpUrlResponse?.statusCode == 204 {
+                
+                self.purchase.PurchaseID = json["PurchaseID"].intValue
+                self.delegate?.purchaseDidChange(self.purchase)
+                
+                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
+                
+                self.delegate?.itemDidChange()
+            }
+            else {
+                
+                UIAlertView(title: "Error", message: "Purchase not saved!", delegate: nil, cancelButtonTitle: "OK").show()
+            }
         })
     }
     

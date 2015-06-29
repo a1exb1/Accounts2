@@ -9,6 +9,7 @@
 
 import UIKit
 import ABToolKit
+import SwiftyJSON
 
 class SaveUserViewController: ACFormViewController {
     
@@ -27,12 +28,16 @@ class SaveUserViewController: ACFormViewController {
             title = "Edit profile"
         }
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        showOrHideRegisterButton()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if view.frame.width >= kTableViewMaxWidth {
             
             tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         }
-        
-        showOrHideRegisterButton()
     }
     
     override func setupView() {
@@ -60,8 +65,8 @@ class SaveUserViewController: ACFormViewController {
             
             user.webApiUpdate()?.onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
                 
-                let success = httpUrlResponse!.statusCode == 204
-                
+                let success = httpUrlResponse!.statusCode == 200 || httpUrlResponse!.statusCode == 204
+                println(httpUrlResponse!.statusCode)
                 if success {
                     
                     self.navigationController?.popViewControllerAnimated(true)
@@ -70,7 +75,19 @@ class SaveUserViewController: ACFormViewController {
                 }
                 else {
                     
-                    UIAlertView(title: "Oops!", message: "Something went wrong!", delegate: nil, cancelButtonTitle: "OK")
+                    let errorsJson = json["ModelState"]["Error"]
+                    
+                    let errors = NSMutableArray()
+                    
+                    for (index: String, errorJson: JSON) in errorsJson {
+                        
+                        errors.addObject(errorJson.stringValue)
+                        println(errorJson)
+                    }
+                    
+                    let errorMsg = errors.componentsJoinedByString(",\n")
+                    
+                    UIAlertView(title: "Error", message: errorMsg, delegate: nil, cancelButtonTitle: "OK").show()
                 }
                 
             }).onDownloadFinished({ () -> () in
@@ -148,10 +165,7 @@ extension SaveUserViewController: UITableViewDelegate {
             cell.textField.secureTextEntry = true
         }
         
-        if indexPath.row == 1 || indexPath.row == 2 {
-            
-            cell.textField.autocapitalizationType = UITextAutocapitalizationType.None
-        }
+        cell.textField.autocapitalizationType = UITextAutocapitalizationType.None
         
         return cell
     }

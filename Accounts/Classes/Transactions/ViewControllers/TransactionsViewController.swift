@@ -163,7 +163,7 @@ class TransactionsViewController: ACBaseViewController {
                         break
                     }
                 }
-                else if let transactionID = selectedTransactionID {
+                if let transactionID = selectedTransactionID {
                     
                     if transaction.TransactionID == transactionID && transactionID > 0 {
                         
@@ -181,7 +181,12 @@ class TransactionsViewController: ACBaseViewController {
             }
             else if selectedPurchaseID == 0 && selectedTransactionID == 0 {
                 
-                rowToDeselect = nil // NSIndexPath(forRow: 0, inSection: 0)
+                rowToDeselect = nil // for now (needsto get id from postback)
+                
+                if transactions.count > 0 {
+                    
+                    tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Middle, animated: false)
+                }
             }
             else if let indexPath = selectedRow {
                 
@@ -508,6 +513,12 @@ extension TransactionsViewController: UIPopoverPresentationControllerDelegate {
         deselectSelectedCell(tableView)
         getDifference(nil)
     }
+    
+    func popoverPresentationControllerShouldDismissPopover(popoverPresentationController: UIPopoverPresentationController) -> Bool {
+        
+        println("hi")
+        return true
+    }
 }
 
 extension TransactionsViewController: UIScrollViewDelegate {
@@ -574,11 +585,13 @@ extension TransactionsViewController: SaveItemDelegate {
         
         selectedPurchaseID = 0
         selectedTransactionID = transaction.TransactionID
+        selectedRow = nil
     }
     
     func purchaseDidChange(purchase: Purchase) {
         
         selectedTransactionID = 0
         selectedPurchaseID = purchase.PurchaseID
+        selectedRow = nil
     }
 }

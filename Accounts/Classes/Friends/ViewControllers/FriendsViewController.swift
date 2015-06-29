@@ -64,6 +64,11 @@ class FriendsViewController: ACBaseViewController {
             
             tableView.reloadData()
         }
+        
+        if data()[2].count > 0 && editing {
+            
+            tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 2), atScrollPosition: .Top, animated: true)
+        }
     }
     
     func setBarButtonItems() {
@@ -76,9 +81,11 @@ class FriendsViewController: ACBaseViewController {
         friendInvitesBarButtonItem = UIBarButtonItem(title: "Invites", style: .Plain, target: self, action: "friendInvites")
         openMenuBarButtonItem = UIBarButtonItem(image: kMenuIcon, style: .Plain, target: self, action: "openMenu")
         
+        let editBarButtonItem = data()[2].count > 0 ? editButtonItem() : UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: self, action: nil)
+        
         navigationItem.leftBarButtonItems = [
             openMenuBarButtonItem!,
-            editButtonItem()
+            editBarButtonItem
         ]
         navigationItem.rightBarButtonItems = [
             addBarButtonItem!,
