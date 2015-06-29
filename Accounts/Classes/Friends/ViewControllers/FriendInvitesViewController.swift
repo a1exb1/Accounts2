@@ -202,6 +202,11 @@ extension FriendInvitesViewController: UITableViewDelegate, UITableViewDataSourc
         
         if indexPath.section == kUnconfirmedSentInvitesSection && editingStyle == .Delete {
             
+            tableView.beginUpdates()
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
+            invites[indexPath.section].removeAtIndex(indexPath.row)
+            tableView.endUpdates()
+            
             kActiveUser.removeFriend(user.UserID, completion: { (success) -> () in
                 
                 self.refresh(nil)
