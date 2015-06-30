@@ -20,6 +20,8 @@ class SavePurchaseViewController: ACFormViewController {
     
     var delegate: SaveItemDelegate?
     
+    var itemDidChange = false
+    
     override func viewDidLoad() {
         
         allowEditing = true //purchase.user.UserID == kActiveUser.UserID || purchase.PurchaseID == 0
@@ -80,22 +82,46 @@ class SavePurchaseViewController: ACFormViewController {
     
     func pop() {
         
-        if purchase.PurchaseID == 0 {
+        if itemDidChange {
             
-            UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back delete this purchase! Are you sure?") { (response) -> () in
+            UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back delete changes to this purchase! Are you sure?") { (response) -> () in
                 
                 if response == AlertResponse.Confirm {
                     
                     self.dismissViewControllerFromCurrentContextAnimated(true)
+                    self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
                 }
             }
         }
         else {
             
             dismissViewControllerFromCurrentContextAnimated(true)
+            navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(navigationController!.popoverPresentationController!)
         }
         
-        navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(navigationController!.popoverPresentationController!)
+        
+    }
+    
+    func popAll() {
+        
+        if itemDidChange {
+            
+            UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back will delete changes to this transaction! Are you sure?") { (response) -> () in
+                
+                if response == AlertResponse.Confirm {
+                    
+                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                    self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
+                    
+                    self.delegate?.itemDidGetDeleted()
+                }
+            }
+        }
+        else {
+            
+            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+            navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(navigationController!.popoverPresentationController!)
+        }
     }
 }
 
@@ -313,6 +339,7 @@ extension SavePurchaseViewController: FormViewDelegate {
     func formViewElementDidChange(identifier: String, value: AnyObject?) {
         
         showOrHideSaveButton()
+        itemDidChange = true
     }
 }
 
@@ -404,6 +431,8 @@ extension SavePurchaseViewController: UITableViewDelegate {
 
                     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
                     tableView.endUpdates()
+                    
+                    itemDidChange = true
                 }
             }
         }
@@ -424,6 +453,7 @@ extension SavePurchaseViewController: SelectUsersDelegate {
             purchase.splitTheBill()
         }
 
+        itemDidChange = true
         showOrHideSaveButton()
         reloadForm()
     }
@@ -439,6 +469,7 @@ extension SavePurchaseViewController: SelectUserDelegate {
             purchase.friends = []
         }
         
+        itemDidChange = true
         showOrHideSaveButton()
         reloadForm()
     }

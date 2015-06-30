@@ -38,6 +38,12 @@ class SelectPurchaseOrTransactionViewController: ACBaseViewController {
         }
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        saveItemDelegate?.newItemViewControllerWasPresented(nil)
+    }
+    
     override func close() {
         super.close()
         
@@ -87,6 +93,7 @@ extension SelectPurchaseOrTransactionViewController: UITableViewDelegate, UITabl
             }
             
             v.delegate = saveItemDelegate
+            saveItemDelegate?.newItemViewControllerWasPresented(v)
             
             navigationController?.pushViewController(v, animated: true)
         }
@@ -100,6 +107,7 @@ extension SelectPurchaseOrTransactionViewController: UITableViewDelegate, UITabl
             }
             
             v.delegate = saveItemDelegate
+            saveItemDelegate?.newItemViewControllerWasPresented(v)
             
             navigationController?.pushViewController(v, animated: true)
         }

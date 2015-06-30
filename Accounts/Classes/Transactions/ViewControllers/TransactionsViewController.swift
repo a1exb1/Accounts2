@@ -22,6 +22,8 @@ protocol SaveItemDelegate {
     func itemDidChange()
     func purchaseDidChange(purchase: Purchase)
     func transactionDidChange(transaction: Transaction)
+    func newItemViewControllerWasPresented(viewController: UIViewController?)
+    func dismissPopover()
 }
 
 class TransactionsViewController: ACBaseViewController {
@@ -44,6 +46,8 @@ class TransactionsViewController: ACBaseViewController {
     var selectedPurchaseID: Int?
     var selectedTransactionID: Int?
     var didJustDelete: Bool = false
+    
+    var popoverViewController: UIViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,10 +77,16 @@ class TransactionsViewController: ACBaseViewController {
             findAndScrollToCalculatedSelectedCellAtIndexPath()
         }
         
-        getDifference(nil)
+        getDifferenceAndRefreshIfNeccessary(nil)
     }
     
-    func getDifference(refreshControl: UIRefreshControl?) {
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        popoverViewController = nil // to make sure
+    }
+    
+    func getDifferenceAndRefreshIfNeccessary(refreshControl: UIRefreshControl?) {
         
         kActiveUser.getDifferenceBetweenFriend(friend, completion: { (difference, count) -> () in
          
@@ -200,7 +210,10 @@ class TransactionsViewController: ACBaseViewController {
                 NSTimer.schedule(delay: kAnimationDuration, handler: { timer in
 
                     var cellRect = self.tableView.rectForRowAtIndexPath(indexPath)
-                    var completelyVisible = CGRectContainsRect(self.tableView.bounds, cellRect)
+                    
+                    let rectToCheck = CGRect(x: self.tableView.bounds.origin.x, y: self.tableView.bounds.origin.y + 64, width: self.tableView.bounds.width, height: self.tableView.bounds.height - 64)
+                    
+                    var completelyVisible = CGRectContainsRect(rectToCheck, cellRect)
                     
                     if !completelyVisible {
                         
@@ -237,9 +250,9 @@ class TransactionsViewController: ACBaseViewController {
         selectedRow = nil
         didJustDelete = false
         
-        getDifference(refreshControl)
+        //getDifferenceAndRefreshIfNeccessary(refreshControl)
         
-        //executeActualRefreshByHiding(false, refreshControl: refreshControl, take: nil, completion: nil)
+        executeActualRefreshByHiding(false, refreshControl: refreshControl, take: nil, completion: nil)
     }
     
     func animateTableFooterViewHeight(height: Int, completion: (() -> ())?) {
@@ -438,47 +451,9 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         v.popoverPresentationController?.delegate = self
         v.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Left
         
+        popoverViewController = view
+        
         presentViewController(v, animated: true, completion: nil)
-    }
-    
-//    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-//        
-//        let transaction = transactions[indexPath.row]
-//        
-//        if canDeleteTransactionAtIndexPath(indexPath) {
-//         
-//            return UITableViewCellEditingStyle.Delete
-//        }
-//        
-//        return UITableViewCellEditingStyle.None
-//    }
-    
-//    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-//        
-//        let transaction = transactions[indexPath.row]
-//        
-//        if editingStyle == .Delete {
-//            
-//            if canDeleteTransactionAtIndexPath(indexPath) {
-//                
-//                transaction.webApiDelete()?.onDownloadFinished({ () -> () in
-//                    
-//                    self.refresh(nil)
-//                })
-//            }
-//        }
-//    }
-    
-    func canDeleteTransactionAtIndexPath(indexPath:NSIndexPath) -> Bool {
-        
-        let transaction = transactions[indexPath.row]
-        
-        if transaction.user.UserID == kActiveUser.UserID && transaction.purchase.PurchaseID == 0 {
-            
-            return true
-        }
-        
-        return false
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -495,11 +470,6 @@ extension TransactionsViewController: UITableViewDelegate, UITableViewDataSource
         return ""
     }
     
-//    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        
-//        return CGFloat.min
-//    }
-    
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         
         return CGFloat.min + (kDevice == .Pad ? 40 : 0)
@@ -510,14 +480,27 @@ extension TransactionsViewController: UIPopoverPresentationControllerDelegate {
     
     func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
         
+        popoverViewController = nil
         deselectSelectedCell(tableView)
-        getDifference(nil)
+        getDifferenceAndRefreshIfNeccessary(nil)
     }
     
     func popoverPresentationControllerShouldDismissPopover(popoverPresentationController: UIPopoverPresentationController) -> Bool {
         
-        println("hi")
-        return true
+        if let viewController = popoverViewController as? SavePurchaseViewController {
+            
+            viewController.popAll()
+            return false
+        }
+        else if let viewController = popoverViewController as? SaveTransactionViewController {
+            
+            viewController.popAll()
+            return false
+        }
+        else {
+            
+            return true
+        }
     }
 }
 
@@ -593,5 +576,15 @@ extension TransactionsViewController: SaveItemDelegate {
         selectedTransactionID = 0
         selectedPurchaseID = purchase.PurchaseID
         selectedRow = nil
+    }
+    
+    func newItemViewControllerWasPresented(viewController: UIViewController?) {
+    
+        popoverViewController = viewController
+    }
+    
+    func dismissPopover() {
+        
+        
     }
 }

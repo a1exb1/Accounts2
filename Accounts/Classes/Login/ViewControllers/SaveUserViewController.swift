@@ -66,11 +66,11 @@ class SaveUserViewController: ACFormViewController {
             user.webApiUpdate()?.onDownloadSuccessWithRequestInfo({ (json, request, httpUrlRequest, httpUrlResponse) -> () in
                 
                 let success = httpUrlResponse!.statusCode == 200 || httpUrlResponse!.statusCode == 204
-                println(httpUrlResponse!.statusCode)
+                
                 if success {
                     
                     self.navigationController?.popViewControllerAnimated(true)
-                    kActiveUser = self.user
+                    kActiveUser = User.createObjectFromJson(json)
                     kActiveUser.saveUserOnDevice()
                 }
                 else {

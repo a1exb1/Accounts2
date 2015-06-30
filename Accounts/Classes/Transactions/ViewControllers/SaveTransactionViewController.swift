@@ -17,6 +17,8 @@ class SaveTransactionViewController: ACFormViewController {
     var allowEditing = false
     var delegate: SaveItemDelegate?
     
+    var itemDidChange = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,13 +71,14 @@ class SaveTransactionViewController: ACFormViewController {
     
     func pop() {
         
-        if transaction.TransactionID == 0 {
+        if itemDidChange {
             
-            UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back will delete this transaction! Are you sure?") { (response) -> () in
+            UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back will delete changes to this transaction! Are you sure?") { (response) -> () in
                 
                 if response == AlertResponse.Confirm {
                     
                     self.dismissViewControllerFromCurrentContextAnimated(true)
+                    self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
                     self.delegate?.itemDidGetDeleted()
                 }
             }
@@ -83,9 +86,34 @@ class SaveTransactionViewController: ACFormViewController {
         else {
             
             self.dismissViewControllerFromCurrentContextAnimated(true)
+            navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(navigationController!.popoverPresentationController!)
         }
         
-        navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(navigationController!.popoverPresentationController!)
+        
+    }
+    
+    func popAll() {
+        
+        if itemDidChange {
+            
+            UIAlertController.showAlertControllerWithButtonTitle("Go back", confirmBtnStyle: UIAlertActionStyle.Destructive, message: "Going back will delete changes to this transaction! Are you sure?") { (response) -> () in
+                
+                if response == AlertResponse.Confirm {
+                    
+                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                    self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
+                    self.delegate?.itemDidGetDeleted()
+                }
+            }
+        }
+        else {
+            
+            navigationController?.dismissViewControllerAnimated(true, completion: nil)
+            navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(navigationController!.popoverPresentationController!)
+        }
+        
+        
+        
     }
     
     func showOrHideSaveButton() {
@@ -228,6 +256,7 @@ extension SaveTransactionViewController: FormViewDelegate {
     func formViewElementDidChange(identifier: String, value: AnyObject?) {
         
         showOrHideSaveButton()
+        itemDidChange = true
     }
 }
 
@@ -261,6 +290,7 @@ extension SaveTransactionViewController: SelectUserDelegate {
             transaction.friend = User()
         }
         
+        itemDidChange = true
         showOrHideSaveButton()
         reloadForm()
     }

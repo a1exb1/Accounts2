@@ -9,6 +9,7 @@
 import UIKit
 import ABToolKit
 import SwiftyUserDefaults
+import SwiftyJSON
 
 private let kProfileSection = 0
 private let kCurrencySection = 1
@@ -19,12 +20,10 @@ private let kLogoutIndexPath = NSIndexPath(forRow: 1, inSection: kProfileSection
 
 private let kCurrencyIndexPath = NSIndexPath(forRow: 0, inSection: kCurrencySection)
 
-
-
 class MenuViewController: ACBaseViewController {
 
     var tableView = UITableView(frame: CGRectZero, style: .Grouped)
-    let data = [
+    var data = [
         //[kProfileIndexPath],
         //[kCurrencyIndexPath],
         [kProfileIndexPath, kLogoutIndexPath]
@@ -33,6 +32,15 @@ class MenuViewController: ACBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if kActiveUser.UserID == 6 {
+            
+            data = [
+                //[kProfileIndexPath],
+                [kCurrencyIndexPath],
+                [kProfileIndexPath, kLogoutIndexPath]
+            ]
+        }
+        
         setupTableView(tableView, delegate: self, dataSource: self)
         
         addCloseButton()
@@ -100,12 +108,24 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
                     let v = UIStoryboard.initialViewControllerFromStoryboardNamed("Login")
                     self.presentViewController(v, animated: true, completion: nil)
                 }
+                else {
+                    
+                    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                }
             })
         }
         else if indexPath == kProfileIndexPath {
             
             let v = SaveUserViewController()
-            v.user = kActiveUser
+            
+            let user = User()
+            
+            user.UserID = kActiveUser.UserID
+            user.Email = kActiveUser.Email
+            user.Username = kActiveUser.Username
+            
+            v.user = user
+            
             navigationController?.pushViewController(v, animated: true)
         }
     }
