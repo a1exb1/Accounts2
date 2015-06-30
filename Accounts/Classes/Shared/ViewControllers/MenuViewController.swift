@@ -20,6 +20,11 @@ private let kLogoutIndexPath = NSIndexPath(forRow: 1, inSection: kProfileSection
 
 private let kCurrencyIndexPath = NSIndexPath(forRow: 0, inSection: kCurrencySection)
 
+protocol MenuDelegate {
+    
+    func menuDidClose()
+}
+
 class MenuViewController: ACBaseViewController {
 
     var tableView = UITableView(frame: CGRectZero, style: .Grouped)
@@ -29,15 +34,16 @@ class MenuViewController: ACBaseViewController {
         [kProfileIndexPath, kLogoutIndexPath]
     ]
     
+    var delegate: MenuDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         if kActiveUser.UserID == 6 {
             
             data = [
-                //[kProfileIndexPath],
-                [kCurrencyIndexPath],
-                [kProfileIndexPath, kLogoutIndexPath]
+                [kProfileIndexPath, kLogoutIndexPath],
+                [kCurrencyIndexPath]
             ]
         }
         
@@ -50,6 +56,12 @@ class MenuViewController: ACBaseViewController {
         super.viewWillAppear(animated)
         
         tableView.reloadData()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        delegate?.menuDidClose()
     }
 }
 
@@ -140,3 +152,4 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         return ""
     }
 }
+

@@ -153,7 +153,7 @@ class User: JSONObject {
     
     func getTransactionsBetweenFriend(friend: User, skip: Int, take: Int?, completion: (transactions: Array<Transaction>) -> ()) -> JsonRequest {
  
-        var itemsToTake = 16
+        var itemsToTake = 20
         
         if let take = take {
             

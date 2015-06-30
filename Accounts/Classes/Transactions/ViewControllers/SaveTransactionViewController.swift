@@ -79,7 +79,7 @@ class SaveTransactionViewController: ACFormViewController {
                     
                     self.dismissViewControllerFromCurrentContextAnimated(true)
                     self.navigationController?.popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(self.navigationController!.popoverPresentationController!)
-                    self.delegate?.itemDidGetDeleted()
+                    //self.delegate?.itemDidGetDeleted()
                 }
             }
         }

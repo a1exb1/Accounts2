@@ -26,6 +26,8 @@ class FriendsViewController: ACBaseViewController {
     var openMenuBarButtonItem: UIBarButtonItem?
     var noDataView = UILabel()
     
+    var popoverViewController: UIViewController?
+    
     var toolbar = UIToolbar()
     
     
@@ -176,7 +178,10 @@ class FriendsViewController: ACBaseViewController {
     
     func openMenu() {
         
-        let v = UINavigationController(rootViewController:MenuViewController())
+        let view = MenuViewController()
+        view.delegate = self
+        
+        let v = UINavigationController(rootViewController:view)
         v.modalPresentationStyle = UIModalPresentationStyle.FormSheet
         presentViewController(v, animated: true, completion: nil)
     }
@@ -185,6 +190,7 @@ class FriendsViewController: ACBaseViewController {
         
         let view = SelectPurchaseOrTransactionViewController()
         let v = UINavigationController(rootViewController: view)
+        view.saveItemDelegate = self
 
         v.modalPresentationStyle = .Popover
         v.preferredContentSize = kPopoverContentSize
@@ -246,7 +252,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.detailTextLabel?.text = Formatter.formatCurrencyAsString(amount)
         cell.detailTextLabel?.textColor = tintColor
-        cell.editingAccessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
+        //cell.editingAccessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         
         return cell
@@ -366,7 +372,26 @@ extension FriendsViewController: UIPopoverPresentationControllerDelegate {
     
     func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
         
+        popoverViewController = nil
         refresh(nil)
+    }
+    
+    func popoverPresentationControllerShouldDismissPopover(popoverPresentationController: UIPopoverPresentationController) -> Bool {
+        
+        if let viewController = popoverViewController as? SavePurchaseViewController {
+            
+            viewController.popAll()
+            return false
+        }
+        else if let viewController = popoverViewController as? SaveTransactionViewController {
+            
+            viewController.popAll()
+            return false
+        }
+        else {
+            
+            return true
+        }
     }
 }
 
@@ -375,5 +400,45 @@ extension FriendsViewController: FriendInvitesDelegate {
     func friendsChanged() {
         
         refresh(nil)
+    }
+}
+
+extension FriendsViewController: MenuDelegate {
+    
+    func menuDidClose() {
+        
+        refresh(nil)
+    }
+}
+
+extension FriendsViewController: SaveItemDelegate {
+    
+    func itemDidGetDeleted() {
+
+    }
+    
+    func itemDidChange() {
+        
+        
+    }
+    
+    func transactionDidChange(transaction: Transaction) {
+        
+
+    }
+    
+    func purchaseDidChange(purchase: Purchase) {
+        
+
+    }
+    
+    func newItemViewControllerWasPresented(viewController: UIViewController?) {
+        
+        popoverViewController = viewController
+    }
+    
+    func dismissPopover() {
+        
+        
     }
 }
