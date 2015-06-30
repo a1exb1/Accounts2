@@ -56,6 +56,7 @@ class MenuViewController: ACBaseViewController {
         super.viewWillAppear(animated)
         
         tableView.reloadData()
+        //deselectSelectedCell(tableView)
     }
     
     override func viewWillDisappear(animated: Bool) {

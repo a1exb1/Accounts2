@@ -34,6 +34,11 @@ class FriendsViewController: ACBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if kDevice == .Phone {
+            
+            tableView = UITableView(frame: CGRectZero, style: .Plain)
+        }
+        
         setupTableView(tableView, delegate: self, dataSource: self)
         
         setBarButtonItems()

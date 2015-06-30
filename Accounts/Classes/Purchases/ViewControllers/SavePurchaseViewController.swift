@@ -467,6 +467,7 @@ extension SavePurchaseViewController: SelectUserDelegate {
             
             purchase.user = user
             purchase.friends = []
+            purchase.splitTheBill()
         }
         
         itemDidChange = true
